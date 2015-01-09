@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<body>
+  <p>Hello, {{ user }}</p>
+  <h5>Your Organizations</h5>
+  <ul>
+    {% for org in organizations %}
+    <li><a href="{{ org.get_absolute_url }}">{{ org }}</a></li>
+    {% endfor %}
+</body>
+
+<h2><a href="/organizations/create">Add organizations</a></h2>
+{% endblock %}

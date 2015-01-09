@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>{% block page_title %}Alumnus{% endblock %}</title>
+
+    <link href="{% static 'stylesheets/css/lib/bootstrap.min.css' %}" rel="stylesheet">
+
+    {% block page_specific_styles %}{% endblock %}
+
+    <script data-main="{% static 'javascripts/main.js' %}" src="{% static 'javascripts/lib/requirejs/require.js' %}"></script>
+
+    {% block page_specific_scripts %}{% endblock %}
+  </head>
+
+  {% block content %}
+  <body>
+    <p>Hello, World</p>
+  </body>
+  {% endblock %}
+
+</html>

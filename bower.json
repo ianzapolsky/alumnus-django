@@ -1,0 +1,17 @@
+{
+  "name": "alumnus-web",
+  "main": "manage.py",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ianzapolsky/alumnus-web",
+  "authors": [
+    "ianzapolsky <ianzapolsky@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": null,
+    "backbone-amd": null,
+    "underscore-amd": null,
+    "requirejs": null
+  }
+}

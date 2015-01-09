@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<body>
+  <h5>{{ organization }} memberlists</h5>
+  <ul>
+    {% for memberlist in memberlists %}
+    <li><a href="{{ memberlist.get_absolute_url }}">{{ memberlist }}</a></li>
+    {% endfor %}
+</body>
+
+<h2><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h2>
+
+{% endblock %}
+

@@ -1,0 +1,10 @@
+<h1>{{ memberlist }}</h1>
+
+<h2>members</h2>
+<ul>
+{% for member in memberlist.members.all %}
+    <li>{{ member }}</li> 
+{% endfor %}
+</ul>
+
+<h2><a href="{{ memberlist.get_update_url }}">Update memberlist</a></h2>
