@@ -1,4 +1,22 @@
-<h1>{{ member }}</h1>
+{% extends "base.html" %}
+{% load staticfiles %}
 
-<h2><a href="{{ member.get_update_url }}">Edit member information</a></h2>
-<h2><a href="{{ member.get_update_request_url }}">Request member information</a></h2>
+{% block require_js %}
+<script>
+  require(['src/views/delete'], function(DeleteView) {
+    new DeleteView();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h1>{{ member }}</h1>
+  
+  <h2><a href="{{ member.get_update_url }}">Edit member information</a></h2>
+  <h2><a href="{{ member.get_update_request_url }}">Request member information</a></h2>
+  
+  <input id="member_id" type="hidden" value="{{ member.pk }}">
+  <button class="btn-delete">Delete member</button>
+</div>
+{% endblock %}

@@ -5,8 +5,3 @@ require.config({
     "backbone": "lib/backbone-amd/backbone"
   }
 });
-
-require(['src/views/base'], function(BaseView) {
-  new BaseView();
-});
-

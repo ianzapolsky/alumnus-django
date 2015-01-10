@@ -33,7 +33,7 @@ def members(request, organization_id):
 @login_required
 def member_detail(request, member_id):
     context = {'user': request.user}
-    member = Member.objects.get(pk=member_id)
+    member = get_object_or_404(Member, pk=member_id)
     if member.organization.owner != request.user:
         return HttpResponse('Sorry, you do not have rights to this member.')
     context['member'] = member

@@ -10,6 +10,9 @@ urlpatterns = patterns('',
 
     # Organizations
     url(r'^organizations/$', 'alumnus_backend.views.get_organizations'),
+
+    # Members
+    url(r'^members/delete/$', 'alumnus_backend.views.member_delete'),
     
 
 )

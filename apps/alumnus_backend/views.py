@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import View
 from django.utils.decorators import method_decorator
@@ -26,3 +26,12 @@ def get_organizations(request):
     if request.method == 'GET':
         organizations = Organization.objects.filter(owner=request.user)
         return HttpResponse(organizations)
+
+@login_required
+def member_delete(request):
+    if request.method == 'POST':
+        member_id = request.POST.get('member_id')
+        member = get_object_or_404(Member, pk=member_id) 
+        member.delete()
+        return HttpResponse('Successfully deleted member.')
+

@@ -15,7 +15,11 @@
 
     <script data-main="{% static 'javascripts/main.js' %}" src="{% static 'javascripts/lib/requirejs/require.js' %}"></script>
 
+    {% block require_js %}
+    {% endblock %}
+
     {% block page_specific_scripts %}{% endblock %}
+
   </head>
 
   {% block content %}
