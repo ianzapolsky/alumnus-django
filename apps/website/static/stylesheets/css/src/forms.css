@@ -1,0 +1,23 @@
+/* line 1, ../../sass/forms.sass */
+.form-container {
+  float: none;
+  margin: auto;
+}
+/* line 5, ../../sass/forms.sass */
+.form-container ul {
+  list-style-type: none;
+  text-align: left;
+  -webkit-box-shadow: 0px 2px 5px;
+  -moz-box-shadow: 0px 2px 5px;
+  -ms-box-shadow: 0px 2px 5px;
+  box-shadow: 0px 2px 5px;
+}
+/* line 13, ../../sass/forms.sass */
+.form-container ul li {
+  height: 30px;
+}
+
+/* line 16, ../../sass/forms.sass */
+.form-checkbox {
+  margin: 10px !important;
+}

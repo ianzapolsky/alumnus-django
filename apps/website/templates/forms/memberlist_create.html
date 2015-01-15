@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+ 
+<div class="form-container col-md-4">
+
+  <div class="form-group">
+    <form method="post">
+      {% csrf_token %}
+      <label for="name">{{form.name.label}}:</label>
+      {% render_field form.name class+="form-control" %}
+      <br>
+      <label for="members">{{ form.members.label }}:</label>
+
+      {% render_field form.members class+="form-checkbox" %}
+
+      <br>
+      <button class="btn btn-success" type="submit">Submit</button>
+    </form>
+  </div>
+
+</div>
+  
+{% endblock %}

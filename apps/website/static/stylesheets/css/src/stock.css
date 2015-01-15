@@ -1,0 +1,15 @@
+/* line 1, ../../sass/stock.sass */
+.centered {
+  float: none;
+  margin: auto;
+}
+
+/* line 5, ../../sass/stock.sass */
+.left-align {
+  text-align: left;
+}
+
+/* line 8, ../../sass/stock.sass */
+.center-align {
+  text-align: center;
+}

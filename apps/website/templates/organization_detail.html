@@ -1,6 +1,12 @@
-<h1>{{ organization }}</h1>
-<h2><a href="{{ organization.get_members_url }}">members</a></h2>
-<h2><a href="{{ organization.get_memberlists_url }}">memberlists</a></h2>
+{% extends "base.html" %}
+{% load staticfiles %}
 
-<h2><a href="{{ organization.get_create_member_url }}">Add member</a></h2>
-<h2><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h2>
+{% block content %}
+<h1>{{ organization }}</h1>
+<h3><a href="{{ organization.get_members_url }}">Members</a></h3>
+<h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
+
+<h3><a href="{{ organization.get_create_member_url }}">Add member</a></h3>
+<h3><a href="{{ organization.get_import_member_url }}">Import members</a></h3>
+<h3><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h3>
+{% endblock %}

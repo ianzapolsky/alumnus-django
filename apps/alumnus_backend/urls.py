@@ -13,6 +13,10 @@ urlpatterns = patterns('',
 
     # Members
     url(r'^members/delete/$', 'alumnus_backend.views.member_delete'),
+    url(r'^members/request-update/$', 'alumnus_backend.views.member_update_request'),
+    url(r'^members/send-mail/$', 'alumnus_backend.views.member_send_mail'),
     
+    # Send mail
+    url(r'^memberlists/send-mail/$', 'alumnus_backend.views.memberlist_send_mail'),
 
 )

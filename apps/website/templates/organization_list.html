@@ -2,14 +2,11 @@
 {% load staticfiles %}
 
 {% block content %}
-<body>
-  <p>Hello, {{ user }}</p>
-  <h5>Your Organizations</h5>
-  <ul>
-    {% for org in organizations %}
-    <li><a href="{{ org.get_absolute_url }}">{{ org }}</a></li>
-    {% endfor %}
-</body>
-
-<h2><a href="/organizations/create">Add organizations</a></h2>
+<p>Hello, {{ user }}</p>
+<h2>Your Organizations</h5>
+{% for org in organizations %}
+<h3><a href="{{ org.get_absolute_url }}">{{ org }}</a></h6>
+{% endfor %}
+<br>
+<h5><a href="/organizations/create">Add organizations</a></h2>
 {% endblock %}

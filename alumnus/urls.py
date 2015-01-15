@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^',       include('website.urls')),
 
     # Backend
-    url(r'^api/',  include('alumnus_backend.urls')),
+    url(r'^api/',   include('alumnus_backend.urls')),
 
     # Admin
     url(r'^admin/', include(admin.site.urls)),

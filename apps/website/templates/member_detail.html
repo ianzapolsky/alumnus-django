@@ -3,20 +3,22 @@
 
 {% block require_js %}
 <script>
-  require(['src/views/delete'], function(DeleteView) {
-    new DeleteView();
+  require(['src/views/member-detail'], function(MemberDetailView) {
+    new MemberDetailView();
   });
 </script>
 {% endblock %}
 
 {% block content %}
 <div class="form-container">
-  <h1>{{ member }}</h1>
+  <h1 id="member-title">{{ member }}</h1>
+  <p>{{ member.email }}</p>
   
-  <h2><a href="{{ member.get_update_url }}">Edit member information</a></h2>
-  <h2><a href="{{ member.get_update_request_url }}">Request member information</a></h2>
+  <h5><a href="{{ member.get_send_mail_url }}">Send message to member</a></h5>
+  <h5><a href="{{ member.get_update_url }}">Edit member information</a></h5>
+  <button id="member-update-request" class="btn btn-success">Request member information</button>
   
-  <input id="member_id" type="hidden" value="{{ member.pk }}">
-  <button class="btn-delete">Delete member</button>
+  <input id="member-id" type="hidden" value="{{ member.pk }}">
+  <button id="member-delete" class="btn btn-danger">Delete member</button>
 </div>
 {% endblock %}

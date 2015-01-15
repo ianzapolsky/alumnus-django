@@ -2,15 +2,13 @@
 {% load staticfiles %}
 
 {% block content %}
-<body>
-  <h5>{{ organization }} members</h5>
-  <ul>
-    {% for member in members %}
-    <li><a href="{{ member.get_absolute_url }}">{{ member }}</a></li>
-    {% endfor %}
-</body>
+<h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> members</h2>
 
-<h2><a href="{{ organization.get_create_member_url }}">Add member</a></h2>
+{% for member in members %}
+<h3><a href="{{ member.get_absolute_url }}">{{ member }}</a></h3>
+{% endfor %}
 
+<br>
+<h5><a href="{{ organization.get_create_member_url }}">Add member</a></h5>
 {% endblock %}
 

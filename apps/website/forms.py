@@ -20,11 +20,13 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
+
 class OrganizationForm(forms.ModelForm):
     
     class Meta:
         model = Organization 
         exclude = ('owner',)
+
 
 class MemberForm(forms.ModelForm):
     
@@ -32,11 +34,15 @@ class MemberForm(forms.ModelForm):
         model = Member
         exclude = ('organization', 'uuid',)
 
+
 class MemberListForm(forms.ModelForm):
 
     class Meta:
         model = MemberList
         exclude = ('organization',)
+        widgets = {
+          'members': forms.CheckboxSelectMultiple()
+        }
 
     def __init__(self, organization, *args, **kwargs):
         super(MemberListForm, self).__init__(*args, **kwargs)
@@ -44,4 +50,9 @@ class MemberListForm(forms.ModelForm):
             queryset=Member.objects.filter(organization=organization),
             widget=forms.CheckboxSelectMultiple(),
         )
+
+
+class MemberImportForm(forms.Form):
+
+    file = forms.FileField(label='Import Excel file')
 

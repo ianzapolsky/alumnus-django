@@ -1,12 +1,17 @@
 from django.conf.urls import patterns, include, url
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
-from django.contrib.auth.decorators import login_required
+
 from .forms import CustomUserCreationForm 
 
 
 # Website URLs
 urlpatterns = patterns('',
+
+    # Marketing
+    url(r'^contact/$', TemplateView.as_view(template_name='marketing/contact.html')),
+    url(r'^about/$', TemplateView.as_view(template_name='marketing/about.html')),
 
     # User Management
     url(r'^login/$', 'django.contrib.auth.views.login'),
@@ -28,7 +33,8 @@ urlpatterns = patterns('',
     # Members
     url(r'^organizations/(?P<organization_id>\d+)/members/$', 'website.views.members'),
     url(r'^members/(?P<member_id>\d+)/$', 'website.views.member_detail'),
-    url(r'^organizations/(?P<organization_id>\d+)/members/create/$', 'website.views.create_member'),
+    url(r'^organizations/(?P<organization_id>\d+)/members/create/$', 'website.views.member_create'),
+    url(r'^organizations/(?P<organization_id>\d+)/members/import/$', 'website.views.member_import'),
     url(r'^members/(?P<member_id>\d+)/update/$', 'website.views.member_update'),
     url(r'^members/(?P<member_id>\d+)/update-request/$', 'website.views.member_update_request'),
 
@@ -39,10 +45,11 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_id>\d+)/memberlists/$', 'website.views.memberlists'),
     url(r'^memberlists/(?P<memberlist_id>\d+)/$', 'website.views.memberlist_detail'),
     url(r'^memberlists/(?P<memberlist_id>\d+)/update$', 'website.views.memberlist_update'),
-    url(r'^organizations/(?P<organization_id>\d+)/memberlists/create/$', 'website.views.create_memberlist'),
+    url(r'^organizations/(?P<organization_id>\d+)/memberlists/create/$', 'website.views.memberlist_create'),
   
-    
     # Send email
+    url(r'^members/(?P<member_id>\d+)/send-mail/$', 'website.views.member_send_mail'),
+    url(r'^memberlists/(?P<memberlist_id>\d+)/send-mail/$', 'website.views.memberlist_send_mail'), 
     
 
 )

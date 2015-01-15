@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+ 
+<div class="form-container col-md-4">
+
+  <div class="form-group">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.errors }}</label>
+      <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+      {% render_field field class+="form-control" %}
+      <br>
+      {% endfor %}
+      <button class="btn btn-success" type="submit">Submit</button>
+    </form>
+  </div>
+
+</div>
+  
+{% endblock %}

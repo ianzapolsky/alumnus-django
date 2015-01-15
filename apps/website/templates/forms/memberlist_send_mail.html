@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block require_js %}
+<script>
+  require(['src/views/memberlist-send-mail'], function(MemberListSendMailView) {
+    new MemberListSendMailView();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<h2>Send email to <a href="{{ memberlist.get_absolute_url }}">{{ memberlist }}</a></h2>
+
+<div class="form-container col-md-4">
+  <div class="form-group"> 
+    <form>
+      <label>Subject:</label>
+      <textarea id="subject" rows="1" class="form-control"></textarea>
+      <br>
+      <label>Message:</label>
+      <textarea id="message" rows="8" class="form-control"></textarea>
+      <br>
+      <button id="send-mail" class="btn btn-success">Send</button>
+    </form>
+  </div>
+</div>
+
+<input id="memberlist-id" type="hidden" value="{{ memberlist.pk }}"> 
+
+{% endblock %}

@@ -20,6 +20,9 @@ class Organization(models.Model):
     def get_create_member_url(self):
         return self.get_members_url() + '/create'
 
+    def get_import_member_url(self):
+        return self.get_members_url() + '/import'
+
     def get_memberlists_url(self):
         return self.get_absolute_url() + '/memberlists'
   
@@ -31,6 +34,7 @@ class Member(models.Model):
     
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
+    email = models.EmailField()
     organization = models.ForeignKey(Organization)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
 
@@ -45,6 +49,9 @@ class Member(models.Model):
 
     def get_update_request_url(self):
         return self.get_absolute_url() + '/update-request'
+
+    def get_send_mail_url(self):
+        return self.get_absolute_url() + '/send-mail'
 
     def get_public_update_url(self):
         # Create a new AccessToken every time this function is called
@@ -68,8 +75,19 @@ class MemberList(models.Model):
     def get_update_url(self):
         return self.get_absolute_url() + '/update'
 
+    def get_send_mail_url(self):
+        return self.get_absolute_url() + '/send-mail'
+
+    def get_email_list(self):
+        email_list = '' 
+        for member in self.members.all():
+            email_list += member.email + ', '
+        return email_list
+
 
 class AccessToken(models.Model):
+    """ A one time token that allows unauthenticated users to gain access to 
+        the site to edit their personal information. """
     
     token = models.CharField(max_length=255, unique=True, default=uuid.uuid1)
     used = models.BooleanField(default=False)
