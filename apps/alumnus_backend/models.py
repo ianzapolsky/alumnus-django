@@ -11,6 +11,9 @@ class Organization(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_members(self):
+        return Member.objects.filter(organization=self).all()
+
     def get_absolute_url(self):
         return '/organizations/' + str(self.pk)
   
@@ -28,6 +31,9 @@ class Organization(models.Model):
   
     def get_create_memberlist_url(self):
         return self.get_memberlists_url() + '/create'
+
+    def get_send_mail_url(self):
+        return self.get_absolute_url() + '/send-mail'
 
 
 class Member(models.Model):

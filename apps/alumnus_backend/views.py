@@ -16,15 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Organization, Member, MemberList
 
 
-def create_user(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email    = request.POST.get('email')
-        password = request.POST.get('password')
-        user = User.objects.create_user(username, email, password)
-        user.save()
-        return HttpResponse(user)
-
 @login_required
 def get_organizations(request):
     """ Returns all of the requesting user's organizations """
@@ -36,16 +27,18 @@ def get_organizations(request):
 def member_delete(request):
     """ Deletes the specified member, assuming the user owns that member's organization """
     if request.method == 'POST':
-        member_id = request.POST.get('member_id')
+        member_id  = request.POST.get('member_id')
         member = get_object_or_404(Member, pk=member_id) 
         organization = member.organization
         if organization.owner != request.user:
-            msg = 'Sorry, you do not own the organization this member is in.'
+            message = 'Sorry, you do not own the organization this member is in.'
+            redirect = None
         else:
             member.delete()
-            msg = 'Member successfully deleted.' 
-        messages.add_message(request, messages.INFO, 'Member successfully deleted')
-        response = {'message': msg, 'redirect': organization.get_members_url()} 
+            message = 'Member successfully deleted.' 
+            redirect = organization.get_members_url()
+        messages.add_message(request, messages.INFO, message)
+        response = {'redirect': redirect} 
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required
@@ -76,53 +69,98 @@ def member_update_request(request):
 
         text_content = get_template('emails/member_update_request.txt').render(context)
         html_content = get_template('emails/member_update_request.html').render(context)
-        
         to = member.email
         reply_to = request.user.email
-          
         subject, from_email = 'Member Update Request', settings.DEFAULT_FROM_EMAIL
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
         msg.attach_alternative(html_content, 'text/html')
         successful = msg.send()
-        response = {'successful': successful}
+        if successful == 0:
+            message = 'There was an error sending the email. Please try again.'
+        else:
+            message = 'Email successfully sent.'
+        messages.add_message(request, messages.INFO, message)
+        response = {'successful': successful, 'redirect': member.get_absolute_url()}
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+@login_required
+def organization_send_mail(request):
+    if request.method == 'POST':
+        organization_id = request.POST.get('organization_id')
+        organization = get_object_or_404(Organization, pk=organization_id)
+        if organization.owner != request.user:
+            return HttpResponse('Sorry, you do not own that organization.')
+
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        text_content = message
+        # Important to note here that we get an array from the client, so do not
+        # need to cast "to" as an array later in our EmailMessage instantiation.
+        to = json.loads(request.POST.get('recipients'))
+        reply_to = request.user.email
+        from_email = settings.DEFAULT_FROM_EMAIL
+        msg = EmailMessage(subject, message, from_email, to, headers={'Reply-To': reply_to})
+        successful = msg.send()
+        if successful == 0:
+            message = 'There was an error sending the email. Please try again.'
+            redirect_url = organization.get_send_mail_url()
+        else:
+            message = 'Email successfully sent.'
+            redirect_url = organization.get_absolute_url()
+        messages.add_message(request, messages.INFO, message)
+        response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required
 def member_send_mail(request):
     if request.method == 'POST':
         member_id = request.POST.get('member_id')
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message', '')
         member = get_object_or_404(Member, pk=member_id)
         if member.organization.owner != request.user:
             return HttpResponse('Sorry, you do not own that member.')
-        text_content = message
 
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        text_content = message
         to = member.email
         reply_to = request.user.email
         from_email = settings.DEFAULT_FROM_EMAIL
-
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
-        response = {'successful': successful}
+        if successful == 0:
+            message = 'There was an error sending the email. Please try again.'
+            redirect_url = member.get_send_mail_url()
+        else:
+            message = 'Email successfully sent.'
+            redirect_url = member.get_absolute_url()
+        messages.add_message(request, messages.INFO, message)
+        response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required
 def memberlist_send_mail(request):
     if request.method == 'POST':
         memberlist_id = request.POST.get('memberlist_id')
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message', '')
         memberlist = get_object_or_404(MemberList, pk=memberlist_id)
         if memberlist.organization.owner != request.user:
             return HttpResponse('Sorry, you do not own that memberlist.')
-        text_content = message
 
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        text_content = message
         to = [member.email for member in memberlist.members.all()]
         reply_to = request.user.email
         from_email = settings.DEFAULT_FROM_EMAIL
-
         msg = EmailMessage(subject, message, from_email, to, headers={'Reply-To': reply_to})
         successful = msg.send()
-        response = {'successful': successful}
+        if successful == 0:
+            message = 'There was an error sending the email. Please try again.'
+            redirect_url = member.get_send_mail_url()
+        else:
+            message = 'Email successfully sent.'
+            redirect_url = member.get_absolute_url()
+        messages.add_message(request, messages.INFO, message)
+        response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
+

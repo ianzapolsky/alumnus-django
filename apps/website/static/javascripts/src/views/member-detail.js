@@ -24,8 +24,10 @@ define([
         url: '/api/members/request-update/',
         type: 'POST',
         data: data,
-        success: function(msg) {
-          console.log(msg);
+        success: function(data) {
+          if (data.redirect) {
+            window.location.replace(data.redirect);
+          }
         }
       });
     },
@@ -38,8 +40,9 @@ define([
         type: 'POST',
         data: data,
         success: function(data) {
-          window.location.replace(data.redirect);
-          // $('#member-title').text('Member has been deleted.');
+          if (data.redirect) {
+            window.location.replace(data.redirect);
+          }
         }
       });
     }

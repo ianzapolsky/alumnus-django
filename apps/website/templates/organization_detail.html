@@ -3,6 +3,7 @@
 
 {% block content %}
 <h1>{{ organization }}</h1>
+<h3><a href="{{ organization.get_send_mail_url }}">Send mail</a></h3>
 <h3><a href="{{ organization.get_members_url }}">Members</a></h3>
 <h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
 

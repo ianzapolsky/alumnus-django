@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     # Organizations
     url(r'^organizations/$', 'website.views.organizations'),
     url(r'^organizations/(?P<organization_id>\d+)/$', 'website.views.organization_detail'),
-    url(r'^organizations/create/$', 'website.views.create_organization'),
+    url(r'^organizations/create/$', 'website.views.organization_create'),
 
     # Members
     url(r'^organizations/(?P<organization_id>\d+)/members/$', 'website.views.members'),
@@ -36,20 +36,18 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_id>\d+)/members/create/$', 'website.views.member_create'),
     url(r'^organizations/(?P<organization_id>\d+)/members/import/$', 'website.views.member_import'),
     url(r'^members/(?P<member_id>\d+)/update/$', 'website.views.member_update'),
-    url(r'^members/(?P<member_id>\d+)/update-request/$', 'website.views.member_update_request'),
-
     # Public member update view, visible to only those with a valid AccessToken
     url(r'^members/(?P<member_id>\d+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
 
     # MemberLists
     url(r'^organizations/(?P<organization_id>\d+)/memberlists/$', 'website.views.memberlists'),
     url(r'^memberlists/(?P<memberlist_id>\d+)/$', 'website.views.memberlist_detail'),
-    url(r'^memberlists/(?P<memberlist_id>\d+)/update$', 'website.views.memberlist_update'),
     url(r'^organizations/(?P<organization_id>\d+)/memberlists/create/$', 'website.views.memberlist_create'),
+    url(r'^memberlists/(?P<memberlist_id>\d+)/update$', 'website.views.memberlist_update'),
   
     # Send email
+    url(r'^organizations/(?P<organization_id>\d+)/send-mail/$', 'website.views.organization_send_mail'),
     url(r'^members/(?P<member_id>\d+)/send-mail/$', 'website.views.member_send_mail'),
     url(r'^memberlists/(?P<memberlist_id>\d+)/send-mail/$', 'website.views.memberlist_send_mail'), 
-    
 
 )

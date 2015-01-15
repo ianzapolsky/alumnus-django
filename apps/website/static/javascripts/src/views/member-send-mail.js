@@ -27,8 +27,10 @@ define([
         url: '/api/members/send-mail/',
         type: 'POST',
         data: data,
-        success: function(msg) {
-          console.log(msg);
+        success: function(data) {
+          if (data.redirect) {
+            window.location.replace(data.redirect);
+          }
         }
       });
     }

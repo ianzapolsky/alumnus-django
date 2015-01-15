@@ -4,12 +4,12 @@ define([
   'backbone',
 ], function($, _, Backbone) {
   
-  var MemberListSendMailView = Backbone.View.extend({
+  var OrganizationSendMailView = Backbone.View.extend({
     
-    el: '.form-container',
+    el: '.send-mail-container',
   
     initialize: function() {
-      console.log('MemberListSendMailView initialize');
+      console.log('OrganizationSendMailView initialize');
     },
 
     events: { 
@@ -18,13 +18,18 @@ define([
 
     handleSend: function( ev ) {
       ev.preventDefault();
+      recipients = []
+      _.forEach($('input[type=checkbox]:checked'), function(el) {
+        recipients.push($(el).attr('data-member-email'));
+      });
       var data = {
-        memberlist_id: $('#memberlist-id').val(),
+        organization_id: $('#organization-id').val(),
+        recipients: JSON.stringify(recipients),
         message: $('#message').val(),
         subject: $('#subject').val()
       };
       $.ajax({
-        url: '/api/memberlists/send-mail/',
+        url: '/api/organizations/send-mail/',
         type: 'POST',
         data: data,
         success: function(data) {
@@ -37,7 +42,7 @@ define([
 
   });
 
-  return MemberListSendMailView;
+  return OrganizationSendMailView;
 
 });
 

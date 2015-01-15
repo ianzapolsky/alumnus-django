@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block require_js %}
+<script>
+  require([
+    'src/views/organization-send-mail',
+  ], function(OrganizationSendMailView, Members) {
+    new OrganizationSendMailView();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="send-mail-container">
+
+<h2>Send email to members in <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h2>
+
+<div class="form-container col-md-4">
+  <form>
+    <ul>
+      {% for member in members.all %}
+      <li>
+        <input class="form-checkbox" data-member-email="{{ member.email }}" type="checkbox" value="{{ member }}">{{ member }}</input>
+      </li>
+      {% endfor %}
+    </ul>
+  </form>
+</div>
+
+<div class="form-container col-md-4">
+  <div class="form-group"> 
+    <form>
+      <label>Subject:</label>
+      <textarea id="subject" rows="1" class="form-control"></textarea>
+      <br>
+      <label>Message:</label>
+      <textarea id="message" rows="8" class="form-control"></textarea>
+      <br>
+      <button id="send-mail" class="btn btn-success">Send</button>
+    </form>
+  </div>
+</div>
+
+<input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
+
+</div>
+
+{% endblock %}
