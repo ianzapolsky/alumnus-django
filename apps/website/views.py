@@ -3,8 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
-from alumnus_backend.models import Organization, Member, MemberList, AccessToken
+from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import OrganizationForm, MemberForm, MemberListForm, MemberImportForm
+
+
+""" User views """
+def user_activate(request, token):
+    token_obj = get_object_or_404(AuthenticationToken, used=False, token=token)
+    user = token_obj.user
+    user.is_active = True
+    user.save()
+    token_obj.used = True
+    token_obj.save()
+    return HttpResponse('Account activated!')
 
 """ Organization views """
 @login_required

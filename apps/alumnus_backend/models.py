@@ -100,3 +100,9 @@ class AccessToken(models.Model):
     
     def __unicode__(self):
         return str(self.token)
+
+
+class AuthenticationToken(AccessToken):
+    """ An AccessToken that is tied to a specific User """
+  
+    user = models.ForeignKey(User)

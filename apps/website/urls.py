@@ -21,6 +21,7 @@ urlpatterns = patterns('',
         form_class=CustomUserCreationForm,
         success_url='/'
     )),
+    url(r'^activate/(?P<token>[-\w\d]+)/$', 'website.views.user_activate'),
 
     # Home
     url(r'^$', 'website.views.organizations'),

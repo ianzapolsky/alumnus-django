@@ -9,9 +9,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.decorators import method_decorator
-from django.views.generic import View
-from django.views.decorators.csrf import csrf_exempt
 
 from .models import Organization, Member, MemberList
 
@@ -58,15 +55,16 @@ def organization_delete(request):
 @login_required
 def member_update_request(request):
     if request.method == 'POST':
-        context = {'user': request.user}
         member_id = request.POST.get('member_id', '')
         member = get_object_or_404(Member, pk=member_id)
         if member.organization.owner != request.user:
             return HttpResponse('Sorry, you do not own that member.')
-        context['member'] = member
-        context['organization'] = member.organization
+        context = { 
+          'user': request.user,
+          'member': member,
+          'organization': member.organization
+        }
         context = Context(context)
-
         text_content = get_template('emails/member_update_request.txt').render(context)
         html_content = get_template('emails/member_update_request.html').render(context)
         to = member.email

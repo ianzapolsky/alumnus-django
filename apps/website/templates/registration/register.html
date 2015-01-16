@@ -9,6 +9,11 @@
   <div class="form-group">
     <form method="post">
       {% csrf_token %}
+      
+      {% for error in form.errors %}
+        <p>{{ error }}</p>
+      {% endfor %}
+
       <label for="{{ form.username.id_for_label }}">Username:</label>
       {% render_field form.username class+="form-control" %}
       <label for="{{ form.email.id_for_label }}">Email:</label>
