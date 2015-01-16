@@ -15,7 +15,8 @@ def user_activate(request, token):
     user.save()
     token_obj.used = True
     token_obj.save()
-    return HttpResponse('Account activated!')
+    messages.add_message(request, messages.INFO, 'Your account has been activated.')
+    return render(request, 'registration/login.html', {})
 
 """ Organization views """
 @login_required

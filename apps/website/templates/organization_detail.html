@@ -3,11 +3,30 @@
 
 {% block content %}
 <h1>{{ organization }}</h1>
-<h3><a href="{{ organization.get_send_mail_url }}">Send mail</a></h3>
-<h3><a href="{{ organization.get_members_url }}">Members</a></h3>
-<h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_send_mail_url }}">Send mail</a></h3>
+  <p>Send email to your members.</p>
+</div>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_members_url }}">Members</a></h3>
+  <p>View all member in your organization</p>
+</div>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
+  <p>View all the MemberLists you have created for this organization</p>
+</div>
 
-<h3><a href="{{ organization.get_create_member_url }}">Add member</a></h3>
-<h3><a href="{{ organization.get_import_member_url }}">Import members</a></h3>
-<h3><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h3>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_create_member_url }}">Add member</a></h3>
+  <p>Add a new member to your organization.</p>
+</div>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_import_member_url }}">Import members</a></h3>
+  <p>Import new members into your organization from a CSV or Excel file.</p>
+</div>
+<div class="col-sm-4">
+  <h3><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h3>
+  <p>Add a new MemberList.</p>
+</div>
+
 {% endblock %}

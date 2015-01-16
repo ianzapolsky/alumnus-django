@@ -6,10 +6,12 @@ define([
   var Member = Backbone.Model.extend({
 
     default: {
-      name: null,
+      firstname: null,
+      lastname: null,
       email: null,
       organization: null
     }
+
   });
 
   return Member;

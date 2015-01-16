@@ -1,14 +1,37 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block require_js %}
+<script>
+  require(['src/views/member-list'], function(MemberListView) {
+    new MemberListView();
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 <h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> members</h2>
-
-{% for member in members %}
-<h3><a href="{{ member.get_absolute_url }}">{{ member }}</a></h3>
-{% endfor %}
-
 <br>
-<h5><a href="{{ organization.get_create_member_url }}">Add member</a></h5>
+
+<div class="centered col-sm-6">
+  <table class="left-align table table-hover">
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+    {% for member in members %}
+    <tr href="{{ member.get_absolute_url }}">
+      <td>{{ forloop.counter }}</td>
+      <td>{{ member.firstname }}</td>
+      <td>{{ member.lastname }}</td>
+      <td>{{ member.email }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br>
+  <h5><a href="{{ organization.get_create_member_url }}">Add member</a></h5>
+</div>
 {% endblock %}
 

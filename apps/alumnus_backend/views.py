@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -40,6 +41,15 @@ def user_check_password(request):
             return HttpResponse(json.dumps({'valid': False}), content_type='application/json')
         except:
             return HttpResponse(json.dumps({'valid': False}), content_type='application/json')
+
+@login_required
+def get_memberlist(request, memberlist_id):
+    if request.method == 'GET':
+        memberlist = get_object_or_404(MemberList, pk=memberlist_id)
+        if memberlist.organization.owner != request.user: 
+            return HttpResponse('Sorry, you do not own that MemberList.')
+        response = {'members': serializers.serialize('json', memberlist.members.all())}
+        return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 @login_required
 def member_delete(request):

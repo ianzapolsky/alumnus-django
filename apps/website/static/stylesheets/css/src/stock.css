@@ -13,3 +13,8 @@
 .center-align {
   text-align: center;
 }
+
+/* line 11, ../../sass/stock.sass */
+.cleared {
+  clear: left;
+}

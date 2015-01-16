@@ -44,7 +44,7 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_id>\d+)/memberlists/$', 'website.views.memberlists'),
     url(r'^memberlists/(?P<memberlist_id>\d+)/$', 'website.views.memberlist_detail'),
     url(r'^organizations/(?P<organization_id>\d+)/memberlists/create/$', 'website.views.memberlist_create'),
-    url(r'^memberlists/(?P<memberlist_id>\d+)/update$', 'website.views.memberlist_update'),
+    url(r'^memberlists/(?P<memberlist_id>\d+)/update/$', 'website.views.memberlist_update'),
   
     # Send email
     url(r'^organizations/(?P<organization_id>\d+)/send-mail/$', 'website.views.organization_send_mail'),
