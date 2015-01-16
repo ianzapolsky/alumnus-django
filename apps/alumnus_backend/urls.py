@@ -5,6 +5,9 @@ from django.views.generic import TemplateView
 # Backend URLs
 urlpatterns = patterns('',
 
+    # Users
+    url(r'^users/exists/$', 'alumnus_backend.views.user_exists'),
+
     # Organizations
     url(r'^organizations/$', 'alumnus_backend.views.get_organizations'),
 

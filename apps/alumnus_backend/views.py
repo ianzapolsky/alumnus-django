@@ -20,6 +20,14 @@ def get_organizations(request):
         organizations = Organization.objects.filter(owner=request.user)
         return HttpResponse(organizations)
 
+def user_exists(request):
+    """ Returns whether or not the user exists """
+    if request.method == 'POST':
+        username = request.POST.get('username') 
+        if len(User.objects.filter(username=username).all()) > 0:
+            return HttpResponse(json.dumps({'exists': True}), content_type='application/json')
+        return HttpResponse(json.dumps({'exists': False}), content_type='application/json')
+
 @login_required
 def member_delete(request):
     """ Deletes the specified member, assuming the user owns that member's organization """
