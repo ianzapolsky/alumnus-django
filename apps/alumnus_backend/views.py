@@ -23,10 +23,23 @@ def get_organizations(request):
 def user_exists(request):
     """ Returns whether or not the user exists """
     if request.method == 'POST':
-        username = request.POST.get('username') 
+        username = request.POST.get('username', '') 
         if len(User.objects.filter(username=username).all()) > 0:
             return HttpResponse(json.dumps({'exists': True}), content_type='application/json')
         return HttpResponse(json.dumps({'exists': False}), content_type='application/json')
+
+def user_check_password(request):
+    """ Returns whether or not the password matches the user """
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        try:
+            user = User.objects.get(username=username)
+            if user.check_password(password):
+                return HttpResponse(json.dumps({'valid': True}), content_type='application/json')
+            return HttpResponse(json.dumps({'valid': False}), content_type='application/json')
+        except:
+            return HttpResponse(json.dumps({'valid': False}), content_type='application/json')
 
 @login_required
 def member_delete(request):

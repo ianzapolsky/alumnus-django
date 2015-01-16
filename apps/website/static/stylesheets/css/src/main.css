@@ -4,6 +4,10 @@
   margin: auto;
 }
 /* line 5, ../../sass/forms.sass */
+.form-container label {
+  font-weight: 400;
+}
+/* line 9, ../../sass/forms.sass */
 .form-container ul {
   list-style-type: none;
   text-align: left;
@@ -12,12 +16,12 @@
   -ms-box-shadow: 0px 2px 5px;
   box-shadow: 0px 2px 5px;
 }
-/* line 13, ../../sass/forms.sass */
+/* line 17, ../../sass/forms.sass */
 .form-container ul li {
   height: 30px;
 }
 
-/* line 16, ../../sass/forms.sass */
+/* line 20, ../../sass/forms.sass */
 .form-checkbox {
   margin: 10px !important;
 }

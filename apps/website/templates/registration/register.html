@@ -27,16 +27,19 @@
         <p>{{ error }}</p>
       {% endfor %}
       {% render_field form.username id="username" required="" class+="form-control" %}
+      <br>
       {% for error in form.email.errors %}
         <p>{{ error }}</p>
       {% endfor %}
       <label for="{{ form.email.id_for_label }}">Email:</label>
       {% render_field form.email required="" class+="form-control" %}
+      <br>
       {% for error in form.password1.errors %}
         <p>{{ error }}</p>
       {% endfor %}
       <label for="{{ form.password1.id_for_label }}">Password:</label>
       {% render_field form.password1 id="password1" required="" class+="form-control" %}
+      <br>
       {% for error in form.password2.errors %}
         <p>{{ error }}</p>
       {% endfor %}

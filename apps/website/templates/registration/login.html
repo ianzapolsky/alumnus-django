@@ -2,6 +2,14 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
+{% block require_js %}
+<script>
+  require(['src/views/user-login'], function(UserLoginView) {
+    new UserLoginView();
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -14,9 +22,10 @@
     <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
       {% csrf_token %}
       <label for="{{ form.username.id_for_label }}">Username:</label>
-      {% render_field form.username class+="form-control" %}
+      {% render_field form.username id="username" required="" class+="form-control" %}
+      <br>
       <label for="{{ form.password.id_for_label }}">Password:</label>
-      {% render_field form.password class+="form-control" %}
+      {% render_field form.password id="password" required="" class+="form-control" %}
       <br>
       <button class="btn btn-success" type="submit">Login</button>
       <input type="hidden" name="next" value="{{ next }}" />

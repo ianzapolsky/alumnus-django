@@ -7,6 +7,7 @@ urlpatterns = patterns('',
 
     # Users
     url(r'^users/exists/$', 'alumnus_backend.views.user_exists'),
+    url(r'^users/check-password/$', 'alumnus_backend.views.user_check_password'),
 
     # Organizations
     url(r'^organizations/$', 'alumnus_backend.views.get_organizations'),
