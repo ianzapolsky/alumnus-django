@@ -52,6 +52,33 @@ def get_memberlist(request, memberlist_id):
         return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 @login_required
+def get_organization(request, organization_id):
+    if request.method == 'GET':
+        organization = get_object_or_404(Organization, pk=organization_id)
+        if organization.owner != request.user: 
+            return HttpResponse('Sorry, you do not own that Organization.')
+        response = {'members': serializers.serialize('json', organization.get_members().all())}
+        return HttpResponse(json.dumps(response), content_type='appliction/json')
+
+@login_required
+def memberlist_delete(request):
+    """ Deletes the specified memberlist, assuming the user owns that memberlist """
+    if request.method == 'POST':
+        memberlist_id  = request.POST.get('memberlist_id')
+        memberlist = get_object_or_404(MemberList, pk=memberlist_id) 
+        organization = memberlist.organization
+        if organization.owner != request.user:
+            message = 'Sorry, you do not own this memberlist.'
+            redirect = None
+        else:
+            memberlist.delete()
+            message = 'MemberList successfully deleted.' 
+            redirect = organization.get_memberlists_url()
+        messages.add_message(request, messages.INFO, message)
+        response = {'redirect': redirect} 
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+@login_required
 def member_delete(request):
     """ Deletes the specified member, assuming the user owns that member's organization """
     if request.method == 'POST':

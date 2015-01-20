@@ -43,6 +43,7 @@ class Member(models.Model):
     email = models.EmailField()
     organization = models.ForeignKey(Organization)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
+    gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female'),))
 
     def __unicode__(self):
         return self.firstname + ' ' + self.lastname

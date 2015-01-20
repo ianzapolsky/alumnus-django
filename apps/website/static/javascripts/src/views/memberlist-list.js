@@ -16,7 +16,7 @@ define([
       console.log('MemberlistListView initialize');
       var _this = this;
       _.forEach($('.memberlist-id'), function(node) {
-        var memberlist_id = $(node).val()
+        var memberlist_id = $(node).val();
         _this.memberlists.push(new MemberCollection({'memberlist_id': memberlist_id}));
       });
       _.forEach(this.memberlists, function(memberlist) {

@@ -46,3 +46,13 @@
 .cleared {
   clear: left;
 }
+
+/* line 15, ../../sass/stock.sass */
+.table-clickable td {
+  cursor: pointer;
+}
+
+/* line 1, ../../sass/filter.sass */
+.field-filter, .field-choice {
+  margin: 0px 30px;
+}

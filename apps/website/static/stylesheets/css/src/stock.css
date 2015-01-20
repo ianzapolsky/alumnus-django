@@ -18,3 +18,8 @@
 .cleared {
   clear: left;
 }
+
+/* line 15, ../../sass/stock.sass */
+.table-clickable td {
+  cursor: pointer;
+}

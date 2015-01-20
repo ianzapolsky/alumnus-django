@@ -3,8 +3,11 @@
 
 {% block require_js %}
 <script>
-  require(['src/views/member-list'], function(MemberListView) {
+  require(['src/views/member-list',
+           'src/views/memberlist-detail'
+  ], function(MemberListView, MemberListDetailView) {
     new MemberListView();
+    new MemberListDetailView();
   });
 </script>
 {% endblock %}
@@ -14,7 +17,7 @@
 <br>
 
 <div class="centered col-sm-6">
-  <table class="left-align table table-hover">
+  <table class="left-align table table-hover table-clickable">
     <tr>
       <th>#</th>
       <th>First Name</th>
@@ -33,5 +36,8 @@
   <br>
   <h5><a href="{{ memberlist.get_send_mail_url }}">Send message to memberlist</a></h5>
   <h5><a href="{{ memberlist.get_update_url }}">Update memberlist</a></h5>
+
+  <input id="memberlist-id" type="hidden" value="{{ memberlist.pk }}">
+  <button id="memberlist-delete" class="btn btn-danger">Delete memberlist</button>
 </div>
 {% endblock %}
