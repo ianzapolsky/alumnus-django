@@ -44,7 +44,7 @@ class OrganizationForm(forms.ModelForm):
     
     class Meta:
         model = Organization 
-        exclude = ('owner',)
+        exclude = ('owner', 'uuid',)
 
 
 class MemberForm(forms.ModelForm):
@@ -58,7 +58,7 @@ class MemberListForm(forms.ModelForm):
 
     class Meta:
         model = MemberList
-        exclude = ('organization',)
+        exclude = ('organization', 'uuid',)
         widgets = {
           'members': forms.CheckboxSelectMultiple()
         }

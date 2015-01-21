@@ -44,28 +44,38 @@
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-    <!-- Intro Section -->
-    <section id="intro" class="intro-section">
-        <div class="container">
-             <div class="row">
-                <div class="col-lg-12">
-                  {% block content %}
-                    <!-- 
-                    <h1>Scrolling Nav</h1>
-                    <p><strong>Usage Instructions:</strong> Make sure to include the <code>scrolling-nav.js</code>, <code>jquery.easing.min.js</code>, and <code>scrolling-nav.css</code> files. To make a link smooth scroll to another section on the page, give the link the <code>.page-scroll</code> class and set the link target to a corresponding ID on the page.</p>
-                    <a class="btn btn-default page-scroll" href="#about">Click Me to Scroll Down!</a>
-                    -->
-                  {% endblock %}
-                </div>
-            </div>
-        </div>
-    </section>
+    <div id="wrap">
+      <!-- Intro Section -->
+      <section id="intro" class="intro-section">
+          <div class="container">
+               <div class="row">
+                  <div class="col-lg-12">
+                    {% block content %}
+                      <!-- 
+                      <h1>Scrolling Nav</h1>
+                      <p><strong>Usage Instructions:</strong> Make sure to include the <code>scrolling-nav.js</code>, <code>jquery.easing.min.js</code>, and <code>scrolling-nav.css</code> files. To make a link smooth scroll to another section on the page, give the link the <code>.page-scroll</code> class and set the link target to a corresponding ID on the page.</p>
+                      <a class="btn btn-default page-scroll" href="#about">Click Me to Scroll Down!</a>
+                      -->
+                    {% endblock %}
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <div id="push">
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="centered col-sm-12" id="footer">
+      <div class="container credit">
+        <p>&copy; Alumnus &middot; <a href="http://www.ianzapolsky.com">ianzapolsky</a></p>
+      </div>
+    </div>
 
     <!-- Javascript
     <script src="js/jquery.js"></script>
-
     <script src="js/bootstrap.min.js"></script>
-
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
     -->

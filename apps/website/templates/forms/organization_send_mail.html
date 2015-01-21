@@ -21,31 +21,10 @@
   <br>
 
   <div class="left-align col-sm-3 filters">
-    <h4>Filter members</h4>
-    <br>
-
-    <label>Gender :</label>
-    <select id="gender-filter">
-      <option value="">-----</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-    </select>
-    <br>
-
-    <label>Graduating Class :</label>
-    <select id="graduating-class-filter">
-      <option value="">-----</option>
-      <option value="1900">1900</option>
-      <option value="1901">1901</option>
-      <option value="1902">1901</option>
-    </select>
-    <br>
-    <br>
-
-    <button id="add-filter" class="btn btn-default">Filter</button>
+    {% include "generic/filter.html" %}
   </div>
   
-  <div class="centered col-sm-6">
+  <div class="col-sm-6">
     <form>
       <div id="organization-members">
         <table class="left-align table table-hover">
@@ -66,16 +45,14 @@
         </table>
       </div>
   
-      <div class="centered col-md-8">
-        <div class="form-group"> 
-          <label>Subject:</label>
-          <textarea id="subject" rows="1" class="form-control"></textarea>
-          <br>
-          <label>Message:</label>
-          <textarea id="message" rows="8" class="form-control"></textarea>
-          <br>
-          <button id="send-mail" class="btn btn-success">Send</button>
-        </div>
+      <div class="form-group"> 
+        <label>Subject:</label>
+        <textarea id="subject" rows="1" class="form-control"></textarea>
+        <br>
+        <label>Message:</label>
+        <textarea id="message" rows="8" class="form-control"></textarea>
+        <br>
+        <button id="send-mail" class="btn btn-success">Send</button>
       </div>
     </form>
   </div>

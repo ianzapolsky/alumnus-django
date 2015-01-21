@@ -56,3 +56,28 @@
 .field-filter, .field-choice {
   margin: 0px 30px;
 }
+
+/* line 1, ../../sass/footer.sass */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  margin: 0 auto -60px;
+}
+
+/* line 6, ../../sass/footer.sass */
+#push {
+  height: 60px;
+}
+
+/* line 9, ../../sass/footer.sass */
+#footer {
+  height: 60px;
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+
+/* line 14, ../../sass/footer.sass */
+.credit {
+  margin-top: 20px;
+  color: #333;
+}

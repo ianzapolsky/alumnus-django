@@ -11,12 +11,7 @@ define([
 
     members: null,
 
-    filterFields: ['Gender', 'Graduating Class'],
-
-    filterChoices: {
-      'Gender': '',
-      'Graduating Class': '',
-    },
+    filters: {},
 
     initialize: function() {
       console.log('OrganizationFilterView initialize');
@@ -26,25 +21,29 @@ define([
     },
 
     events: {
-      'click #add-filter': 'handleFilter',
+      'change select': 'handleFilter',
     },
 
     handleFilter: function( ev ) {
       ev.preventDefault();
-      this.filterChoices['Gender'] = $('#gender-filter').val();
-      this.filterChoices['Graduating Class'] = $('#graduating-class-filter').val();
-      this.renderFilteredMembers();
+      this.filters['Gender'] = $('#gender-filter').val();
+      this.filters['Graduation Year'] = $('#graduation-year-filter').val();
+      this.filters['School'] = $('#school-filter').val();
+      this.render();
     },
 
-    renderFilteredMembers: function() {
+    render: function() {
       var _this = this;
-      var results = this.members.models;
-
-      results = this.members.filter(function(member) {
-        if (_this.filterChoices['Gender'] != '') {
-          if (member.get('fields').gender != _this.filterChoices['Gender']) {
-            return false;
-          }
+      var results = this.members.filter(function(member) {
+        console.log(member);
+        if (_this.filters['Gender'] && member.get('fields').gender != _this.filters['Gender']) {
+          return false;
+        }
+        if (_this.filters['Graduation Year'] && member.get('fields').graduation_year != _this.filters['Graduation Year']) {
+          return false;
+        }
+        if (_this.filters['School'] && member.get('fields').school != _this.filters['School']) {
+          return false;
         }
         return true;
       });
