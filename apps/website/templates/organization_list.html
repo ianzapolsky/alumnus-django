@@ -3,9 +3,11 @@
 
 {% block content %}
 <p>Hello, {{ user }}</p>
-<h2>Your Organizations</h5>
+<h1>Your Organizations</h1>
 {% for org in organizations %}
 <h3><a href="{{ org.get_absolute_url }}">{{ org }}</a></h6>
+{% empty %}
+<h4>You have no Organizations</h4>
 {% endfor %}
 <br>
 <h5><a href="/organizations/create">Add organizations</a></h2>

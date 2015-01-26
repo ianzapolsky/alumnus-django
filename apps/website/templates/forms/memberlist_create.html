@@ -2,11 +2,31 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-{% block content %}
- 
-<div class="centered col-md-6">
+{% block require_js %}
+<script>
+  require([
+    'src/views/member-list-filter',
+    'src/views/table-buttons',
+  ], function(MemberListFilterView, TableButtonsView) {
+    new MemberListFilterView();
+    new TableButtonsView();
+  });
+</script>
+{% endblock %}
 
-  <div class="form-group">
+{% block content %}
+<div class="member-list-container">
+ 
+  <h2>Create a new MemberList</h2>
+  <br>
+
+  <div class="left-align col-sm-3 filters">
+    <div class="left-align col-sm-10 filters">
+      {% include "generic/filter.html" %}
+    </div>
+  </div>
+
+  <div class="col-sm-6">
     <form method="post">
       {% csrf_token %}
 
@@ -17,30 +37,59 @@
       <label for="name">{{ form.name.label }}:</label>
       {% render_field form.name class+="form-control" %}
       <br>
+
       <label for="members">{{ form.members.label }}:</label>
 
-      <table class="left-align table table-hover">
-        <tr>
-          <th>Include</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-        </tr>
+      <div class="left-align table-buttons">
+        <button class="btn btn-sm btn-primary" id="check-all">Check all</button>
+        <button class="btn btn-sm btn-primary" id="uncheck-all">Uncheck all</button>
+      </div>
+      <div id="member-list-members">
+        <table class="left-align table table-hover">
+          <tr>
+            <th>Include</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+          </tr>
 
-        {% for member in organization.get_members %}
-        <tr> 
-          <td><input type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
-          <td>{{ member.firstname }}</td>
-          <td>{{ member.lastname}}</td>
-          <td>{{ member.email }}</td>
-        </tr>
-        {% endfor %}
-      </table>
+          {% for member in organization.get_members %}
+          <tr> 
+            <td><input type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
+            <td>{{ member.firstname }}</td>
+            <td>{{ member.lastname}}</td>
+            <td>{{ member.email }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
 
       <br>
       <button class="btn btn-success" type="submit">Submit</button>
+
     </form>
   </div>
+
+  <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
+
+  <script type="text/template" id="member-list-template">
+    <table class="left-align table table-hover">
+      <tr>
+        <th>Include</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+      </tr>
+      <% _.each(Members, function(member, index) { %>
+      <tr href="/members/<%= member.get('pk') %>">
+        <td><input type="checkbox" id="id_members_<%= index %>" name="members" value="<%= member.get('pk') %>"></td>
+        <td><%= member.get('fields').firstname %></td>
+        <td><%= member.get('fields').lastname %></td>
+        <td><%= member.get('fields').email %></td>
+      </tr>
+      <% }); %>
+    </table>
+  </script>
 
 </div>
   

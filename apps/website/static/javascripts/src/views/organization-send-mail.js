@@ -6,14 +6,14 @@ define([
   
   var OrganizationSendMailView = Backbone.View.extend({
     
-    el: '.send-mail-container',
+    el: '.member-list-container',
   
     initialize: function() {
       console.log('OrganizationSendMailView initialize');
     },
 
     events: { 
-      'click #send-mail': 'handleSend'
+      'click #send-mail': 'handleSend',
     },
 
     handleSend: function( ev ) {

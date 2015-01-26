@@ -18,6 +18,8 @@
   <div class="col-sm-6">
     {% for memberlist in memberlists %}
     <h3 data-memberlist-id="{{ memberlist.pk }}" class="memberlist-link"><a href="{{ memberlist.get_absolute_url }}">{{ memberlist }}</a></h3>
+    {% empty %}
+    <h4>You have no MemberLists</h4>
     {% endfor %}
     <br>
     <h5><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h5>

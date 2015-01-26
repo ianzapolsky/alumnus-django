@@ -5,16 +5,16 @@ define([
   'src/collections/members',
 ], function($, _, Backbone, MemberCollection) {
   
-  var OrganizationFilterView = Backbone.View.extend({
+  var MemberListFilterView = Backbone.View.extend({
 
-    el: '.send-mail-container',
+    el: '.member-list-container',
 
     members: null,
 
     filters: {},
 
     initialize: function() {
-      console.log('OrganizationFilterView initialize');
+      console.log('MemberListFilterView initialize');
       var organization_id = $('#organization-id').val();
       this.members = new MemberCollection({'organization_id': organization_id});
       this.members.fetch();
@@ -48,12 +48,12 @@ define([
       });
     
       var content = _.template( $('#member-list-template').html(), { Members: results });
-      $('#organization-members').html(content);
+      $('#member-list-members').html(content);
     }
 
   });
 
-  return OrganizationFilterView;
+  return MemberListFilterView;
 
 });
   

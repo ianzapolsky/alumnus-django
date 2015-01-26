@@ -2,3 +2,12 @@
 .field-filter, .field-choice {
   margin: 0px 30px;
 }
+
+/* line 4, ../../sass/filter.sass */
+.table-buttons {
+  margin: 10px;
+}
+/* line 7, ../../sass/filter.sass */
+.table-buttons button {
+  margin-right: 20px;
+}

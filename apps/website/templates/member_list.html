@@ -3,35 +3,70 @@
 
 {% block require_js %}
 <script>
-  require(['src/views/member-list'], function(MemberListView) {
+  require(['src/views/member-list',
+           'src/views/member-list-filter'
+          ], function(MemberListView, MemberListFilterView) {
     new MemberListView();
+    new MemberListFilterView();
   });
 </script>
 {% endblock %}
 
 {% block content %}
-<h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> members</h2>
-<br>
 
-<div class="centered col-sm-6">
-  <table class="left-align table table-hover">
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-    </tr>
-    {% for member in members %}
-    <tr href="{{ member.get_absolute_url }}">
-      <td>{{ forloop.counter }}</td>
-      <td>{{ member.firstname }}</td>
-      <td>{{ member.lastname }}</td>
-      <td>{{ member.email }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+<div class="member-list-container">
+
+  <h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> Members</h2>
   <br>
-  <h5><a href="{{ organization.get_create_member_url }}">Add member</a></h5>
+
+  <div class="left-align col-sm-3 filters">
+    <div class="left-align col-sm-10">
+      {% include "generic/filter.html" %}
+    </div>
+  </div>
+  
+  <div id="member-list-members" class="centered col-sm-6">
+    <table class="left-align table table-hover">
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+      </tr>
+      {% for member in members %}
+      <tr href="{{ member.get_absolute_url }}">
+        <td>{{ forloop.counter }}</td>
+        <td>{{ member.firstname }}</td>
+        <td>{{ member.lastname }}</td>
+        <td>{{ member.email }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br>
+    <h5><a href="{{ organization.get_create_member_url }}">Add member</a></h5>
+  </div>
+
+  <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
+
+  <script type="text/template" id="member-list-template">
+    <table class="left-align table table-hover">
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+      </tr>
+      <% _.each(Members, function(member, index) { %>
+      <tr href="/members/<%= member.get('pk') %>">
+        <td><%= index + 1 %></td>
+        <td><%= member.get('fields').firstname %></td>
+        <td><%= member.get('fields').lastname %></td>
+        <td><%= member.get('fields').email %></td>
+      </tr>
+      <% }); %>
+    </table>
+  </script>
+
 </div>
 {% endblock %}
 

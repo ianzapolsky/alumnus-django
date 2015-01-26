@@ -5,28 +5,36 @@
 <script>
   require([
     'src/views/organization-send-mail',
-    'src/views/organization-filter',
-  ], function(OrganizationSendMailView, OrganizationFilterView) {
+    'src/views/member-list-filter',
+    'src/views/table-buttons',
+  ], function(OrganizationSendMailView, MemberListFilterView, TableButtonsView) {
     new OrganizationSendMailView();
-    new OrganizationFilterView();
+    new MemberListFilterView();
+    new TableButtonsView();
   });
 </script>
 {% endblock %}
 
 {% block content %}
 
-<div class="send-mail-container">
+<div class="member-list-container">
 
-  <h2>Send email to members in <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h2>
+  <h2>Send email to Members in <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h2>
   <br>
 
   <div class="left-align col-sm-3 filters">
-    {% include "generic/filter.html" %}
+    <div class="left-align col-sm-10">
+      {% include "generic/filter.html" %}
+    </div>
   </div>
   
   <div class="col-sm-6">
     <form>
-      <div id="organization-members">
+      <div class="left-align table-buttons">
+        <button class="btn btn-sm btn-primary" id="check-all">Check all</button>
+        <button class="btn btn-sm btn-primary" id="uncheck-all">Uncheck all</button>
+      </div>
+      <div id="member-list-members">
         <table class="left-align table table-hover">
           <tr>
             <th>Include</th>
@@ -55,6 +63,8 @@
         <button id="send-mail" class="btn btn-success">Send</button>
       </div>
     </form>
+    <br>
+    <br>
   </div>
 
   <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
