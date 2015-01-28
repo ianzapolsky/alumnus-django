@@ -26,6 +26,15 @@
   margin: 10px !important;
 }
 
+/* line 23, ../../sass/forms.sass */
+.form-errors {
+  padding: 10px 0px 1px 0px;
+  margin-bottom: 20px !important;
+  background-color: rgba(255, 0, 0, 0.3);
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
 /* line 1, ../../sass/stock.sass */
 .centered {
   float: none;
@@ -50,6 +59,15 @@
 /* line 15, ../../sass/stock.sass */
 .table-clickable td {
   cursor: pointer;
+}
+
+/* line 18, ../../sass/stock.sass */
+.django-messages {
+  padding: 10px 0px 1px 0px;
+  margin-bottom: 20px !important;
+  background-color: rgba(0, 0, 255, 0.3);
+  border-radius: 5px;
+  border: 1px solid #000;
 }
 
 /* line 1, ../../sass/filter.sass */

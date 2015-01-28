@@ -2,9 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic.edit import CreateView
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
-from .forms import OrganizationForm, MemberForm, MemberListForm, MemberImportForm
+from .forms import CustomUserCreationForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
 
 
 """ User views """
@@ -16,7 +17,18 @@ def user_activate(request, token):
     token_obj.used = True
     token_obj.save()
     messages.add_message(request, messages.INFO, 'Your account has been activated.')
-    return render(request, 'registration/login.html', {})
+    return redirect('/')
+
+class CustomUserCreateView(CreateView):
+
+    template_name = 'registration/register.html'
+    form_class = CustomUserCreationForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.INFO, 'Your account has been created. Please check your email for an activation link.')
+        return super(CustomUserCreateView, self).form_valid(form)
+
 
 """ Organization views """
 @login_required

@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+{% if form.errors %}
+<div class="centered left-align col-md-6 form-errors">
+  <ul>
+    {% for field in form %}
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

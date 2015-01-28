@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import CustomUserCreationForm 
+from .views import CustomUserCreateView
 
 
 # Website URLs
@@ -15,12 +16,8 @@ urlpatterns = patterns('',
 
     # User Management
     url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'registration/logout.html'}), 
-    url(r'^register/$', CreateView.as_view(
-        template_name='registration/register.html',
-        form_class=CustomUserCreationForm,
-        success_url='/'
-    )),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}), 
+    url(r'^register/$', CustomUserCreateView.as_view()),
     url(r'^activate/(?P<token>[-\w\d]+)/$', 'website.views.user_activate'),
 
     # Home
