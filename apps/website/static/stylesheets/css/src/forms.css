@@ -34,3 +34,16 @@
   border-radius: 5px;
   border: 1px solid #000;
 }
+
+/* line 30, ../../sass/forms.sass */
+.multistep-form-header {
+  text-align: left;
+}
+/* line 32, ../../sass/forms.sass */
+.multistep-form-header li {
+  display: inline-block;
+}
+/* line 34, ../../sass/forms.sass */
+.multistep-form-header li.active {
+  text-decoration: underline;
+}

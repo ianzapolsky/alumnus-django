@@ -2,9 +2,19 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
+{% block require_js %}
+<script>
+  require([
+    'src/views/generic-form',
+  ], function(GenericFormView) {
+    new GenericFormView();
+  });
+</script>
+{% endblock %}
+
 {% block content %}
  
-<div class="form-container col-md-4">
+<div id="form-container" class="centered col-md-4">
 
   <div class="form-group">
     <form method="post">
@@ -17,7 +27,7 @@
       {% render_field field class+="form-control" %}
       <br>
       {% endfor %}
-      <button class="btn btn-success" type="submit">Submit</button>
+      <button id="btn-submit" class="btn btn-success" type="submit">Submit</button>
     </form>
     <br>
     <br>

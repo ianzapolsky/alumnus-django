@@ -2,7 +2,7 @@ require.config({
   shim: {
     "bootstrap": {"deps": ['jquery']},
     "jquery-easing": {"deps": ['jquery']},
-    "scrolling-nav": {"deps": ['jquery']}
+    "scrolling-nav": {"deps": ['jquery']},
   },
   paths: {
     "backbone": "lib/backbone-amd/backbone",

@@ -10,21 +10,31 @@
 }
 
 /* line 8, ../../sass/stock.sass */
+.right-align {
+  text-align: right;
+}
+
+/* line 11, ../../sass/stock.sass */
 .center-align {
   text-align: center;
 }
 
-/* line 11, ../../sass/stock.sass */
+/* line 14, ../../sass/stock.sass */
 .cleared {
   clear: left;
 }
 
-/* line 15, ../../sass/stock.sass */
+/* line 17, ../../sass/stock.sass */
+.hidden {
+  display: none;
+}
+
+/* line 21, ../../sass/stock.sass */
 .table-clickable td {
   cursor: pointer;
 }
 
-/* line 18, ../../sass/stock.sass */
+/* line 24, ../../sass/stock.sass */
 .django-messages {
   padding: 10px 0px 1px 0px;
   margin-bottom: 20px !important;

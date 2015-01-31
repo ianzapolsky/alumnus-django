@@ -101,6 +101,9 @@ def member_create(request, organization_id):
     context['organization'] = organization
     if request.method == 'POST':
         form = MemberForm(request.POST)
+        fields = list(form)
+        context['form_personal'] = fields[:4] 
+        context['form_work'] = fields[4:]
         context['form'] = form
         if form.is_valid():
             member = form.save(commit=False)
@@ -110,7 +113,10 @@ def member_create(request, organization_id):
             return redirect(organization.get_members_url())
     else:
         context['form'] = MemberForm()    
-    return render(request, 'generic/form.html', context)
+        fields = list(context['form'])
+        context['form_personal'] = fields[:4]
+        context['form_work'] = fields[4:]
+    return render(request, 'forms/member_create.html', context)
 
 @login_required
 def member_update(request, member_id):
