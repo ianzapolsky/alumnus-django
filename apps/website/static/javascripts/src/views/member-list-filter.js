@@ -30,6 +30,7 @@ define([
       this.filters['Graduation Year'] = $('#graduation-year-filter').val();
       this.filters['School'] = $('#school-filter').val();
       this.filters['Current State'] = $('#state-filter').val();
+      this.filters['Industry'] = $('#industry-filter').val();
       this.render();
     },
 
@@ -46,6 +47,9 @@ define([
           return false;
         }
         if (_this.filters['Current State'] && member.get('fields').current_state != _this.filters['Current State']) {
+          return false;
+        }
+        if (_this.filters['Industry'] && member.get('fields').industry != _this.filters['Industry']) {
           return false;
         }
         return true;

@@ -6,7 +6,7 @@ define([
   
   var MemberSendMailView = Backbone.View.extend({
     
-    el: '.form-container',
+    el: '#form-container',
   
     initialize: function() {
       console.log('MemberSendMailView initialize');

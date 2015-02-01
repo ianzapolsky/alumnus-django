@@ -6,7 +6,7 @@ define([
   
   var MemberDetailView = Backbone.View.extend({
     
-    el: '.form-container',
+    el: '#member-detail-container',
   
     initialize: function() {
       console.log('MemberDetailView initialize');

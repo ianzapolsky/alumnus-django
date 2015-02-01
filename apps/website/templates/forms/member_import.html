@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+ 
+{% include "generic/form_errors.html" %}
+
+<div id="form-container" class="centered col-md-4">
+
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+      {% render_field field class+="form-control" %}
+      <br>
+    </div>
+    {% endfor %}
+    <button class="btn btn-success" type="submit">Submit</button>
+  </form>
+
+</div>
+  
+{% endblock %}

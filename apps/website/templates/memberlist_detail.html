@@ -34,8 +34,8 @@
     {% endfor %}
   </table>
   <br>
-  <h5><a href="{{ memberlist.get_send_mail_url }}">Send message to memberlist</a></h5>
-  <h5><a href="{{ memberlist.get_update_url }}">Update memberlist</a></h5>
+  <a class="btn btn-primary" href="{{ memberlist.get_send_mail_url }}">Send message to memberlist</a>
+  <a class="btn btn-primary" href="{{ memberlist.get_update_url }}">Update memberlist</a>
 
   <input id="memberlist-id" type="hidden" value="{{ memberlist.pk }}">
   <button id="memberlist-delete" class="btn btn-danger">Delete memberlist</button>

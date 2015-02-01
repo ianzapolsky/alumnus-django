@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import CustomUserCreationForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
+from .parser import ExcelParser
 
 
 """ User views """
@@ -28,7 +29,6 @@ class CustomUserCreateView(CreateView):
     def form_valid(self, form):
         messages.add_message(self.request, messages.INFO, 'Your account has been created. Please check your email for an activation link.')
         return super(CustomUserCreateView, self).form_valid(form)
-
 
 """ Organization views """
 @login_required
@@ -129,6 +129,9 @@ def member_update(request, member_id):
     context['organization'] = organization
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
+        fields = list(form)
+        context['form_personal'] = fields[:4] 
+        context['form_work'] = fields[4:]
         context['form'] = form
         if form.is_valid():
             form.save()
@@ -136,7 +139,10 @@ def member_update(request, member_id):
             return redirect(member.get_absolute_url())
     else:
         context['form'] = MemberForm(instance=member)
-    return render(request, 'generic/form.html', context)
+        fields = list(context['form'])
+        context['form_personal'] = fields[:4] 
+        context['form_work'] = fields[4:]
+    return render(request, 'forms/member_create.html', context)
 
 """
 This URL is does not require login because it needs to be open to users
@@ -185,18 +191,17 @@ def member_import(request, organization_id):
     context['organization'] = organization
     if request.method == 'POST':
         form = MemberImportForm(request.POST, request.FILES)
-        print request.FILES
         if form.is_valid():
-            """
-            Parsing logic for import Excel and CSV files will go here
-            """
-            return HttpResponse('You submitted a file!')        
+            parser = ExcelParser(request.FILES['file'], organization)
+            parser.parse()
+            messages.add_message(request, messages.INFO, 'Members successfully imported.')
+            return redirect(organization.get_members_url())
         else:
             context['errors'] = form.errors
     else:
         form = MemberImportForm()
     context['form'] = form
-    return render(request, 'generic/file_form.html', context)
+    return render(request, 'forms/member_import.html', context)
         
 """ MemberList views """
 @login_required

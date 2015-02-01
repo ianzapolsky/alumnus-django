@@ -22,7 +22,7 @@
     <h4>You have no MemberLists</h4>
     {% endfor %}
     <br>
-    <h5><a href="{{ organization.get_create_memberlist_url }}">Add memberlist</a></h5>
+    <a class="btn btn-primary" href="{{ organization.get_create_memberlist_url }}">Add memberlist</a>
   </div>
 
   <div id="memberlist-members" class="col-sm-6">
@@ -51,9 +51,9 @@
       </tr>
       <% }); %>
     </table>
-    <h5><a href="/memberlists/<%= Members.memberlist_id %>/">Detail View</h5>
-    <h5><a href="/memberlists/<%= Members.memberlist_id %>/send-mail/">Send message to memberlist</a></h5>
-    <h5><a href="/memberlists/<%= Members.memberlist_id %>/update/">Update memberlist</a></h5>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/">Detail View</a>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/send-mail/">Send message to memberlist</a>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/update/">Update memberlist</a>
   </script>
 
 </div>

@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="centered col-md-12">
+<div id="member-detail-container" class="centered col-md-12">
   <h1 id="member-title">{{ member }}</h1>
   <br>
 
@@ -35,13 +35,8 @@
     </tr>
   </table>
   
-  <button class="btn btn-primary" href="{{ member.get_send_mail_url }}">Send email to Member</button>
-  <button class="btn btn-warning" href="{{ member.get_update_url }}">Edit Member Information</button>
-  
-  <!--
-  <h5><a href="{{ member.get_send_mail_url }}">Send email to Member</a></h5>
-  <h5><a href="{{ member.get_update_url }}">Edit Member information</a></h5>
-  -->
+  <a class="btn btn-primary" href="{{ member.get_send_mail_url }}">Send email to Member</a>
+  <a class="btn btn-warning" href="{{ member.get_update_url }}">Edit Member Information</a>
 
   <button id="member-update-request" class="btn btn-success">Request Member information</button>
   
