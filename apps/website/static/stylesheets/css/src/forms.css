@@ -1,32 +1,9 @@
 /* line 1, ../../sass/forms.sass */
-.form-container {
-  float: none;
-  margin: auto;
-}
-/* line 5, ../../sass/forms.sass */
-.form-container label {
-  font-weight: 400;
-}
-/* line 9, ../../sass/forms.sass */
-.form-container ul {
-  list-style-type: none;
-  text-align: left;
-  -webkit-box-shadow: 0px 2px 5px;
-  -moz-box-shadow: 0px 2px 5px;
-  -ms-box-shadow: 0px 2px 5px;
-  box-shadow: 0px 2px 5px;
-}
-/* line 17, ../../sass/forms.sass */
-.form-container ul li {
-  height: 30px;
-}
-
-/* line 20, ../../sass/forms.sass */
 .form-checkbox {
   margin: 10px !important;
 }
 
-/* line 23, ../../sass/forms.sass */
+/* line 4, ../../sass/forms.sass */
 .form-errors {
   padding: 10px 0px 1px 0px;
   margin-bottom: 20px !important;
@@ -35,15 +12,19 @@
   border: 1px solid #000;
 }
 
-/* line 30, ../../sass/forms.sass */
+/* line 11, ../../sass/forms.sass */
 .multistep-form-header {
-  text-align: left;
+  text-align: center;
 }
-/* line 32, ../../sass/forms.sass */
+/* line 14, ../../sass/forms.sass */
 .multistep-form-header li {
   display: inline-block;
+  font-size: 18px;
+  font-weight: 300;
+  margin-right: 40px;
 }
-/* line 34, ../../sass/forms.sass */
+/* line 20, ../../sass/forms.sass */
 .multistep-form-header li.active {
   text-decoration: underline;
+  color: #337ab7;
 }

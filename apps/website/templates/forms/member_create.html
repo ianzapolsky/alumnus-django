@@ -16,50 +16,56 @@
 
 {% include "generic/form_errors.html" %}
  
-<div id="form-container" class="centered col-md-4">
+<div id="form-container"> 
 
-  <ul class="multistep-form-header">
-    <li>Personal Information</li>
-    <li>Work Information</li>
-  </ul>
+  <div class="centered col-md-8">
+    <ul class="multistep-form-header">
+      <li>Personal Information</li>
+      <li>Work Information</li>
+    </ul>
+  </div>
 
-  <form method="post">
-    {% csrf_token %}
+  <div class="centered col-md-4">
 
-    <fieldset data-index="0">
-      <legend>Personal Information</legend>
-      {% for field in form_personal %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-        {% if forloop.counter < 4 %}
-          {% render_field field required="" class+="form-control" %}
-        {% else %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <fieldset data-index="0">
+        <legend>Personal Information</legend>
+        {% for field in form_personal %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+          {% if forloop.counter < 4 %}
+            {% render_field field required="" class+="form-control" %}
+          {% else %}
+            {% render_field field class+="form-control" %}
+          {% endif %}
+          <br>
+        </div>
+        {% endfor %}
+      </fieldset>
+
+      <fieldset data-index="1">
+        <legend>Work Information</legend>
+        {% for field in form_work %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
           {% render_field field class+="form-control" %}
-        {% endif %}
-        <br>
-      </div>
-      {% endfor %}
-    </fieldset>
+          <br>
+        </div>
+        {% endfor %}
+      </fieldset>
 
-    <fieldset data-index="1">
-      <legend>Work Information</legend>
-      {% for field in form_work %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-        {% render_field field class+="form-control" %}
-        <br>
-      </div>
-      {% endfor %}
-    </fieldset>
+      <button id="btn-back" class="btn btn-primary">Back</button>
+      <button id="btn-next" class="btn btn-primary">Next</button>
 
-    <button id="btn-back" class="btn btn-primary">Back</button>
-    <button id="btn-next" class="btn btn-primary">Next</button>
+      <button id="btn-submit" class="btn btn-success stepy-finish" type="submit">Submit</button>
 
-    <button id="btn-submit" class="btn btn-success stepy-finish" type="submit">Submit</button>
-
-  </form>
-  <br>
-  <br>
+    </form>
+    <br>
+    <br>
+  </div>
 
 </div>
 
