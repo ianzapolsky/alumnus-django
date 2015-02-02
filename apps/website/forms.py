@@ -75,3 +75,18 @@ class MemberImportForm(forms.Form):
 
     file = forms.FileField(label='Import Excel file')
 
+    def clean(self):
+        data = super(MemberImportForm, self).clean()
+
+        # Double check that the file is there
+        if 'file' not in data:
+            raise forms.ValidationError('Please submit an Excel file.', code='invalid')
+
+        # Ensure that the submitted file has an Excel extension
+        docfile = data['file']
+        extension = docfile.name.split('.')[1]
+        if extension != 'xlsx':
+            raise forms.ValidationError('%s is not a valid Excel file. Please make sure your input file is an Excel file.' % docfile.name, code='invalid') 
+
+        return data
+

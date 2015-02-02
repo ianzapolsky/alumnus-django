@@ -9,7 +9,7 @@ class ExcelParser():
     def __init__(self, f, organization):
         self.f = f 
         self.organization = organization
-        self.wb = xlrd.open_workbook(f.name, file_contents=f.read())
+        self.wb = xlrd.open_workbook(self.f.name, file_contents=self.f.read())
         self.sheet = self.wb.sheet_by_index(0)
 
     def parse(self):
