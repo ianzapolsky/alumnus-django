@@ -20,6 +20,8 @@
   <h2>Create a new MemberList</h2>
   <br>
 
+  {% include "generic/form_errors.html" %}
+
   <div class="left-align col-sm-3 filters">
     <div class="left-align col-sm-10 filters">
       {% include "generic/filter.html" %}
@@ -29,10 +31,6 @@
   <div class="col-sm-6">
     <form method="post">
       {% csrf_token %}
-
-      {% for error in form.errors %}
-      <p>{{ error }}</p>
-      {% endfor %}
 
       <label for="name">{{ form.name.label }}:</label>
       {% render_field form.name class+="form-control" %}

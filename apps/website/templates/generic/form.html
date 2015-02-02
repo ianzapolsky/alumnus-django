@@ -14,15 +14,15 @@
 
 {% block content %}
  
+{% include "generic/form_errors.html" %}
+
 <div id="form-container" class="centered col-md-4">
+
 
   <div class="form-group">
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
-      {% for error in field.errors %}
-        <p class="form-error">{{ error }}</p>
-      {% endfor %}
       <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
       {% render_field field class+="form-control" %}
       <br>
