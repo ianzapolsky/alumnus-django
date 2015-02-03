@@ -1,8 +1,12 @@
+import datetime
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.edit import CreateView
+from django.utils import timezone
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import CustomUserCreationForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
@@ -12,6 +16,12 @@ from .parser import ExcelParser
 """ User views """
 def user_activate(request, token):
     token_obj = get_object_or_404(AuthenticationToken, used=False, token=token)
+    if token_obj.created < timezone.now() - datetime.timedelta(hours=24):
+        messages.add_message(request, messages.INFO, 'Your activation token has expired.')
+        """
+        delete user model here?
+        """
+        return redirect('/')
     user = token_obj.user
     user.is_active = True
     user.save()
@@ -154,8 +164,11 @@ def member_update_public(request, member_id, token):
         access_tokens = AccessToken.objects.filter(token=token, used=False)
         if access_tokens:
             access_token = access_tokens[0]
-            access_token.used = True
-            access_token.save()
+            if access_token.created < timezone.now() - datetime.timedelta(hours=24):
+                access_token.used = True
+                access_token.save()
+            else:
+                return HttpResponse('Sorry, that is an invalid access token.')
         else:
             return HttpResponse('Sorry, that is an invalid access token.')
     member = get_object_or_404(Member, pk=member_id)

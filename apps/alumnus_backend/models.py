@@ -108,6 +108,7 @@ class AccessToken(models.Model):
     
     token = models.CharField(max_length=255, unique=True, default=uuid.uuid1)
     used = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
         return str(self.token)
