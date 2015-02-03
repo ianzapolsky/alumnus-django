@@ -90,6 +90,7 @@ def member_detail(request, member_id):
     if member.organization.owner != request.user:
         return HttpResponse('Sorry, you do not have rights to this member.')
     context['member'] = member
+    context['organization'] = member.organization
     return render(request, 'member_detail.html', context)
 
 @login_required
@@ -162,15 +163,22 @@ def member_update_public(request, member_id, token):
     context['organization'] = member.organization
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
+        fields = list(form)
+        context['form_personal'] = fields[:4] 
+        context['form_work'] = fields[4:]
+        context['form'] = form
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/thanks')
         else:
             context['form'] = form
-            return render(request, 'generic/form.html', context)
+            return render(request, 'forms/member_create.html', context)
     else:
         context['form'] = MemberForm(instance=member)
-        return render(request, 'generic/form.html', context)
+        fields = list(context['form'])
+        context['form_personal'] = fields[:4] 
+        context['form_work'] = fields[4:]
+        return render(request, 'forms/member_create.html', context)
 
 @login_required
 def member_send_mail(request, member_id):

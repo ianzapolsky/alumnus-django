@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     # Marketing
     url(r'^contact/$', TemplateView.as_view(template_name='marketing/contact.html')),
     url(r'^about/$', TemplateView.as_view(template_name='marketing/about.html')),
+    url(r'^thanks/$', TemplateView.as_view(template_name='marketing/thanks.html')),
 
     # User Management
     url(r'^login/$', 'django.contrib.auth.views.login'),
