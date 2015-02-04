@@ -16,19 +16,20 @@ from .parser import ExcelParser
 """ User views """
 def user_activate(request, token):
     token_obj = get_object_or_404(AuthenticationToken, used=False, token=token)
-    if token_obj.created < timezone.now() - datetime.timedelta(hours=24):
+    if token_obj.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
+        user = token_obj.user
+        user.is_active = True
+        user.save()
+        token_obj.used = True
+        token_obj.save()
+        messages.add_message(request, messages.INFO, 'Your account has been activated.')
+        return redirect('/')
+    else:
         messages.add_message(request, messages.INFO, 'Your activation token has expired.')
         """
         delete user model here?
         """
         return redirect('/')
-    user = token_obj.user
-    user.is_active = True
-    user.save()
-    token_obj.used = True
-    token_obj.save()
-    messages.add_message(request, messages.INFO, 'Your account has been activated.')
-    return redirect('/')
 
 class CustomUserCreateView(CreateView):
 
@@ -160,17 +161,20 @@ This URL is does not require login because it needs to be open to users
 without an account accessing the URL via a one-time expiring AccessToken
 """
 def member_update_public(request, member_id, token):
-    if request.method == 'GET':
-        access_tokens = AccessToken.objects.filter(token=token, used=False)
-        if access_tokens:
-            access_token = access_tokens[0]
-            if access_token.created < timezone.now() - datetime.timedelta(hours=24):
-                access_token.used = True
-                access_token.save()
-            else:
-                return HttpResponse('Sorry, that is an invalid access token.')
-        else:
-            return HttpResponse('Sorry, that is an invalid access token.')
+    # Check that the access_token is not expired
+    access_token = get_object_or_404(AccessToken, used=False, token=token)
+    if access_token.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
+        pass
+        """
+        Not necessarily appropriate to invalidate an AccessToken after first use.
+        Imagine use case where the Member refreshes page, or starts the form but comes back to it later.
+        AccessToken should remain valid for the entirety of its lifetime.
+        access_token.used = True
+        access_token.save()
+        """
+    else:
+        return HttpResponse('Sorry, that is an invalid access token.')
+
     member = get_object_or_404(Member, pk=member_id)
     context = {'member': member}
     context['organization'] = member.organization

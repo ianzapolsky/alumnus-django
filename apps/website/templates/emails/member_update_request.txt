@@ -2,7 +2,9 @@ Hi there,
 
 {{ user }} has added you as a member of an organization called {{ organization }} on Alumnus.
 
-Please follow this <a href="{{ member.get_public_update_url }}">link</a> to add information about yourself to the database so your organization leader can know more about who you are, what information you might be interested, and how best to contact you.
+Please follow the link below to add information about yourself to the database so your organization leader can know more about who you are, what information you might be interested, and how best to contact you.
+
+http://localhost:8000{{ member.get_public_update_url }}
 
 Thanks,
 
