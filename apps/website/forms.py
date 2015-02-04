@@ -48,6 +48,8 @@ class OrganizationForm(forms.ModelForm):
 
 
 class MemberForm(forms.ModelForm):
+
+    email = forms.EmailField(label='Personal Email')
     
     class Meta:
         model = Member
