@@ -127,7 +127,7 @@ class MemberListForm(forms.ModelForm):
 
 class MemberImportForm(forms.Form):
 
-    file = forms.FileField(label='Import Excel file')
+    file = forms.FileField(label='Excel or CSV File')
 
     def clean(self):
         data = super(MemberImportForm, self).clean()
@@ -138,8 +138,9 @@ class MemberImportForm(forms.Form):
 
         # Ensure that the submitted file has an Excel extension
         docfile = data['file']
+        extensions = ['xlsl', 'csv']
         extension = docfile.name.split('.')[1]
-        if extension != 'xlsx':
+        if extension not in extensions:
             raise forms.ValidationError('%s is not a valid Excel file. Please make sure your input file is an Excel file.' % docfile.name, code='invalid') 
 
         return data

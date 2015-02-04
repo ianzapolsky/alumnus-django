@@ -1,3 +1,4 @@
+import csv
 import itertools
 
 from django.utils.text import slugify

@@ -214,16 +214,14 @@ def member_import(request, organization_slug):
     context['organization'] = organization
     if request.method == 'POST':
         form = MemberImportForm(request.POST, request.FILES)
+        context['form'] = form
         if form.is_valid():
             parser = ExcelParser(request.FILES['file'], organization)
             parser.parse()
             messages.add_message(request, messages.INFO, 'Members successfully imported.')
             return redirect(organization.get_members_url())
-        else:
-            context['errors'] = form.errors
     else:
-        form = MemberImportForm()
-    context['form'] = form
+        context['form'] = MemberImportForm()
     return render(request, 'forms/member_import.html', context)
         
 """ MemberList views """
