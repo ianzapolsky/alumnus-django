@@ -26,27 +26,27 @@ urlpatterns = patterns('',
 
     # Organizations
     url(r'^organizations/$', 'website.views.organizations'),
-    url(r'^organizations/(?P<organization_id>\d+)/$', 'website.views.organization_detail'),
     url(r'^organizations/create/$', 'website.views.organization_create'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/$', 'website.views.organization_detail'),
 
     # Members
-    url(r'^organizations/(?P<organization_id>\d+)/members/$', 'website.views.members'),
-    url(r'^members/(?P<member_id>\d+)/$', 'website.views.member_detail'),
-    url(r'^organizations/(?P<organization_id>\d+)/members/create/$', 'website.views.member_create'),
-    url(r'^organizations/(?P<organization_id>\d+)/members/import/$', 'website.views.member_import'),
-    url(r'^members/(?P<member_id>\d+)/update/$', 'website.views.member_update'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/$', 'website.views.members'),
+    url(r'^members/(?P<member_slug>[-\w\d]+)/$', 'website.views.member_detail'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/create/$', 'website.views.member_create'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/import/$', 'website.views.member_import'),
+    url(r'^members/(?P<member_slug>[-\w\d]+)/update/$', 'website.views.member_update'),
     # Public member update view, visible to only those with a valid AccessToken
-    url(r'^members/(?P<member_id>\d+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
+    url(r'^members/(?P<member_slug>\d+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
 
     # MemberLists
-    url(r'^organizations/(?P<organization_id>\d+)/memberlists/$', 'website.views.memberlists'),
-    url(r'^memberlists/(?P<memberlist_id>\d+)/$', 'website.views.memberlist_detail'),
-    url(r'^organizations/(?P<organization_id>\d+)/memberlists/create/$', 'website.views.memberlist_create'),
-    url(r'^memberlists/(?P<memberlist_id>\d+)/update/$', 'website.views.memberlist_update'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/memberlists/$', 'website.views.memberlists'),
+    url(r'^memberlists/(?P<memberlist_slug>[-\w\d]+)/$', 'website.views.memberlist_detail'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/memberlists/create/$', 'website.views.memberlist_create'),
+    url(r'^memberlists/(?P<memberlist_slug>[-\w\d]+)/update/$', 'website.views.memberlist_update'),
   
     # Send email
-    url(r'^organizations/(?P<organization_id>\d+)/send-mail/$', 'website.views.organization_send_mail'),
-    url(r'^members/(?P<member_id>\d+)/send-mail/$', 'website.views.member_send_mail'),
-    url(r'^memberlists/(?P<memberlist_id>\d+)/send-mail/$', 'website.views.memberlist_send_mail'), 
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/send-mail/$', 'website.views.organization_send_mail'),
+    url(r'^members/(?P<member_slug>[-\w\d]+)/send-mail/$', 'website.views.member_send_mail'),
+    url(r'^memberlists/(?P<memberlist_slug>[-\w\d]+)/send-mail/$', 'website.views.memberlist_send_mail'), 
 
 )

@@ -13,27 +13,79 @@ define([
     },
 
     events: { 
+      'change #subject': 'validateRequired',
+      'change #message': 'validateRequired',
+
+      'keydown #subject': 'removeRequiredError',
+      'keydown #message': 'removeRequiredError',
+
       'click #send-mail': 'handleSend'
+    },
+
+    formIsValid: function () {
+      if (this.checkRequired())
+        return true;
+      return false;
     },
 
     handleSend: function( ev ) {
       ev.preventDefault();
-      var data = {
-        memberlist_id: $('#memberlist-id').val(),
-        message: $('#message').val(),
-        subject: $('#subject').val()
-      };
-      $.ajax({
-        url: '/api/memberlists/send-mail/',
-        type: 'POST',
-        data: data,
-        success: function(data) {
-          if (data.redirect) {
-            window.location.replace(data.redirect);
+      if (this.formIsValid()) {
+        var data = {
+          memberlist_id: $('#memberlist-id').val(),
+          message: $('#message').val(),
+          subject: $('#subject').val()
+        };
+        $.ajax({
+          url: '/api/memberlists/send-mail/',
+          type: 'POST',
+          data: data,
+          success: function(data) {
+            if (data.redirect) {
+              window.location.replace(data.redirect);
+            }
           }
+        });
+      }
+    },
+
+    checkRequired: function () {
+      var _this = this;
+      var valid = true;
+      _.forEach($('input,textarea,select').filter('[required]:visible'), function(field) {
+        var field = $(field);
+        if (field.val() === '') {
+          valid = false;
+          _this.signalError(field, 'This field is required.');
         }
       });
-    }
+      return valid;
+    },
+
+    removeRequiredError: function (ev) {
+      if ($(ev.currentTarget).val() != '') {
+        $(ev.currentTarget).parent().removeClass('has-error');
+        $(ev.currentTarget).tooltip('destroy');
+      }
+    },
+  
+    validateRequired: function (ev) {
+      if ($(ev.currentTarget).val() === '') {
+        this.signalError($(ev.currentTarget), 'This field is required.');
+      }
+    },
+
+    signalError: function($container, errorMsg) {
+      $container.parent().removeClass('has-success');
+      $container.parent().addClass('has-error');
+      $container.tooltip({'trigger': 'manual', 'placement': 'bottom', 'title': errorMsg}).tooltip('show');
+    },
+
+    signalSuccess: function($container) {
+      $container.parent().removeClass('has-error');
+      $container.parent().addClass('has-success');
+      $container.tooltip('destroy');
+    },
 
   });
 

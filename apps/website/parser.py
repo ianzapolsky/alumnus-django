@@ -1,3 +1,7 @@
+import itertools
+
+from django.utils.text import slugify
+
 from alumnus_backend.models import Organization, Member 
 
 import xlrd
@@ -29,5 +33,14 @@ class ExcelParser():
                 m.company = row[7].value
             if 8 < len(row):
                 m.current_state = row[8].value
+
+            # set slug
+            max_length = Member._meta.get_field('slug').max_length
+            m.slug = orig = slugify(m.__unicode__())[:max_length]
+            for x in itertools.count(1):
+                if not Member.objects.filter(slug=m.slug).exists():
+                    break
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                m.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
             m.save() 

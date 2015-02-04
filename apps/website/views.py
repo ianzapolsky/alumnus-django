@@ -1,4 +1,5 @@
 import datetime
+import itertools
 
 from django.conf import settings
 from django.contrib import messages
@@ -7,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.edit import CreateView
 from django.utils import timezone
+from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import CustomUserCreationForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
@@ -49,9 +51,9 @@ def organizations(request):
     return render(request, 'organization_list.html', context)
 
 @login_required
-def organization_detail(request, organization_id):
+def organization_detail(request, organization_slug):
     context = {'user': request.user}
-    organization = Organization.objects.get(pk=organization_id)
+    organization = Organization.objects.get(slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -64,9 +66,7 @@ def organization_create(request):
         form = OrganizationForm(request.POST)
         context['form'] = form
         if form.is_valid():
-            organization = form.save(commit=False)
-            organization.owner = request.user
-            organization.save()
+            organization = form.save(request.user)
             messages.add_message(request, messages.INFO, 'Organization successfully created.')
             return redirect('/')
     else:
@@ -74,9 +74,9 @@ def organization_create(request):
     return render(request, 'generic/form.html', context)
 
 @login_required
-def organization_send_mail(request, organization_id):
+def organization_send_mail(request, organization_slug):
     context = {'user': request.user}
-    organization = get_object_or_404(Organization, pk=organization_id)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own this memberlist')
     context['organization'] = organization
@@ -85,9 +85,9 @@ def organization_send_mail(request, organization_id):
 
 """ Member views """
 @login_required
-def members(request, organization_id):
+def members(request, organization_slug):
     context = {'user': request.user}
-    organization = Organization.objects.get(pk=organization_id)
+    organization = Organization.objects.get(slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -95,9 +95,9 @@ def members(request, organization_id):
     return render(request, 'member_list.html', context)
 
 @login_required
-def member_detail(request, member_id):
+def member_detail(request, member_slug):
     context = {'user': request.user}
-    member = get_object_or_404(Member, pk=member_id)
+    member = get_object_or_404(Member, slug=member_slug)
     if member.organization.owner != request.user:
         return HttpResponse('Sorry, you do not have rights to this member.')
     context['member'] = member
@@ -105,9 +105,9 @@ def member_detail(request, member_id):
     return render(request, 'member_detail.html', context)
 
 @login_required
-def member_create(request, organization_id):
+def member_create(request, organization_slug):
     context = {'user': request.user}
-    organization = get_object_or_404(Organization, pk=organization_id)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -118,9 +118,7 @@ def member_create(request, organization_id):
         context['form_work'] = fields[4:]
         context['form'] = form
         if form.is_valid():
-            member = form.save(commit=False)
-            member.organization = organization
-            member.save()
+            member = form.save(organization)
             messages.add_message(request, messages.INFO, 'Member successfully created.')
             return redirect(organization.get_members_url())
     else:
@@ -131,9 +129,9 @@ def member_create(request, organization_id):
     return render(request, 'forms/member_create.html', context)
 
 @login_required
-def member_update(request, member_id):
+def member_update(request, member_slug):
     context = {'user': request.user}
-    member = get_object_or_404(Member, pk=member_id)
+    member = get_object_or_404(Member, slug=member_slug)
     organization = member.organization
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not have rights to update this member.')
@@ -146,7 +144,7 @@ def member_update(request, member_id):
         context['form_work'] = fields[4:]
         context['form'] = form
         if form.is_valid():
-            form.save()
+            form.save(organization)
             messages.add_message(request, messages.INFO, 'Member successfully updated.')
             return redirect(member.get_absolute_url())
     else:
@@ -160,7 +158,7 @@ def member_update(request, member_id):
 This URL is does not require login because it needs to be open to users
 without an account accessing the URL via a one-time expiring AccessToken
 """
-def member_update_public(request, member_id, token):
+def member_update_public(request, member_slug, token):
     # Check that the access_token is not expired
     access_token = get_object_or_404(AccessToken, used=False, token=token)
     if access_token.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
@@ -175,7 +173,7 @@ def member_update_public(request, member_id, token):
     else:
         return HttpResponse('Sorry, that is an invalid access token.')
 
-    member = get_object_or_404(Member, pk=member_id)
+    member = get_object_or_404(Member, slug=member_slug)
     context = {'member': member}
     context['organization'] = member.organization
     if request.method == 'POST':
@@ -185,7 +183,7 @@ def member_update_public(request, member_id, token):
         context['form_work'] = fields[4:]
         context['form'] = form
         if form.is_valid():
-            form.save()
+            form.save(member.organization)
             return redirect('/thanks')
         else:
             context['form'] = form
@@ -198,8 +196,8 @@ def member_update_public(request, member_id, token):
         return render(request, 'forms/member_create.html', context)
 
 @login_required
-def member_send_mail(request, member_id):
-    member = get_object_or_404(Member, pk=member_id)
+def member_send_mail(request, member_slug):
+    member = get_object_or_404(Member, slug=member_slug)
     organization = member.organization
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own this memberlist')
@@ -208,9 +206,9 @@ def member_send_mail(request, member_id):
     return render(request, 'forms/member_send_mail.html', context)
 
 @login_required
-def member_import(request, organization_id):
+def member_import(request, organization_slug):
     context = {'user': request.user}
-    organization = get_object_or_404(Organization, pk=organization_id)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -230,9 +228,9 @@ def member_import(request, organization_id):
         
 """ MemberList views """
 @login_required
-def memberlists(request, organization_id):
+def memberlists(request, organization_slug):
     context = {'user': request.user}
-    organization = get_object_or_404(Organization, pk=organization_id)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -240,9 +238,9 @@ def memberlists(request, organization_id):
     return render(request, 'memberlist_list.html', context)
 
 @login_required
-def memberlist_detail(request, memberlist_id):
+def memberlist_detail(request, memberlist_slug):
     context = {'user': request.user}
-    memberlist = get_object_or_404(MemberList, pk=memberlist_id)
+    memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
     organization = memberlist.organization
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that memberlist.')
@@ -251,9 +249,9 @@ def memberlist_detail(request, memberlist_id):
     return render(request, 'memberlist_detail.html', context)
 
 @login_required
-def memberlist_create(request, organization_id):
+def memberlist_create(request, organization_slug):
     context = {'user': request.user}
-    organization = get_object_or_404(Organization, pk=organization_id)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
@@ -261,9 +259,7 @@ def memberlist_create(request, organization_id):
         form = MemberListForm(organization, request.POST)
         context['form'] = form
         if form.is_valid():
-            memberlist = form.save(commit=False)
-            memberlist.organization = organization
-            memberlist.save()
+            memberlist = form.save(organization)
             form.save_m2m()
             messages.add_message(request, messages.INFO, 'MemberList successfully created.')
             return redirect('/')
@@ -272,8 +268,8 @@ def memberlist_create(request, organization_id):
     return render(request, 'forms/memberlist_create.html', context)
     
 @login_required
-def memberlist_update(request, memberlist_id):
-    memberlist = get_object_or_404(MemberList, pk=memberlist_id)
+def memberlist_update(request, memberlist_slug):
+    memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
     organization = memberlist.organization
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that memberlist')
@@ -283,7 +279,8 @@ def memberlist_update(request, memberlist_id):
         form = MemberListForm(organization, request.POST, instance=memberlist)
         context['form'] = form
         if form.is_valid():
-            form.save()
+            form.save(organization)
+            form.save_m2m()
             messages.add_message(request, messages.INFO, 'MemberList successfully updated.')
             return redirect(organization.get_memberlists_url())
     else:
@@ -291,8 +288,8 @@ def memberlist_update(request, memberlist_id):
     return render(request, 'forms/memberlist_create.html', context)
 
 @login_required
-def memberlist_send_mail(request, memberlist_id):
-    memberlist = get_object_or_404(MemberList, pk=memberlist_id)
+def memberlist_send_mail(request, memberlist_slug):
+    memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
     organization = memberlist.organization
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own this memberlist')

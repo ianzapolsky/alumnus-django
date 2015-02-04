@@ -9,6 +9,7 @@ define([
       firstname: null,
       lastname: null,
       email: null,
+      slug: null,
       organization: null
     }
 

@@ -32,6 +32,7 @@
   
   {% for memberlist in memberlists %}
   <input class="memberlist-id" type="hidden" value="{{ memberlist.pk }}">
+  <input class="memberlist-slug" type="hidden" value="{{ memberlist.slug }}">
   {% endfor %}
 
   <script type="text/template" id="member-list-template">
@@ -43,7 +44,7 @@
         <th>Email</th>
       </tr>
       <% _.each(Members.models, function(member, index) { %>
-      <tr href="/members/<%= member.get('pk') %>">
+      <tr href="/members/<%= member.get('fields').slug %>">
         <td><%= index + 1 %></td>
         <td><%= member.get('fields').firstname %></td>
         <td><%= member.get('fields').lastname %></td>
@@ -51,9 +52,9 @@
       </tr>
       <% }); %>
     </table>
-    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/">Detail View</a>
-    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/send-mail/">Send message to memberlist</a>
-    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_id %>/update/">Update memberlist</a>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/">Detail View</a>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/send-mail/">Send message to memberlist</a>
+    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/update/">Update memberlist</a>
   </script>
 
 </div>

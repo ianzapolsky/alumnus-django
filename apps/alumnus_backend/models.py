@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from localflavor.us.us_states import STATE_CHOICES
 
 from .choices import *
@@ -10,6 +11,7 @@ class Organization(models.Model):
 
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
+    slug = models.SlugField(unique=True)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
 
     def __unicode__(self):
@@ -19,7 +21,7 @@ class Organization(models.Model):
         return Member.objects.filter(organization=self).all()
 
     def get_absolute_url(self):
-        return '/organizations/' + str(self.pk)
+        return '/organizations/' + self.slug
   
     def get_members_url(self):
         return self.get_absolute_url() + '/members'
@@ -47,6 +49,7 @@ class Member(models.Model):
     email = models.EmailField()
     organization = models.ForeignKey(Organization)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
+    slug = models.SlugField(unique=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
     graduation_year = models.CharField(max_length=4, choices=YEAR_CHOICES, blank=True)
     school = models.CharField(max_length=10, choices=SCHOOL_CHOICES, blank=True)
@@ -58,7 +61,7 @@ class Member(models.Model):
         return self.firstname + ' ' + self.lastname
 
     def get_absolute_url(self):
-        return '/members/' + str(self.pk)
+        return '/members/' + self.slug
 
     def get_update_url(self):
         return self.get_absolute_url() + '/update'
@@ -81,13 +84,14 @@ class MemberList(models.Model):
     name = models.CharField(max_length=100)
     organization = models.ForeignKey(Organization)
     members = models.ManyToManyField(Member)
+    slug = models.SlugField(unique=True)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
-        return '/memberlists/' + str(self.pk)
+        return '/memberlists/' + self.slug
   
     def get_update_url(self):
         return self.get_absolute_url() + '/update'

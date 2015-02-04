@@ -17,7 +17,8 @@ define([
       var _this = this;
       _.forEach($('.memberlist-id'), function(node) {
         var memberlist_id = $(node).val();
-        _this.memberlists.push(new MemberCollection({'memberlist_id': memberlist_id}));
+        var memberlist_slug = $(node).next().val();
+        _this.memberlists.push(new MemberCollection({'memberlist_id': memberlist_id, 'memberlist_slug': memberlist_slug}));
       });
       _.forEach(this.memberlists, function(memberlist) {
         memberlist.fetch();

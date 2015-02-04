@@ -9,6 +9,7 @@ define([
     url: '/api/memberlists/',
     model: Member,
     memberlist_id: null,
+    memberlist_slug: null,
     organization_id: null,
 
     parse: function(data) {
@@ -22,6 +23,9 @@ define([
       } else if (options.organization_id) {
         this.url = '/api/organizations/' + options.organization_id;
         this.organization_id = parseInt(options.organization_id);
+      }
+      if (options.memberlist_slug) {
+        this.memberlist_slug = options.memberlist_slug;
       }
     }
 

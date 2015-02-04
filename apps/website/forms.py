@@ -1,3 +1,5 @@
+import itertools
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -5,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import EmailMultiAlternatives
 from django.template import Context
 from django.template.loader import get_template
+from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AuthenticationToken
 
@@ -44,8 +47,24 @@ class OrganizationForm(forms.ModelForm):
     
     class Meta:
         model = Organization 
-        exclude = ('owner', 'uuid',)
+        exclude = ('owner', 'slug', 'uuid',)
 
+    def save(self, owner, commit=True):
+        instance = super(OrganizationForm, self).save(commit=False)
+        # set owner
+        instance.owner = owner
+        # set slug
+        max_length = Organization._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.name)[:max_length]
+        for x in itertools.count(1):
+            if not Organization.objects.filter(slug=instance.slug).exists():
+                break
+            # Truncate the original slug dynamically. Minus 1 for the hyphen.
+            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+        if commit:
+            instance.save()
+        return instance
+          
 
 class MemberForm(forms.ModelForm):
 
@@ -53,14 +72,30 @@ class MemberForm(forms.ModelForm):
     
     class Meta:
         model = Member
-        exclude = ('organization', 'uuid',)
+        exclude = ('organization', 'slug', 'uuid',)
+
+    def save(self, organization, commit=True):
+        instance = super(MemberForm, self).save(commit=False)
+        # set organization
+        instance.organization = organization
+        # set slug
+        max_length = Member._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.__unicode__())[:max_length]
+        for x in itertools.count(1):
+            if not Member.objects.filter(slug=instance.slug).exists():
+                break
+            # Truncate the original slug dynamically. Minus 1 for the hyphen.
+            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+        if commit:
+            instance.save()
+        return instance
 
 
 class MemberListForm(forms.ModelForm):
 
     class Meta:
         model = MemberList
-        exclude = ('organization', 'uuid',)
+        exclude = ('organization', 'slug', 'uuid',)
         widgets = {
           'members': forms.CheckboxSelectMultiple()
         }
@@ -71,6 +106,23 @@ class MemberListForm(forms.ModelForm):
             queryset=Member.objects.filter(organization=organization),
             widget=forms.CheckboxSelectMultiple(),
         )
+
+    def save(self, organization, commit=True):
+        instance = super(MemberListForm, self).save(commit=False)
+        # set organization
+        instance.organization = organization
+        # set slug
+        max_length = MemberList._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.name)[:max_length]
+        for x in itertools.count(1):
+            if not MemberList.objects.filter(slug=instance.slug).exists():
+                break
+            # Truncate the original slug dynamically. Minus 1 for the hyphen.
+            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+        if commit: 
+            instance.save()
+        return instance
+        
 
 
 class MemberImportForm(forms.Form):

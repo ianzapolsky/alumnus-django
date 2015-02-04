@@ -64,7 +64,6 @@ define([
     },
 
     checkRequired: function () {
-      console.log('hi');
       var _this = this;
       var valid = true;
       _.forEach($('input,textarea,select').filter('[required]:visible'), function(field) {
