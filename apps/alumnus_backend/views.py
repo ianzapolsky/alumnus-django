@@ -61,6 +61,23 @@ def get_organization(request, organization_id):
         return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 @login_required
+def organization_delete(request):
+    """ Deletes the specified organization """
+    if request.method == 'POST':
+        organization_id  = request.POST.get('organization_id')
+        organization = get_object_or_404(Organization, pk=organization_id) 
+        if organization.owner != request.user:
+            message = 'Sorry, you do not own this organization.'
+            redirect = None
+        else:
+            organization.delete()
+            message = 'Organization successfully deleted.' 
+            redirect = '/'
+        messages.add_message(request, messages.INFO, message)
+        response = {'redirect': redirect} 
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+@login_required
 def memberlist_delete(request):
     """ Deletes the specified memberlist, assuming the user owns that memberlist """
     if request.method == 'POST':
@@ -94,20 +111,6 @@ def member_delete(request):
             redirect = organization.get_members_url()
         messages.add_message(request, messages.INFO, message)
         response = {'redirect': redirect} 
-        return HttpResponse(json.dumps(response), content_type='application/json')
-
-@login_required
-def organization_delete(request):
-    """ Deletes the specified organization, assuming the user owns that organization """
-    if request.method == 'POST':
-        organization_id = request.POST.get('organization_id')
-        organization = get_object_or_404(Organization, pk=organization_id)
-        if organization.owner != request.user:
-            msg = 'Sorry, you do not own that organization.'
-        else:
-            organization.delete()
-            msg = 'Organization successfully deleted.'
-        response = {'message': msg} 
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required

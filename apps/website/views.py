@@ -43,6 +43,12 @@ class CustomUserCreateView(CreateView):
         messages.add_message(self.request, messages.INFO, 'Your account has been created. Please check your email for an activation link.')
         return super(CustomUserCreateView, self).form_valid(form)
 
+@login_required
+def account(request):
+    context = {'user': request.user}
+    context['organizations'] = Organization.objects.filter(owner=request.user)
+    return render(request, 'account_detail.html', context)
+
 """ Organization views """
 @login_required
 def organizations(request):
@@ -71,6 +77,22 @@ def organization_create(request):
             return redirect('/')
     else:
         context['form'] = OrganizationForm()    
+    return render(request, 'generic/form.html', context)
+
+@login_required
+def organization_update(request, organization_slug):
+    context = {'user': request.user}
+    organization = get_object_or_404(Organization, slug=organization_slug)
+    context['organization'] = organization
+    if request.method == 'POST':
+        form = OrganizationForm(request.POST, instance=organization)
+        context['form'] = form
+        if form.is_valid():
+            organization = form.save(request.user)
+            messages.add_message(request, messages.INFO, 'Organization successfully created.')
+            return redirect('/')
+    else:
+        context['form'] = OrganizationForm(instance=organization)    
     return render(request, 'generic/form.html', context)
 
 @login_required

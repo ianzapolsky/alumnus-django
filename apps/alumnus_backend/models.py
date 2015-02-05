@@ -23,6 +23,9 @@ class Organization(models.Model):
     def get_absolute_url(self):
         return '/organizations/' + self.slug
   
+    def get_update_url(self):
+        return self.get_absolute_url() + '/update'
+  
     def get_members_url(self):
         return self.get_absolute_url() + '/members'
 

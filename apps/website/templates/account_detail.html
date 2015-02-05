@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block require_js %}
+<script>
+  require(['src/views/member-detail'], function(MemberDetailView) {
+    new MemberDetailView();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="account-detail-container" class="centered col-md-12">
+  <h1 id="account-title">{{ user }}</h1>
+  <br>
+
+  <p>Email: {{ user.email }}</p>
+  <p>{{ organizations|length }} Organizations</p>
+  <a class="btn btn-warning">Update Account</a>
+
+  <input id="user-id" type="hidden" value="{{ user.pk }}">
+</div>
+{% endblock %}

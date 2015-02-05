@@ -2,16 +2,6 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-{% block require_js %}
-<script>
-  require([
-    'src/views/generic-form',
-  ], function(GenericFormView) {
-    new GenericFormView();
-  });
-</script>
-{% endblock %}
-
 {% block content %}
  
 {% include "generic/form_errors.html" %}

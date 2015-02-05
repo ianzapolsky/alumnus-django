@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}), 
     url(r'^register/$', CustomUserCreateView.as_view()),
     url(r'^activate/(?P<token>[-\w\d]+)/$', 'website.views.user_activate'),
+    url(r'^account/$', 'website.views.account'),
 
     # Home
     url(r'^$', 'website.views.organizations'),
@@ -28,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^organizations/$', 'website.views.organizations'),
     url(r'^organizations/create/$', 'website.views.organization_create'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/$', 'website.views.organization_detail'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/update/$', 'website.views.organization_update'),
 
     # Members
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/$', 'website.views.members'),

@@ -1,14 +1,33 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block require_js %}
+<script>
+  require(['src/views/organization-list'], function(OrganizationListView) {
+    new OrganizationListView();
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 <p>Hello, {{ user }}</p>
 <h1>Your Organizations</h1>
-{% for org in organizations %}
-<h3><a href="{{ org.get_absolute_url }}">{{ org }}</a></h6>
-{% empty %}
-<h4>You have no Organizations</h4>
-{% endfor %}
 <br>
-<a class="btn btn-primary" href="/organizations/create">Add organizations</a>
+<div id="organization-container" class="centered col-md-6">
+  <table class="table">
+    {% for org in organizations %}
+    <tr>
+      <td><a href="{{ org.get_absolute_url }}"><h4>{{ org }}</h4></a></td>
+      <td><a href="{{ org.get_update_url }}" class="btn btn-warning">Update</a></td>
+      <td><a data-organization-id="{{ org.pk }}" class="organization-delete btn btn-danger">Delete</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td>You have no Organizations</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<br>
+<a class="btn btn-primary" href="/organizations/create">Add Organization</a>
 {% endblock %}
