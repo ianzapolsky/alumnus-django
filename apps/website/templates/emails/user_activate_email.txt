@@ -8,6 +8,8 @@ To activate your account at Alumnus, please click the following link:
 
 {{ token }}
 
+Note that this link will expire in 24 hours. If this occurrs, your account will be deleted and you may re-register with the same username.
+
 Thanks,
 
 Alumnus

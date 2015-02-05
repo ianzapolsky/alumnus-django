@@ -6,6 +6,8 @@ Please follow the link below to add information about yourself to the database s
 
 http://localhost:8000{{ member.get_public_update_url }}
 
+Note that this link will expire in 24 hours.
+
 Thanks,
 
 Alumnus
