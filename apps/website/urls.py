@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/import/$', 'website.views.member_import'),
     url(r'^members/(?P<member_slug>[-\w\d]+)/update/$', 'website.views.member_update'),
     # Public member update view, visible to only those with a valid AccessToken
-    url(r'^members/(?P<member_slug>\d+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
+    url(r'^members/(?P<member_slug>[-\w\d]+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
 
     # MemberLists
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/memberlists/$', 'website.views.memberlists'),

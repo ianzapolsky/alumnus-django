@@ -51,6 +51,7 @@ class Member(models.Model):
     lastname = models.CharField(max_length=100)
     email = models.EmailField()
     organization = models.ForeignKey(Organization)
+    times_requested = models.IntegerField(default=0)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
     slug = models.SlugField(unique=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
@@ -80,6 +81,10 @@ class Member(models.Model):
         token = AccessToken()
         token.save()
         return self.get_update_url() + '/' + str(token)
+  
+    def increment_times_requested(self):
+        self.times_requested = self.times_requested + 1
+        self.save()
 
 
 class MemberList(models.Model):

@@ -138,6 +138,7 @@ def member_update_request(request):
             message = 'There was an error sending the email. Please try again.'
         else:
             message = 'Email successfully sent.'
+        member.increment_times_requested()
         messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': member.get_absolute_url()}
         return HttpResponse(json.dumps(response), content_type='application/json')
