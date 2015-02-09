@@ -21,6 +21,8 @@ urlpatterns = patterns('',
     url(r'^register/$', CustomUserCreateView.as_view()),
     url(r'^activate/(?P<token>[-\w\d]+)/$', 'website.views.user_activate'),
     url(r'^account/$', 'website.views.account'),
+    url(r'^account/update-email/$', 'website.views.user_update_email'),
+    url(r'^account/update-password/$', 'website.views.user_update_password'),
 
     # Home
     url(r'^$', 'website.views.organizations'),

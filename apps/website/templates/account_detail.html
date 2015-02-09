@@ -14,9 +14,16 @@
   <h1 id="account-title">{{ user }}</h1>
   <br>
 
-  <p>Email: {{ user.email }}</p>
-  <p>{{ organizations|length }} Organizations</p>
-  <a class="btn btn-warning">Update Account</a>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  {% if organizations|length == 1 %}
+    <p><strong>1</strong> Organization</p>
+  {% else %}
+    <p><strong>{{ organizations|length }}</strong> Organizations</p>
+  {% endif %}
+
+  <br>
+  <a href="/account/update-email/" class="btn btn-primary">Update Email</a>
+  <a href="/account/update-password/" class="btn btn-warning">Update Password</a>
 
   <input id="user-id" type="hidden" value="{{ user.pk }}">
 </div>

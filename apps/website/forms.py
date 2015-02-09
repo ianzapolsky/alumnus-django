@@ -43,6 +43,30 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
+class UserUpdateEmailForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['email']
+    
+    email = forms.EmailField(required=True)
+
+class UserUpdatePasswordForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = []
+    
+    password1 = forms.CharField(label=("Password"), widget=forms.PasswordInput) 
+    password2 = forms.CharField(label=("Password confirmation"), widget=forms.PasswordInput)
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("The two password fields didn't match.", code='invalid')
+        return password2
+
 class OrganizationForm(forms.ModelForm):
     
     class Meta:

@@ -11,15 +11,15 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
-from .forms import CustomUserCreationForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
+from .forms import CustomUserCreationForm, UserUpdateEmailForm, UserUpdatePasswordForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
 from .parser import ExcelParser
 
 
 """ User views """
 def user_activate(request, token):
     token_obj = get_object_or_404(AuthenticationToken, used=False, token=token)
+    user = token_obj.user
     if token_obj.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
-        user = token_obj.user
         user.is_active = True
         user.save()
         token_obj.used = True
@@ -28,9 +28,7 @@ def user_activate(request, token):
         return redirect('/')
     else:
         messages.add_message(request, messages.INFO, 'Your activation token has expired.')
-        """
-        delete user model here?
-        """
+        user.delete();
         return redirect('/')
 
 class CustomUserCreateView(CreateView):
@@ -48,6 +46,36 @@ def account(request):
     context = {'user': request.user}
     context['organizations'] = Organization.objects.filter(owner=request.user)
     return render(request, 'account_detail.html', context)
+
+def user_update_email(request):
+    context = {'user': request.user}
+    user = request.user
+    if request.method == 'POST':
+        form = UserUpdateEmailForm(request.POST, instance=user)
+        context['form'] = form
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            user.save()
+            messages.add_message(request, messages.INFO, 'Account successfully updated.')
+            return redirect('/account/')
+    else:
+        context['form'] = UserUpdateEmailForm(instance=user)    
+    return render(request, 'generic/form.html', context)
+
+def user_update_password(request):
+    context = {'user': request.user}
+    user = request.user
+    if request.method == 'POST':
+        form = UserUpdatePasswordForm(request.POST, instance=user)
+        context['form'] = form
+        if form.is_valid():
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            messages.add_message(request, messages.INFO, 'Account successfully updated.')
+            return redirect('/account/')
+    else:
+        context['form'] = UserUpdatePasswordForm(instance=user)    
+    return render(request, 'forms/password_update.html', context)
 
 """ Organization views """
 @login_required
