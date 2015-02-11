@@ -31,7 +31,11 @@ class CustomUserCreationForm(UserCreationForm):
             token.user = user
             token.save()
             # Let the user know about it
-            context = {'user': user, 'token': token}
+            context = {
+                'user': user, 
+                'token': token,
+                'site_name': settings.SITE_NAME
+            }
             context = Context(context)
             text_content = get_template('emails/user_activate_email.txt').render(context)
             html_content = get_template('emails/user_activate_email.html').render(context)

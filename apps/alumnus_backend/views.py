@@ -123,7 +123,8 @@ def member_update_request(request):
         context = { 
           'user': request.user,
           'member': member,
-          'organization': member.organization
+          'organization': member.organization,
+          'site_name': settings.SITE_NAME
         }
         context = Context(context)
         text_content = get_template('emails/member_update_request.txt').render(context)
