@@ -3,6 +3,18 @@
 {% load widget_tweaks %}
 
 {% block content %}
+
+<div class="centered left-align col-md-8">
+  <p>In order to import your Members into Alumnus, please click the button below 
+     to download a Excel template file. Then, simply copy and paste your data into
+     the format provided, save the file, and submit it in the form below.</p>
+</div>
+<br>
+<div class="centered center-align col-md-4">
+  <a class="btn btn-primary" href="{% static 'files/alumnus.xlsx' %}">Download Template</a>
+</div>
+<br>
+<br>
  
 {% if form.errors %}
 <div class="centered left-align col-md-6 form-errors">

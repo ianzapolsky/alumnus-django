@@ -24,6 +24,9 @@
       <th>Company</th>
       <th>State</th>
       <th>Update Requests</th>
+      {% if member.last_requested %}
+        <th>Last Requested</th>
+      {% endif %}
     </tr>
     <tr>
       <td>{{ member.email }}</td>
@@ -34,6 +37,9 @@
       <td>{{ member.company }}</td>
       <td>{{ member.current_state }}</td>
       <td>{{ member.times_requested }}</td>
+      {% if member.last_requested %}
+        <td>{{ member.last_requested }}</td>
+      {% endif %}
     </tr>
   </table>
   

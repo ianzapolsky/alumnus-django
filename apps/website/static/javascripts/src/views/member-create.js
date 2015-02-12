@@ -13,7 +13,7 @@ define([
     
   
     initialize: function() {
-      console.log('GenericFormView initialize');
+      console.log('MemberCreateView initialize');
       this.renderMultistepFormHeader();
       this.renderCurrentFieldset(); 
     },

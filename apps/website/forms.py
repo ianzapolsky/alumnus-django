@@ -100,14 +100,18 @@ class MemberForm(forms.ModelForm):
     
     class Meta:
         model = Member
-        exclude = ('organization', 'slug', 'times_requested', 'uuid',)
+        exclude = ('organization', 'last_requested', 'slug', 'times_requested', 'uuid',)
 
     def save(self, organization, commit=True):
         instance = super(MemberForm, self).save(commit=False)
+
         # set organization
         instance.organization = organization
+
         # set times_requested
-        instance.times_requested = 0
+        if not instance.times_requested:
+            instance.times_requested = 0
+
         # set slug
         max_length = Member._meta.get_field('slug').max_length
         instance.slug = orig = slugify(instance.__unicode__())[:max_length]
@@ -116,6 +120,8 @@ class MemberForm(forms.ModelForm):
                 break
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+        # save
         if commit:
             instance.save()
         return instance

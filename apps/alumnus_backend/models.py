@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.utils.text import slugify
 from localflavor.us.us_states import STATE_CHOICES
 
@@ -52,6 +53,7 @@ class Member(models.Model):
     email = models.EmailField()
     organization = models.ForeignKey(Organization)
     times_requested = models.IntegerField(default=0)
+    last_requested = models.DateTimeField(blank=True, null=True)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
     slug = models.SlugField(unique=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
@@ -84,6 +86,10 @@ class Member(models.Model):
   
     def increment_times_requested(self):
         self.times_requested = self.times_requested + 1
+        self.save()
+
+    def set_last_requested(self):
+        self.last_requested = timezone.now()        
         self.save()
 
 
