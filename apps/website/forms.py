@@ -170,7 +170,7 @@ class MemberImportForm(forms.Form):
 
         # Ensure that the submitted file has an Excel extension
         docfile = data['file']
-        extensions = ['xlsl', 'csv']
+        extensions = ['xlsx']
         extension = docfile.name.split('.')[1]
         if extension not in extensions:
             raise forms.ValidationError('%s is not a valid Excel file. Please make sure your input file is an Excel file.' % docfile.name, code='invalid') 
