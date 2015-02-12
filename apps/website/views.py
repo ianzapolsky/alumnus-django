@@ -234,6 +234,7 @@ def member_update_public(request, member_slug, token):
         context['form'] = form
         if form.is_valid():
             form.save(member.organization)
+            member.increment_times_completed()
             return redirect('/thanks')
         else:
             context['form'] = form

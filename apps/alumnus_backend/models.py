@@ -52,8 +52,6 @@ class Member(models.Model):
     lastname = models.CharField(max_length=100)
     email = models.EmailField()
     organization = models.ForeignKey(Organization)
-    times_requested = models.IntegerField(default=0)
-    last_requested = models.DateTimeField(blank=True, null=True)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
     slug = models.SlugField(unique=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
@@ -62,6 +60,9 @@ class Member(models.Model):
     industry = models.CharField(max_length=100, choices=INDUSTRY_CHOICES, blank=True)
     company = models.CharField(max_length=100, blank=True)
     current_state = models.CharField(max_length=50, choices=STATE_CHOICES, blank=True)
+    times_requested = models.IntegerField(default=0)
+    times_completed = models.IntegerField(default=0)
+    last_requested = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
         return self.firstname + ' ' + self.lastname
@@ -88,9 +89,18 @@ class Member(models.Model):
         self.times_requested = self.times_requested + 1
         self.save()
 
+    def increment_times_completed(self):
+        self.times_completed = self.times_completed + 1
+        self.save()
+
     def set_last_requested(self):
         self.last_requested = timezone.now()        
         self.save()
+
+    def has_request_pending(self):
+        if self.times_completed < self.times_requested:
+            return True
+        return False
 
 
 class MemberList(models.Model):

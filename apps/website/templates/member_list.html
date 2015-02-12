@@ -32,6 +32,7 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
+        <th>Request Pending</th>
       </tr>
       {% for member in members %}
       <tr href="{{ member.get_absolute_url }}">
@@ -39,6 +40,11 @@
         <td>{{ member.firstname }}</td>
         <td>{{ member.lastname }}</td>
         <td>{{ member.email }}</td>
+        {% if member.has_request_pending %}
+          <td>Yes</td>
+        {% else %}
+          <td>No</td>
+        {% endif %}
       </tr>
       {% endfor %}
     </table>
