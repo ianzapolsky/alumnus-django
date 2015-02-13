@@ -7,6 +7,7 @@ gunicorn==19.2.1
 jdcal==1.0
 jsonpickle==0.8.0
 openpyxl==2.1.4
+psycopg2==2.6
 Unipath==1.0
 whitenoise==1.0.6
 xlrd==0.9.3
