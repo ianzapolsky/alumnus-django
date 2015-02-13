@@ -1,6 +1,5 @@
 #! /bin/sh
 
-cd /home/ubuntu/alumnus-django/
 git pull --rebase origin master
 sudo docker build -t alumnus .
 sudo docker rm -f $(sudo docker ps -a -q)
