@@ -50,7 +50,7 @@ define([
     renderMultistepFormHeader: function () {
       var _this = this;
       _.forEach($('.multistep-form-header').find('li'), function (node, index) {
-        if (index == _this.currentFieldset)
+        if (index === _this.currentFieldset)
           $(node).addClass('active');
         else 
           $(node).removeClass('active');
@@ -59,12 +59,16 @@ define([
 
     renderCurrentFieldset: function () {
       var _this = this;
-      _.forEach($('fieldset'), function (node) {
-        if ($(node).attr('data-index') != _this.currentFieldset)
-          $(node).addClass('hidden');
-        else
+
+      // render the right fieldset
+      _.forEach($('fieldset'), function (node, index) {
+        if (index === _this.currentFieldset)
           $(node).removeClass('hidden');
+        else
+          $(node).addClass('hidden');
       });
+
+      // render the right nav buttons
       if (this.currentFieldset == this.maxFieldset) {
         $('#btn-submit').removeClass('hidden');
         $('#btn-next').addClass('hidden');

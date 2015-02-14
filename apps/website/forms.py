@@ -72,6 +72,8 @@ class UserUpdatePasswordForm(forms.ModelForm):
         return password2
 
 class OrganizationForm(forms.ModelForm):
+
+    name = forms.CharField(label=("Organization Name"))
     
     class Meta:
         model = Organization 
@@ -141,8 +143,10 @@ class MemberListForm(forms.ModelForm):
 
     def save(self, organization, commit=True):
         instance = super(MemberListForm, self).save(commit=False)
+
         # set organization
         instance.organization = organization
+
         # set slug
         max_length = MemberList._meta.get_field('slug').max_length
         instance.slug = orig = slugify(instance.name)[:max_length]
@@ -151,11 +155,11 @@ class MemberListForm(forms.ModelForm):
                 break
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
         if commit: 
             instance.save()
         return instance
         
-
 
 class MemberImportForm(forms.Form):
 

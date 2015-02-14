@@ -213,13 +213,6 @@ def member_update_public(request, member_slug, token):
     access_token = get_object_or_404(AccessToken, used=False, token=token)
     if access_token.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
         pass
-        """
-        Not necessarily appropriate to invalidate an AccessToken after first use.
-        Imagine use case where the Member refreshes page, or starts the form but comes back to it later.
-        AccessToken should remain valid for the entirety of its lifetime.
-        access_token.used = True
-        access_token.save()
-        """
     else:
         return HttpResponse('Sorry, that is an invalid access token.')
 

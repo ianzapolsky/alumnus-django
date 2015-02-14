@@ -31,11 +31,11 @@
     <form method="post">
       {% csrf_token %}
 
-      <fieldset data-index="0">
+      <fieldset>
         <legend>Personal Information</legend>
         {% for field in form_personal %}
         <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if forloop.counter < 4 %} (required){% endif%}:</label>
           {% if forloop.counter < 4 %}
             {% render_field field required="" class+="form-control" %}
           {% else %}
@@ -46,7 +46,7 @@
         {% endfor %}
       </fieldset>
 
-      <fieldset data-index="1">
+      <fieldset>
         <legend>Work Information</legend>
         {% for field in form_work %}
         <div class="form-group">
