@@ -32,11 +32,11 @@
     <form method="post">
       {% csrf_token %}
 
-      <label for="name">{{ form.name.label }}:</label>
+      <label for="name">{{ form.name.label }} (required):</label>
       {% render_field form.name class+="form-control" %}
       <br>
 
-      <label for="members">{{ form.members.label }}:</label>
+      <label for="members">{{ form.members.label }} (required):</label>
 
       <div class="left-align table-buttons">
         <button class="btn btn-sm btn-primary" id="check-all">Check all</button>

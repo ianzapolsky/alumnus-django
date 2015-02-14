@@ -16,6 +16,17 @@ from .parser import ExcelParser
 
 
 """ User views """
+class CustomUserCreateView(CreateView):
+
+    template_name = 'registration/register.html'
+    form_class = CustomUserCreationForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.INFO, 'Your account has been created. Please check your email for an activation link.')
+        return super(CustomUserCreateView, self).form_valid(form)
+
+
 def user_activate(request, token):
     token_obj = get_object_or_404(AuthenticationToken, used=False, token=token)
     user = token_obj.user
@@ -31,21 +42,13 @@ def user_activate(request, token):
         user.delete();
         return redirect('/')
 
-class CustomUserCreateView(CreateView):
-
-    template_name = 'registration/register.html'
-    form_class = CustomUserCreationForm
-    success_url = '/'
-
-    def form_valid(self, form):
-        messages.add_message(self.request, messages.INFO, 'Your account has been created. Please check your email for an activation link.')
-        return super(CustomUserCreateView, self).form_valid(form)
 
 @login_required
 def account(request):
     context = {'user': request.user}
     context['organizations'] = Organization.objects.filter(owner=request.user)
     return render(request, 'account_detail.html', context)
+
 
 def user_update_email(request):
     context = {'user': request.user}
@@ -62,6 +65,7 @@ def user_update_email(request):
         context['form'] = UserUpdateEmailForm(instance=user)    
     return render(request, 'generic/form.html', context)
 
+
 def user_update_password(request):
     context = {'user': request.user}
     user = request.user
@@ -77,6 +81,7 @@ def user_update_password(request):
         context['form'] = UserUpdatePasswordForm(instance=user)    
     return render(request, 'forms/password_update.html', context)
 
+
 """ Organization views """
 @login_required
 def organizations(request):
@@ -84,14 +89,16 @@ def organizations(request):
     context['organizations'] = Organization.objects.filter(owner=request.user)
     return render(request, 'organization_list.html', context)
 
+
 @login_required
 def organization_detail(request, organization_slug):
     context = {'user': request.user}
-    organization = Organization.objects.get(slug=organization_slug)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
     return render(request, 'organization_detail.html', context)
+
 
 @login_required
 def organization_create(request):
@@ -106,6 +113,7 @@ def organization_create(request):
     else:
         context['form'] = OrganizationForm()    
     return render(request, 'generic/form.html', context)
+
 
 @login_required
 def organization_update(request, organization_slug):
@@ -123,6 +131,7 @@ def organization_update(request, organization_slug):
         context['form'] = OrganizationForm(instance=organization)    
     return render(request, 'generic/form.html', context)
 
+
 @login_required
 def organization_send_mail(request, organization_slug):
     context = {'user': request.user}
@@ -133,16 +142,18 @@ def organization_send_mail(request, organization_slug):
     context['members'] = organization.get_members()
     return render(request, 'forms/organization_send_mail.html', context)
 
+
 """ Member views """
 @login_required
 def members(request, organization_slug):
     context = {'user': request.user}
-    organization = Organization.objects.get(slug=organization_slug)
+    organization = get_object_or_404(Organization, slug=organization_slug)
     if organization.owner != request.user:
         return HttpResponse('Sorry, you do not own that organization.')
     context['organization'] = organization
     context['members'] = Member.objects.filter(organization=organization)
     return render(request, 'member_list.html', context)
+
 
 @login_required
 def member_detail(request, member_slug):
@@ -153,6 +164,7 @@ def member_detail(request, member_slug):
     context['member'] = member
     context['organization'] = member.organization
     return render(request, 'member_detail.html', context)
+
 
 @login_required
 def member_create(request, organization_slug):
@@ -177,6 +189,7 @@ def member_create(request, organization_slug):
         context['form_personal'] = fields[:4]
         context['form_work'] = fields[4:]
     return render(request, 'forms/member_create.html', context)
+
 
 @login_required
 def member_update(request, member_slug):
@@ -203,6 +216,7 @@ def member_update(request, member_slug):
         context['form_personal'] = fields[:4] 
         context['form_work'] = fields[4:]
     return render(request, 'forms/member_create.html', context)
+
 
 """
 This URL is does not require login because it needs to be open to users
@@ -239,6 +253,7 @@ def member_update_public(request, member_slug, token):
         context['form_work'] = fields[4:]
         return render(request, 'forms/member_create.html', context)
 
+
 @login_required
 def member_send_mail(request, member_slug):
     member = get_object_or_404(Member, slug=member_slug)
@@ -248,6 +263,7 @@ def member_send_mail(request, member_slug):
     context = {'member': member}
     context['organization'] = organization
     return render(request, 'forms/member_send_mail.html', context)
+
 
 @login_required
 def member_import(request, organization_slug):
@@ -268,6 +284,7 @@ def member_import(request, organization_slug):
         context['form'] = MemberImportForm()
     return render(request, 'forms/member_import.html', context)
         
+
 """ MemberList views """
 @login_required
 def memberlists(request, organization_slug):
@@ -279,6 +296,7 @@ def memberlists(request, organization_slug):
     context['memberlists'] = MemberList.objects.filter(organization=organization)
     return render(request, 'memberlist_list.html', context)
 
+
 @login_required
 def memberlist_detail(request, memberlist_slug):
     context = {'user': request.user}
@@ -289,6 +307,7 @@ def memberlist_detail(request, memberlist_slug):
     context['organization'] = organization
     context['memberlist'] = memberlist
     return render(request, 'memberlist_detail.html', context)
+
 
 @login_required
 def memberlist_create(request, organization_slug):
@@ -309,6 +328,7 @@ def memberlist_create(request, organization_slug):
         context['form'] = MemberListForm(organization)    
     return render(request, 'forms/memberlist_create.html', context)
     
+
 @login_required
 def memberlist_update(request, memberlist_slug):
     memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
@@ -329,6 +349,7 @@ def memberlist_update(request, memberlist_slug):
         context['form'] = MemberListForm(organization, instance=memberlist)
     return render(request, 'forms/memberlist_create.html', context)
 
+
 @login_required
 def memberlist_send_mail(request, memberlist_slug):
     memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
@@ -338,4 +359,3 @@ def memberlist_send_mail(request, memberlist_slug):
     context = {'memberlist': memberlist}
     context['organization'] = organization
     return render(request, 'forms/memberlist_send_mail.html', context)
-

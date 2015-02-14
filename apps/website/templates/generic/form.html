@@ -13,7 +13,7 @@
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
-      <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+      <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} (required){% endif %}:</label>
       {% render_field field class+="form-control" %}
       <br>
       {% endfor %}
