@@ -323,7 +323,7 @@ def memberlist_create(request, organization_slug):
             memberlist = form.save(organization)
             form.save_m2m()
             messages.add_message(request, messages.INFO, 'MemberList successfully created.')
-            return redirect('/')
+            return redirect(organization.get_memberlists_url())
     else:
         context['form'] = MemberListForm(organization)    
     return render(request, 'forms/memberlist_create.html', context)
