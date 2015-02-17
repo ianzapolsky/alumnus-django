@@ -31,6 +31,7 @@ define([
     handleSend: function( ev ) {
       ev.preventDefault();
       if (this.formIsValid()) {
+        this.showLoading(); 
         var data = {
           member_id: $('#member-id').val(),
           message: $('#message').val(),
@@ -60,6 +61,18 @@ define([
         }
       });
       return valid;
+    },
+  
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
     },
 
     removeRequiredError: function (ev) {

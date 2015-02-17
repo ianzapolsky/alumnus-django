@@ -40,6 +40,7 @@ define([
     handleSend: function (ev) {
       ev.preventDefault();
       if (this.formIsValid()) {
+        this.showLoading();
         recipients = []
         _.forEach($('input[type=checkbox]:checked'), function(el) {
           recipients.push($(el).attr('data-member-email'));
@@ -61,6 +62,19 @@ define([
           }
         });
       }
+    },
+
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+      window.scrollTo(0,0);
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
     },
 
     checkRequired: function () {

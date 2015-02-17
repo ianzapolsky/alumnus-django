@@ -31,6 +31,7 @@ define([
     handleSend: function( ev ) {
       ev.preventDefault();
       if (this.formIsValid()) {
+        this.showLoading(); 
         var data = {
           memberlist_id: $('#memberlist-id').val(),
           message: $('#message').val(),
@@ -47,6 +48,18 @@ define([
           }
         });
       }
+    },
+
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
     },
 
     checkRequired: function () {
