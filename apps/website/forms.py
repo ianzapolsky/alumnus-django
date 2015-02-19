@@ -10,6 +10,7 @@ from django.template.loader import get_template
 from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AuthenticationToken
+from .parser import ExcelParser
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -181,5 +182,14 @@ class MemberImportForm(forms.Form):
         if extension not in extensions:
             raise forms.ValidationError('%s is not a valid Excel file. Please make sure your input file is an Excel file.' % docfile.name, code='invalid') 
 
+        # Check that the format of the uploaded file is expected
+        self.parser = ExcelParser(docfile)
+        if not self.parser.validate():
+            raise forms.ValidationError('%s does not match the format of the template Excel file provided.' % docfile.name, code='invalid')
+    
         return data
+
+    def save(self, organization):
+        self.parser.parse(organization)
+        
 

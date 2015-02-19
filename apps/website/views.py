@@ -12,7 +12,6 @@ from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import CustomUserCreationForm, UserUpdateEmailForm, UserUpdatePasswordForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
-from .parser import ExcelParser
 
 
 """ User views """
@@ -276,8 +275,7 @@ def member_import(request, organization_slug):
         form = MemberImportForm(request.POST, request.FILES)
         context['form'] = form
         if form.is_valid():
-            parser = ExcelParser(request.FILES['file'], organization)
-            parser.parse()
+            form.save(organization)
             messages.add_message(request, messages.INFO, 'Members successfully imported.')
             return redirect(organization.get_members_url())
     else:
