@@ -18,6 +18,8 @@ define([
 
     handleDelete: function( ev ) {
       ev.preventDefault();
+      this.showLoading()
+      var _this = this;
       var data = {memberlist_id: $('#memberlist-id').val()};
       $.ajax({
         url: '/api/memberlists/delete/',
@@ -25,11 +27,24 @@ define([
         data: data,
         success: function(data) {
           if (data.redirect) {
+            _this.hideLoading();
             window.location.replace(data.redirect);
           }
         }
       });
-    }
+    },
+
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
+    },
 
   });
 

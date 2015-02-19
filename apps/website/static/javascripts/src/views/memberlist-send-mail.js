@@ -32,6 +32,7 @@ define([
       ev.preventDefault();
       if (this.formIsValid()) {
         this.showLoading(); 
+        var _this = this;
         var data = {
           memberlist_id: $('#memberlist-id').val(),
           message: $('#message').val(),
@@ -42,6 +43,7 @@ define([
           type: 'POST',
           data: data,
           success: function(data) {
+            _this.hideLoading();
             if (data.redirect) {
               window.location.replace(data.redirect);
             }

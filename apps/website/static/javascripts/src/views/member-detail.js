@@ -19,6 +19,8 @@ define([
 
     handleUpdateRequest: function( ev ) {
       ev.preventDefault();
+      this.showLoading();
+      var _this = this;
       var data = {member_id: $('#member-id').val()};
       $.ajax({
         url: '/api/members/request-update/',
@@ -26,6 +28,7 @@ define([
         data: data,
         success: function(data) {
           if (data.redirect) {
+            _this.hideLoading();
             window.location.replace(data.redirect);
           }
         }
@@ -34,6 +37,8 @@ define([
 
     handleDelete: function( ev ) {
       ev.preventDefault();
+      this.showLoading();
+      var _this = this;
       var data = {member_id: $('#member-id').val()};
       $.ajax({
         url: '/api/members/delete/',
@@ -45,7 +50,19 @@ define([
           }
         }
       });
-    }
+    },
+
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
+    },
 
   });
 
