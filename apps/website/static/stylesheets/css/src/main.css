@@ -82,12 +82,7 @@
   display: none;
 }
 
-/* line 21, ../../sass/stock.sass */
-.table-clickable td {
-  cursor: pointer;
-}
-
-/* line 24, ../../sass/stock.sass */
+/* line 20, ../../sass/stock.sass */
 .django-messages {
   padding: 10px 0px 1px 0px;
   margin-bottom: 20px !important;

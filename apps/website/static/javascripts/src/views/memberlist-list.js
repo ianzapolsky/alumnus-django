@@ -26,7 +26,6 @@ define([
     },
 
     events: { 
-      'click tr': 'followLink',
       'click .memberlist-link': 'renderMemberlist'
     },
 
@@ -38,13 +37,6 @@ define([
       });
       var content = _.template( $('#member-list-template').html(), { Members: memberlist });
       $('#memberlist-members').html(content);
-    },
-
-    followLink: function( ev ) {
-      ev.preventDefault();
-      if ($(ev.currentTarget).attr('href')) {
-        window.location.href = $(ev.currentTarget).attr('href');
-      } 
     },
 
   });

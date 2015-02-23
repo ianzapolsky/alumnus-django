@@ -3,10 +3,9 @@
 
 {% block require_js %}
 <script>
-  require(['src/views/member-list',
-           'src/views/memberlist-detail'
-  ], function(MemberListView, MemberListDetailView) {
-    new MemberListView();
+  require([
+    'src/views/memberlist-detail'
+  ], function(MemberListDetailView) {
     new MemberListDetailView();
   });
 </script>
@@ -23,6 +22,7 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
+      <th><!-- Detail --></th>
     </tr>
     {% for member in memberlist.members.all %}
     <tr href="{{ member.get_absolute_url }}">
@@ -30,14 +30,15 @@
       <td>{{ member.firstname }}</td>
       <td>{{ member.lastname }}</td>
       <td>{{ member.email }}</td>
+      <td><a class="btn btn-sm btn-warning" href="{{ member.get_absolute_url }}">Detail</a></td>
     </tr>
     {% endfor %}
   </table>
   <br>
-  <a class="btn btn-primary" href="{{ memberlist.get_send_mail_url }}">Send message to memberlist</a>
-  <a class="btn btn-primary" href="{{ memberlist.get_update_url }}">Update memberlist</a>
+  <a class="btn btn-primary" href="{{ memberlist.get_send_mail_url }}">Send email to MemberList</a>
+  <a class="btn btn-warning" href="{{ memberlist.get_update_url }}">Update MemberList</a>
 
   <input id="memberlist-id" type="hidden" value="{{ memberlist.pk }}">
-  <button id="memberlist-delete" class="btn btn-danger">Delete memberlist</button>
+  <button id="memberlist-delete" class="btn btn-danger">Delete MemberList</button>
 </div>
 {% endblock %}
