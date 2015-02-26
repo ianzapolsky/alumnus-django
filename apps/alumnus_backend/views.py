@@ -141,7 +141,9 @@ def member_update_request(request):
             message = 'Email successfully sent.'
         member.increment_times_requested()
         member.set_last_requested()
-        messages.add_message(request, messages.INFO, message)
+        # Stop adding messages from the API. This is counterintuitive, and 
+        # confuses presentation logic with backend logic
+        # messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': member.get_absolute_url()}
         return HttpResponse(json.dumps(response), content_type='application/json')
 

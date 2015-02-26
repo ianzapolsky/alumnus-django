@@ -7,11 +7,13 @@
            'src/views/member-list-filter',
            'src/views/table-buttons',
            'src/views/email-form',
-          ], function(MemberListView, MemberListFilterView, TableButtonsView, EmailFormView) {
+           'src/views/request-info-form',
+          ], function(MemberListView, MemberListFilterView, TableButtonsView, EmailFormView, RequestInfoFormView) {
     new MemberListView();
     new MemberListFilterView();
     new TableButtonsView();
     new EmailFormView();
+    new RequestInfoFormView();
   });
 </script>
 {% endblock %}
@@ -37,7 +39,7 @@
   <div class="centered col-sm-6">
     {% include "generic/member_table_detail.html" %}
 
-    <!--<button id="member-update-request" class="btn btn-success">Request Member information</button>-->
+    <button id="member-request-info" class="btn btn-success">Request Member information</button>
     <button id="member-send-mail" class="btn btn-primary">Send Mail</button>
   </div>
   <br>

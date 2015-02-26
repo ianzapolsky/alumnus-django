@@ -4,7 +4,7 @@ define([
   'backbone',
 ], function($, _, Backbone) {
 
-  var EmailFormView = Backbone.View.extend({
+  var RequestInfoFormView = Backbone.View.extend({
 
     el: '.member-list-container',
 
@@ -13,11 +13,11 @@ define([
     messagesSent: 0,
 
     initialize: function() {
-      console.log('EmailFormView initialize');
+      console.log('RequestInfoFormView initialize');
     },
 
     events: { 
-      'click #send-mail': 'handleSendAsync',
+      'click #member-request-info': 'handleSendAsync',
     },
 
     formIsValid: function () {
@@ -27,7 +27,7 @@ define([
         this.signalError('Please check at least one Member.');
         valid = false
       } 
-      if (valid && this.checkRequired()) {
+      if (valid) {
         this.signalSuccess();
         return true;
       } else {
@@ -44,23 +44,19 @@ define([
         _.forEach($('input[type=checkbox]:checked'), function(el) {
           var loader = '<div id="loader"><img src="/static/images/ajax-loader.gif"></div>'; 
           $(loader).css('margin-top', '3px').appendTo($(el).parent().parent());
-          _this.sendMailToMember(el);
+          _this.sendRequestToMember(el);
         });
       }
     },
 
-    sendMailToMember: function (el) {
+    sendRequestToMember: function (el) {
       var _this = this;
-      var address = $(el).attr('data-member-email');
-      var recipients = [address];
+      var id = $(el).val();
       var data = {
-        organization_id: $('#organization-id').val(),
-        recipients: JSON.stringify(recipients),
-        message: $('#message').val(),
-        subject: $('#subject').val()
+        member_id: id
       };
       $.ajax({
-        url: '/api/organizations/send-mail/',
+        url: '/api/members/request-update/',
         type: 'POST',
         data: data,
         success: function (data) {
@@ -69,8 +65,8 @@ define([
           $(el).prop('checked', false);
 
           _this.messagesSent += 1;
-          if (_this.messagesSent === 1) var msg = '1 email successfully sent.';
-          else var msg = _this.messagesSent + ' emails sent successfully.';
+          if (_this.messagesSent === 1) var msg = '1 request successfully sent.';
+          else var msg = _this.messagesSent + ' requests sent successfully.';
           var content = _.template($('#messages-template').html(), {Messages: [msg]});
           $('#messages-container').html(content);
         }
@@ -112,7 +108,7 @@ define([
 
   });
   
-  return EmailFormView;
+  return RequestInfoFormView;
 
 });
   
