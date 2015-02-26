@@ -1,0 +1,42 @@
+<div class="left-align table-buttons">
+  <button class="btn btn-sm btn-primary" id="check-all">Check all</button>
+  <button class="btn btn-sm btn-primary" id="uncheck-all">Uncheck all</button>
+</div>
+
+<div id="member-list-members">
+  <table class="left-align table table-hover">
+    <tr>
+      <th></th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+    {% for member in members %}
+    <tr href="{{ member.get_absolute_url }}">
+      <td><input data-member-email="{{ member.email }}" type="checkbox" value="{{ member }}"></td>
+      <td>{{ member.firstname }}</td>
+      <td>{{ member.lastname }}</td>
+      <td>{{ member.email }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<script type="text/template" id="member-list-template">
+  <table class="left-align table table-hover">
+    <tr>
+      <th>Include</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+    <% _.each(Members, function(member) { %>
+    <tr href="/members/<%= member.get('pk') %>">
+      <td><input data-member-email="<%= member.get('fields').email %>" type="checkbox" value="<%= member.get('fields').firstname + ' ' + member.get('fields').lastname %>"></td>
+      <td><%= member.get('fields').firstname %></td>
+      <td><%= member.get('fields').lastname %></td>
+      <td><%= member.get('fields').email %></td>
+    </tr>
+    <% }); %>
+  </table>
+</script>

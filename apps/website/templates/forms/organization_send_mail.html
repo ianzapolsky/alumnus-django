@@ -4,11 +4,11 @@
 {% block require_js %}
 <script>
   require([
-    'src/views/organization-send-mail',
+    'src/views/email-form',
     'src/views/member-list-filter',
     'src/views/table-buttons',
-  ], function(OrganizationSendMailView, MemberListFilterView, TableButtonsView) {
-    new OrganizationSendMailView();
+  ], function(EmailFormView, MemberListFilterView, TableButtonsView) {
+    new EmailFormView();
     new MemberListFilterView();
     new TableButtonsView();
   });
@@ -18,6 +18,11 @@
 {% block content %}
 
 <div class="member-list-container">
+
+  {% include "generic/templates.html" %}
+
+  <div id="messages-container">
+  </div>
 
   <h2>Send email to Members in <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h2>
   <br>
@@ -30,30 +35,7 @@
   
   <div class="col-sm-6">
     <form>
-      <div class="left-align table-buttons">
-        <button class="btn btn-sm btn-primary" id="check-all">Check all</button>
-        <button class="btn btn-sm btn-primary" id="uncheck-all">Uncheck all</button>
-      </div>
-      <div class="form-group">
-      <div id="member-list-members">
-        <table class="left-align table table-hover">
-          <tr>
-            <th>Include</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-          </tr>
-          {% for member in members %}
-          <tr href="{{ member.get_absolute_url }}">
-            <td><input data-member-email="{{ member.email }}" type="checkbox" value="{{ member }}"></td>
-            <td>{{ member.firstname }}</td>
-            <td>{{ member.lastname }}</td>
-            <td>{{ member.email }}</td>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-      </div>
+      {% include "generic/member_table_simple.html" %}
       <br>
       <br>
   
@@ -75,25 +57,6 @@
   </div>
 
   <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
-
-  <script type="text/template" id="member-list-template">
-    <table class="left-align table table-hover">
-      <tr>
-        <th>Include</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-      </tr>
-      <% _.each(Members, function(member) { %>
-      <tr href="/members/<%= member.get('pk') %>">
-        <td><input data-member-email="<%= member.get('fields').email %>" type="checkbox" value="<%= member.get('fields').firstname + ' ' + member.get('fields').lastname %>"></td>
-        <td><%= member.get('fields').firstname %></td>
-        <td><%= member.get('fields').lastname %></td>
-        <td><%= member.get('fields').email %></td>
-      </tr>
-      <% }); %>
-    </table>
-  </script>
 
 </div>
 

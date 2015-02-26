@@ -170,7 +170,9 @@ def organization_send_mail(request):
         else:
             message = 'Email successfully sent.'
             redirect_url = organization.get_absolute_url()
-        messages.add_message(request, messages.INFO, message)
+        # Stop adding messages from the API. This is counterintuitive, and 
+        # confuses presentation logic with backend logic
+        # messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 

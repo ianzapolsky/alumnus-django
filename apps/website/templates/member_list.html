@@ -6,33 +6,27 @@
   require(['src/views/member-list',
            'src/views/member-list-filter',
            'src/views/table-buttons',
-          ], function(MemberListView, MemberListFilterView, TableButtonsView) {
+           'src/views/email-form',
+          ], function(MemberListView, MemberListFilterView, TableButtonsView, EmailFormView) {
     new MemberListView();
     new MemberListFilterView();
     new TableButtonsView();
+    new EmailFormView();
   });
 </script>
 {% endblock %}
 
 {% block content %}
 
-<div id="member-list-container">
+<div class="member-list-container">
+  
+  {% include "generic/templates.html" %}
+  
+  <div id="messages-container">
+  </div>
 
   <h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> Members</h2>
   <br>
-
-  <div id="member-list-errors">
-  </div>
-
-  <script type="text/template" id="errors-template">
-    <div class="centered left-align col-md-6 form-errors">
-      <ul>
-        <% _.each(Errors, function(error) { %>
-        <li><%= error %></li>
-        <% }); %>
-      </ul>
-    </div>
-  </script>
 
   <div class="left-align col-sm-3 filters">
     <div class="left-align col-sm-10">
@@ -40,44 +34,14 @@
     </div>
   </div>
   
-  <div class="left-align table-buttons">
-    <button class="btn btn-sm btn-primary" id="check-all">Check all</button>
-    <button class="btn btn-sm btn-primary" id="uncheck-all">Uncheck all</button>
-  </div>
-
-  <div id="member-list-members" class="centered col-sm-6">
-    <table class="left-align table table-hover">
-      <tr>
-        <th></th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Request Pending</th>
-        <th><!-- Detail --></th>
-      </tr>
-      {% for member in members %}
-      <tr href="{{ member.get_absolute_url }}">
-        <td><input data-member-email="{{ member.email }}" type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
-        <td>{{ member.firstname }}</td>
-        <td>{{ member.lastname }}</td>
-        <td>{{ member.email }}</td>
-        {% if member.has_request_pending %}
-          <td>Yes</td>
-        {% else %}
-          <td>No</td>
-        {% endif %}
-        <td><a class="btn btn-sm btn-warning" href="{{ member.get_absolute_url }}">Detail</a></td>
-      </tr>
-      {% endfor %}
-    </table>
-    <br>
-  </div>
-
   <div class="centered col-sm-6">
+    {% include "generic/member_table_detail.html" %}
+
     <!--<button id="member-update-request" class="btn btn-success">Request Member information</button>-->
     <button id="member-send-mail" class="btn btn-primary">Send Mail</button>
   </div>
   <br>
+
   <div class="centered col-sm-6" id="send-mail-container">
   </div>
   <br>
@@ -87,43 +51,6 @@
   </div>
 
   <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
-
-  <script type="text/template" id="member-list-template">
-    <table class="left-align table table-hover">
-      <tr>
-        <th></th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th></th>
-      </tr>
-      <% _.each(Members, function(member, index) { %>
-      <tr href="/members/<%= member.get('pk') %>">
-        <td><input data-member-email="<%= member.get('fields').email %> type="checkbox" id="id_members_<%= index %>" name="members" value="<%= member.get('pk') %>"></td>
-        <td><%= member.get('fields').firstname %></td>
-        <td><%= member.get('fields').lastname %></td>
-        <td><%= member.get('fields').email %></td>
-        <td><a class="btn btn-sm btn-warning" href="/members/<%= member.get('pk') %>">Detail</a></td>
-      </tr>
-      <% }); %>
-    </table>
-  </script>
-
-  <script type="text/template" id="send-mail-template">
-    <div class="form-group"> 
-      <label>Subject:</label>
-      <textarea id="subject" required="" rows="1" class="form-control"></textarea>
-      <br>
-    </div>
-    <div class="form-group">
-      <label>Message:</label>
-      <textarea id="message" required="" rows="8" class="form-control"></textarea>
-      <br>
-    </div>
-      <button id="send-mail" class="btn btn-success">Send</button>
-      <br>
-      <br>
-  </script>
 
 </div>
 {% endblock %}

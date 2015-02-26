@@ -2,11 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'src/views/form-validation',
 ], function($, _, Backbone) {
   
   var OrganizationSendMailView = Backbone.View.extend({
     
     el: '.member-list-container',
+
+    messagesSent: 0,
   
     initialize: function() {
       console.log('OrganizationSendMailView initialize');
@@ -15,11 +18,10 @@ define([
     events: { 
       'change #subject': 'validateRequired',
       'change #message': 'validateRequired',
-
       'keydown #subject': 'removeRequiredError',
       'keydown #message': 'removeRequiredError',
 
-      'click #send-mail': 'handleSend',
+      'click #send-mail': 'handleSendAsync',
     },
 
     formIsValid: function () {
@@ -31,50 +33,52 @@ define([
       } else {
         this.signalSuccess($('#member-list-members'));
       }
-      
       if (this.checkRequired() && valid === true)
         return true;
       return false;
     },
 
-    handleSend: function (ev) {
+    handleSendAsync: function (ev) {
       ev.preventDefault();
+      var _this = this;
       if (this.formIsValid()) {
-        this.showLoading();
-        recipients = []
         _.forEach($('input[type=checkbox]:checked'), function(el) {
-          recipients.push($(el).attr('data-member-email'));
-        });
-        var data = {
-          organization_id: $('#organization-id').val(),
-          recipients: JSON.stringify(recipients),
-          message: $('#message').val(),
-          subject: $('#subject').val()
-        };
-        $.ajax({
-          url: '/api/organizations/send-mail/',
-          type: 'POST',
-          data: data,
-          success: function(data) {
-            if (data.redirect) {
-              window.location.replace(data.redirect);
-            }
-          }
+          var loader = '<div id="loader"><img src="/static/images/ajax-loader.gif"></div>'; 
+          $(loader).appendTo($(el).parent().parent());
+          _this.sendMailToMember(el);
         });
       }
     },
 
-    showLoading: function() {
-      // add the overlay with loading image to the page
-       var over = '<div class="overlay">' +
-            '<img class="loading" src="/static/images/ajax-loader.gif">' +
-            '</div>'; 
-      $(over).appendTo('body');
-      window.scrollTo(0,0);
-    },
+    sendMailToMember: function (el) {
+      var _this = this;
+      var address = $(el).attr('data-member-email');
+      var recipients = [address];
+      var data = {
+        organization_id: $('#organization-id').val(),
+        recipients: JSON.stringify(recipients),
+        message: $('#message').val(),
+        subject: $('#subject').val()
+      };
+      $.ajax({
+        url: '/api/organizations/send-mail/',
+        type: 'POST',
+        data: data,
+        success: function (data) {
+          $(el).parent().parent().find('#loader').remove();
+          $(el).parent().parent().css('background-color', 'rgba(0,255,0,0.25)');
+          $(el).prop('checked', false);
+          _this.messagesSent += 1;
 
-    hideLoading: function() {
-      $('.overlay').remove();
+          if (_this.messagesSent === 1)
+            var msg = '1 email successfully sent.';
+          else
+            var msg = _this.messagesSent + ' emails sent successfully.';
+          var messages = [msg];
+          var content = _.template($('#messages-template').html(), {Messages: messages});
+          $('#messages-container').html(content);
+        }
+      });
     },
 
     checkRequired: function () {
