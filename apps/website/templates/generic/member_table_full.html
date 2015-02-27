@@ -1,0 +1,28 @@
+<table class="left-align table table-hover">
+  <tr>
+    <th>Email</th>
+    <th>Gender</th>
+    <th>Graduation Year</th>
+    <th>School</th>
+    <th>Industry</th>
+    <th>Company</th>
+    <th>State</th>
+    <th>Update Requests</th>
+    {% if member.last_requested %}
+      <th>Last Requested</th>
+    {% endif %}
+  </tr>
+  <tr>
+    <td>{{ member.email }}</td>
+    <td>{{ member.gender }} </td>
+    <td>{{ member.graduation_year }}</td>
+    <td>{{ member.school }}</td>
+    <td>{{ member.industry }}</td>
+    <td>{{ member.company }}</td>
+    <td>{{ member.current_state }}</td>
+    <td>{{ member.times_requested }}</td>
+    {% if member.last_requested %}
+      <td>{{ member.last_requested }}</td>
+    {% endif %}
+  </tr>
+</table>

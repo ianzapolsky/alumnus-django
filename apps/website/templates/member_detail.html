@@ -10,45 +10,24 @@
 {% endblock %}
 
 {% block content %}
-<div id="member-detail-container" class="centered col-md-12">
+<div class="member-detail-container" class="centered col-md-12">
+  
+  {% include "generic/templates.html" %}
+
+  <div id="messages-container">
+  </div>
+
   <h1 id="member-title">{{ member }}</h1>
   <br>
 
-  <table class="left-align table table-hover">
-    <tr>
-      <th>Email</th>
-      <th>Gender</th>
-      <th>Graduation Year</th>
-      <th>School</th>
-      <th>Industry</th>
-      <th>Company</th>
-      <th>State</th>
-      <th>Update Requests</th>
-      {% if member.last_requested %}
-        <th>Last Requested</th>
-      {% endif %}
-    </tr>
-    <tr>
-      <td>{{ member.email }}</td>
-      <td>{{ member.gender }} </td>
-      <td>{{ member.graduation_year }}</td>
-      <td>{{ member.school }}</td>
-      <td>{{ member.industry }}</td>
-      <td>{{ member.company }}</td>
-      <td>{{ member.current_state }}</td>
-      <td>{{ member.times_requested }}</td>
-      {% if member.last_requested %}
-        <td>{{ member.last_requested }}</td>
-      {% endif %}
-    </tr>
-  </table>
+  {% include "generic/member_table_full.html" %}
   
   <a class="btn btn-primary" href="{{ member.get_send_mail_url }}">Send email to Member</a>
   <a class="btn btn-warning" href="{{ member.get_update_url }}">Edit Member Information</a>
 
-  <button id="member-update-request" class="btn btn-success">Request Member information</button>
+  <button id="member-request-info" class="btn btn-success">Request Member information</button>
+  <button id="member-delete" class="btn btn-danger">Delete member</button>
   
   <input id="member-id" type="hidden" value="{{ member.pk }}">
-  <button id="member-delete" class="btn btn-danger">Delete member</button>
 </div>
 {% endblock %}

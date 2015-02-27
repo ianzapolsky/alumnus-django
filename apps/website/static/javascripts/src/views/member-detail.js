@@ -6,14 +6,14 @@ define([
   
   var MemberDetailView = Backbone.View.extend({
     
-    el: '#member-detail-container',
+    el: '.member-detail-container',
   
     initialize: function() {
       console.log('MemberDetailView initialize');
     },
 
     events: { 
-      'click #member-update-request': 'handleUpdateRequest',
+      'click #member-request-info': 'handleUpdateRequest',
       'click #member-delete': 'handleDelete'
     },
 
@@ -27,29 +27,32 @@ define([
         type: 'POST',
         data: data,
         success: function(data) {
-          if (data.redirect) {
-            _this.hideLoading();
-            window.location.replace(data.redirect);
-          }
+          _this.hideLoading();
+          var msg = 'Request sent successfully.';
+          var content = _.template($('#messages-template').html(), {Messages: [msg]});
+          $('#messages-container').html(content);
         }
       });
     },
 
     handleDelete: function( ev ) {
       ev.preventDefault();
-      this.showLoading();
-      var _this = this;
-      var data = {member_id: $('#member-id').val()};
-      $.ajax({
-        url: '/api/members/delete/',
-        type: 'POST',
-        data: data,
-        success: function(data) {
-          if (data.redirect) {
-            window.location.replace(data.redirect);
+      var check = confirm("Are you sure you want to delete this Member?");
+      if (check == true) {
+        this.showLoading();
+        var _this = this;
+        var data = {member_id: $('#member-id').val()};
+        $.ajax({
+          url: '/api/members/delete/',
+          type: 'POST',
+          data: data,
+          success: function(data) {
+            if (data.redirect) {
+              window.location.replace(data.redirect);
+            }
           }
-        }
-      });
+        });
+      }
     },
 
     showLoading: function() {

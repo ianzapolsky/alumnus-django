@@ -18,20 +18,23 @@ define([
 
     handleDelete: function( ev ) {
       ev.preventDefault();
-      this.showLoading()
-      var _this = this;
-      var data = {memberlist_id: $('#memberlist-id').val()};
-      $.ajax({
-        url: '/api/memberlists/delete/',
-        type: 'POST',
-        data: data,
-        success: function(data) {
-          if (data.redirect) {
-            _this.hideLoading();
-            window.location.replace(data.redirect);
+      var check = confirm("Are you sure you want to delete this Member?");
+      if (check == true) {
+        this.showLoading()
+        var _this = this;
+        var data = {memberlist_id: $('#memberlist-id').val()};
+        $.ajax({
+          url: '/api/memberlists/delete/',
+          type: 'POST',
+          data: data,
+          success: function(data) {
+            if (data.redirect) {
+              _this.hideLoading();
+              window.location.replace(data.redirect);
+            }
           }
-        }
-      });
+        });
+      }
     },
 
     showLoading: function() {
