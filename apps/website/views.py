@@ -270,7 +270,7 @@ def member_update_public_thanks(request, member_slug, token):
     else:
         members = organization.get_members()
     # if there are no other members else within 3 years, default to all members
-    if len(members) == 0:
+    if members.count() == 0:
         members = organization.get_members()
     context['members'] = members
     return render(request, 'thanks.html', context)

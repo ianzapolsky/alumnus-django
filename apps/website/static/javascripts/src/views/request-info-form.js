@@ -23,7 +23,7 @@ define([
     formIsValid: function () {
       var valid = true
       // Check for at least one checked Member
-      if ($('input:checked').length === 0) {
+      if ($('input[type=checkbox]:checked').length === 0) {
         this.signalError('Please check at least one Member.');
         valid = false
       } 

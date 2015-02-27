@@ -11,8 +11,10 @@ define([
 
     members: null,
 
-    filters: {},
+    ascending: true,
 
+    filters: {},
+    
     initialize: function() {
       console.log('MemberListFilterView initialize');
       var organization_id = $('#organization-id').val();
@@ -22,10 +24,20 @@ define([
 
     events: {
       'change select': 'handleFilter',
+      'click input[type=radio]': 'changeOrder',
+    },
+
+    changeOrder: function ( ev ) {
+      if ($(ev.currentTarget).val() === 'asc')
+        this.ascending = true;
+      else
+        this.ascending = false;
+      this.render();
     },
 
     handleFilter: function( ev ) {
       ev.preventDefault();
+      this.filters['Sort'] = $('#sort-filter').val();
       this.filters['Gender'] = $('#gender-filter').val();
       this.filters['Graduation Year'] = $('#graduation-year-filter').val();
       this.filters['School'] = $('#school-filter').val();
@@ -54,6 +66,16 @@ define([
         }
         return true;
       });
+
+      if (this.filters['Sort']) {
+        var results = _.sortBy(results, function(member) {
+          var func = "member.get('fields')." + _this.filters['Sort'];
+          return eval(func);
+        });
+      }
+
+      if (this.filters['Sort'] && !this.ascending)
+        results.reverse();
     
       var content = _.template( $('#member-list-template').html(), { Members: results });
       $('#member-list-members').html(content);
