@@ -269,8 +269,9 @@ def member_update_public_thanks(request, member_slug, token):
         members = organization.get_members().filter(graduation_year__range=(int(member.graduation_year) - 3, int(member.graduation_year) + 3))
     else:
         members = organization.get_members()
+
     # if there are no other members else within 3 years, default to all members
-    if members.count() == 0:
+    if len(members.all()) == 1:
         members = organization.get_members()
     context['members'] = members
     return render(request, 'thanks.html', context)
