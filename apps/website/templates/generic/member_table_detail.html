@@ -10,6 +10,7 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
+      <th>Information Entered</th>
       <th>Request Pending</th>
       <th><!-- Detail --></th>
     </tr>
@@ -19,6 +20,12 @@
       <td>{{ member.firstname }}</td>
       <td>{{ member.lastname }}</td>
       <td>{{ member.email }}</td>
+      {% if member.times_completed > 0 %}
+        <td>Yes</td>
+      {% else %}
+        <td>No</td>
+      {% endif %}
+
       {% if member.has_request_pending %}
         <td>Yes</td>
       {% else %}
