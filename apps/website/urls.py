@@ -13,7 +13,6 @@ urlpatterns = patterns('',
     # Marketing
     url(r'^contact/$', TemplateView.as_view(template_name='marketing/contact.html')),
     url(r'^about/$', TemplateView.as_view(template_name='marketing/about.html')),
-    url(r'^thanks/$', TemplateView.as_view(template_name='marketing/thanks.html')),
 
     # User Management
     url(r'^login/$', 'django.contrib.auth.views.login'),
@@ -41,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^members/(?P<member_slug>[-\w\d]+)/update/$', 'website.views.member_update'),
     # Public member update view, visible to only those with a valid AccessToken
     url(r'^members/(?P<member_slug>[-\w\d]+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
+    url(r'^thanks/(?P<member_slug>[-\w\d]+)/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public_thanks'),
 
     # MemberLists
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/memberlists/$', 'website.views.memberlists'),

@@ -241,7 +241,7 @@ def member_update_public(request, member_slug, token):
         if form.is_valid():
             form.save(member.organization)
             member.increment_times_completed()
-            return redirect('/thanks')
+            return redirect('/thanks/' + member.slug + '/' + access_token.token)
         else:
             context['form'] = form
             return render(request, 'forms/member_create.html', context)
@@ -252,6 +252,25 @@ def member_update_public(request, member_slug, token):
         context['form_work'] = fields[4:]
         return render(request, 'forms/member_create.html', context)
 
+def member_update_public_thanks(request, member_slug, token):
+    # Check that the access_token is not expired
+    access_token = get_object_or_404(AccessToken, used=False, token=token)
+    if access_token.created > timezone.now() - datetime.timedelta(hours=settings.TOKEN_LIFETIME):
+        pass
+    else:
+        return HttpResponse('Sorry, that is an invalid access token.')
+
+    member = get_object_or_404(Member, slug=member_slug)
+    context = {'member': member}
+    organization = member.organization
+    context['organization'] = organization
+    # build the right members list (+/- 3 years)
+    if member.graduation_year:
+        members = organization.get_members().filter(graduation_year__range=(int(member.graduation_year) - 3, int(member.graduation_year) + 3))
+    else:
+        members = organization.get_members()
+    context['members'] = members
+    return render(request, 'thanks.html', context)
 
 @login_required
 def member_send_mail(request, member_slug):

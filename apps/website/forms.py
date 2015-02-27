@@ -113,14 +113,15 @@ class MemberForm(forms.ModelForm):
         # set organization
         instance.organization = organization
 
-        # set slug
-        max_length = Member._meta.get_field('slug').max_length
-        instance.slug = orig = slugify(instance.__unicode__())[:max_length]
-        for x in itertools.count(1):
-            if not Member.objects.filter(slug=instance.slug).exists():
-                break
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+        # set slug if not already set
+        if not instance.slug:
+            max_length = Member._meta.get_field('slug').max_length
+            instance.slug = orig = slugify(instance.__unicode__())[:max_length]
+            for x in itertools.count(1):
+                if not Member.objects.filter(slug=instance.slug).exists():
+                    break
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         # save
         if commit:

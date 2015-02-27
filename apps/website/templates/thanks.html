@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="centered left-align col-md-8">
+  <h2>Thank you {{ member }}!</h2>
+  <p>Entering your information into Alumnus has gone a long way toward helping the manager of <strong>{{ organization }}</strong> keep track of all your organization's members.</p>
+  
+  <h4>Please, continue to help by looking over 
+    {% if not member.graduation_year %}
+      all the other people in your organization.
+    {% else %}
+      the other people in your organization who are within 3 years of your graduation year.
+    {% endif %}
+      If you see someone missing, <a href="mailto:{{ organization.owner.email }}">let your organization manager know!</a></h4>
+
+  <br>
+
+  <table class="left-align table table-hover">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Graduation Year</th>
+    </tr>
+    {% for memb in members %}
+      {% if memb == member %}
+        <!-- display nothing -->
+      {% else %}
+      <tr>
+        <td>{{ memb.firstname }}</td>
+        <td>{{ memb.lastname }}</td>
+        <td>{{ memb.email }}</td>
+        <td>{{ memb.graduation_year }}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+
+</div>
+
+{% endblock %}
