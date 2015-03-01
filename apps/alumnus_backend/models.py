@@ -36,6 +36,9 @@ class Organization(models.Model):
     def get_import_member_url(self):
         return self.get_members_url() + '/import'
 
+    def get_export_member_url(self):
+        return self.get_members_url() + '/export'
+
     def get_memberlists_url(self):
         return self.get_absolute_url() + '/memberlists'
   

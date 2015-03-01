@@ -86,14 +86,17 @@ class OrganizationForm(forms.ModelForm):
         instance = super(OrganizationForm, self).save(commit=False)
         # set owner
         instance.owner = owner
-        # set slug
-        max_length = Organization._meta.get_field('slug').max_length
-        instance.slug = orig = slugify(instance.name)[:max_length]
-        for x in itertools.count(1):
-            if not Organization.objects.filter(slug=instance.slug).exists():
-                break
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+        # set slug if not already set
+        if not instance.slug:
+            max_length = Organization._meta.get_field('slug').max_length
+            instance.slug = orig = slugify(instance.name)[:max_length]
+            for x in itertools.count(1):
+                if not Organization.objects.filter(slug=instance.slug).exists():
+                    break
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
         if commit:
             instance.save()
         return instance
@@ -151,14 +154,15 @@ class MemberListForm(forms.ModelForm):
         # set organization
         instance.organization = organization
 
-        # set slug
-        max_length = MemberList._meta.get_field('slug').max_length
-        instance.slug = orig = slugify(instance.name)[:max_length]
-        for x in itertools.count(1):
-            if not MemberList.objects.filter(slug=instance.slug).exists():
-                break
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+        # set slug if not already set
+        if not instance.slug:
+            max_length = MemberList._meta.get_field('slug').max_length
+            instance.slug = orig = slugify(instance.name)[:max_length]
+            for x in itertools.count(1):
+                if not MemberList.objects.filter(slug=instance.slug).exists():
+                    break
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         if commit: 
             instance.save()

@@ -12,6 +12,7 @@ from django.utils.text import slugify
 
 from alumnus_backend.models import Organization, Member, MemberList, AccessToken, AuthenticationToken
 from .forms import CustomUserCreationForm, UserUpdateEmailForm, UserUpdatePasswordForm, OrganizationForm, MemberForm, MemberListForm, MemberImportForm
+from .exporter import ExcelExporter
 
 
 """ User views """
@@ -304,7 +305,19 @@ def member_import(request, organization_slug):
     else:
         context['form'] = MemberImportForm()
     return render(request, 'forms/member_import.html', context)
-        
+
+@login_required
+def member_export(request, organization_slug):
+    context = {'user': request.user}
+    organization = get_object_or_404(Organization, slug=organization_slug)
+    if organization.owner != request.user:
+        return HttpResponse('Sorry, you do not own that organization.')
+    exporter = ExcelExporter(organization)
+    export_file = exporter.export()
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="' + str(organization) + ' Members Export.xls"'
+    export_file.save(response)
+    return response
 
 """ MemberList views """
 @login_required
