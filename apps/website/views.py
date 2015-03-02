@@ -384,13 +384,3 @@ def memberlist_update(request, memberlist_slug):
         context['form'] = MemberListForm(organization, instance=memberlist)
     return render(request, 'forms/memberlist_create.html', context)
 
-
-@login_required
-def memberlist_send_mail(request, memberlist_slug):
-    memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
-    organization = memberlist.organization
-    if organization.owner != request.user:
-        return HttpResponse('Sorry, you do not own this memberlist')
-    context = {'memberlist': memberlist}
-    context['organization'] = organization
-    return render(request, 'forms/memberlist_send_mail.html', context)

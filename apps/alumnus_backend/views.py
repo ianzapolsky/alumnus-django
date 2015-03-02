@@ -132,7 +132,7 @@ def member_update_request(request):
         text_content = message + '\n\n' + get_template('emails/member_update_request.txt').render(context)
         to = member.email
         reply_to = request.user.email
-        from_email = settings.DEFAULT_FROM_EMAIL
+        from_email = str(member.organization) + ' ' + settings.DEFAULT_FROM_EMAIL
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
@@ -152,36 +152,6 @@ def member_update_request(request):
 
 
 @login_required
-def organization_send_mail(request):
-    if request.method == 'POST':
-        organization_id = request.POST.get('organization_id')
-        organization = get_object_or_404(Organization, pk=organization_id)
-        if organization.owner != request.user:
-            return HttpResponse('Sorry, you do not own that organization.')
-
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message', '')
-        text_content = message
-        # Important to note here that we get an array from the client, so do not
-        # need to cast "to" as an array later in our EmailMessage instantiation.
-        to = json.loads(request.POST.get('recipients'))
-        reply_to = request.user.email
-        from_email = settings.DEFAULT_FROM_EMAIL
-        msg = EmailMessage(subject, message, from_email, to, headers={'Reply-To': reply_to})
-        successful = msg.send()
-        if successful == 0:
-            message = 'There was an error sending the email. Please try again.'
-            redirect_url = organization.get_send_mail_url()
-        else:
-            message = 'Email successfully sent.'
-            redirect_url = organization.get_absolute_url()
-        # Stop adding messages from the API. This is counterintuitive, and 
-        # confuses presentation logic with backend logic
-        # messages.add_message(request, messages.INFO, message)
-        response = {'successful': successful, 'redirect': redirect_url}
-        return HttpResponse(json.dumps(response), content_type='application/json')
-
-@login_required
 def member_send_mail(request):
     if request.method == 'POST':
         member_id = request.POST.get('member_id')
@@ -194,7 +164,8 @@ def member_send_mail(request):
         text_content = message
         to = member.email
         reply_to = request.user.email
-        from_email = settings.DEFAULT_FROM_EMAIL
+        from_email = str(member.organization) + ' ' + settings.DEFAULT_FROM_EMAIL
+        #from_email = settings.DEFAULT_FROM_EMAIL
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
         if successful == 0:

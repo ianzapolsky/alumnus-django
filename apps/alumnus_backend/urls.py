@@ -23,8 +23,6 @@ urlpatterns = patterns('',
     url(r'^memberlists/delete/$', 'alumnus_backend.views.memberlist_delete'),
     
     # Send mail
-    url(r'^organizations/send-mail/$', 'alumnus_backend.views.organization_send_mail'),
     url(r'^members/send-mail/$', 'alumnus_backend.views.member_send_mail'),
-    url(r'^memberlists/send-mail/$', 'alumnus_backend.views.memberlist_send_mail'),
 
 )
