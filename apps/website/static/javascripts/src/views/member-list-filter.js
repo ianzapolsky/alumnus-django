@@ -39,7 +39,8 @@ define([
       ev.preventDefault();
       this.filters['Sort'] = $('#sort-filter').val();
       this.filters['Gender'] = $('#gender-filter').val();
-      this.filters['Graduation Year'] = $('#graduation-year-filter').val();
+      this.filters['Graduation Year From'] = $('#graduation-year-from-filter').val();
+      this.filters['Graduation Year To'] = $('#graduation-year-to-filter').val();
       this.filters['School'] = $('#school-filter').val();
       this.filters['Current State'] = $('#state-filter').val();
       this.filters['Industry'] = $('#industry-filter').val();
@@ -52,8 +53,15 @@ define([
         if (_this.filters['Gender'] && member.get('fields').gender != _this.filters['Gender']) {
           return false;
         }
-        if (_this.filters['Graduation Year'] && member.get('fields').graduation_year != _this.filters['Graduation Year']) {
-          return false;
+        // both year inputs are filled out
+        if (_this.filters['Graduation Year From'] && _this.filters['Graduation Year To']) {
+          var grad = parseInt(member.get('fields').graduation_year);
+          var from = parseInt(_this.filters['Graduation Year From']);
+          var to = parseInt(_this.filters['Graduation Year To']);
+          if (isNaN(grad)) {
+            return false;
+          else if (grad < from || grad > to) {
+            return false;
         }
         if (_this.filters['School'] && member.get('fields').school != _this.filters['School']) {
           return false;

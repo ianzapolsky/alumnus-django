@@ -30,6 +30,12 @@
 }
 
 /* line 24, ../../sass/forms.sass */
+.form-inline {
+  width: auto;
+  display: inline-block;
+}
+
+/* line 28, ../../sass/forms.sass */
 .overlay {
   position: absolute;
   left: 0;
@@ -41,7 +47,7 @@
   filter: alpha(opacity=80);
 }
 
-/* line 34, ../../sass/forms.sass */
+/* line 38, ../../sass/forms.sass */
 .loading {
   width: 50px;
   height: 57px;
@@ -89,6 +95,11 @@
   background-color: rgba(0, 0, 255, 0.3);
   border-radius: 5px;
   border: 1px solid #000;
+}
+
+/* line 27, ../../sass/stock.sass */
+.inline {
+  display: inline-block;
 }
 
 /* line 1, ../../sass/filter.sass */
