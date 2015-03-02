@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="member-detail-container" class="centered col-md-12">
+<div class="member-detail-container centered col-md-10">
   
   {% include "generic/templates.html" %}
 
@@ -22,12 +22,22 @@
 
   {% include "generic/member_table_full.html" %}
   
-  <a class="btn btn-primary" href="{{ member.get_send_mail_url }}">Send email to Member</a>
-  <a class="btn btn-warning" href="{{ member.get_update_url }}">Edit Member Information</a>
+  <div class="centered col-sm-6">
+    <a id="member-send-mail" class="btn btn-primary">Send email to Member</a>
+    <a id="member-request-info" class="btn btn-success">Request Member information</a>
+  </div>
+  <br>
 
-  <button id="member-request-info" class="btn btn-success">Request Member information</button>
-  <button id="member-delete" class="btn btn-danger">Delete member</button>
-  
+  <div class="centered col-sm-6" id="send-mail-container">
+  </div>
+
+  <div class="centered col-sm-6">
+    <a class="btn btn-warning" href="{{ member.get_update_url }}">Edit Member Information</a>
+    <a id="member-delete" class="btn btn-danger">Delete member</a>
+  </div>
+  <br>
+
   <input id="member-id" type="hidden" value="{{ member.pk }}">
+
 </div>
 {% endblock %}

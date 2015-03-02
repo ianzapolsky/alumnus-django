@@ -17,7 +17,7 @@ define([
     },
 
     events: { 
-      'click #member-request-info': 'handleSendAsync',
+      'click #send-info-request': 'handleSendAsync'
     },
 
     formIsValid: function () {
@@ -27,7 +27,7 @@ define([
         this.signalError('Please check at least one Member.');
         valid = false
       } 
-      if (valid) {
+      if (this.checkRequired() && valid) {
         this.signalSuccess();
         return true;
       } else {
@@ -43,7 +43,7 @@ define([
       if (this.formIsValid()) {
         _.forEach($('input[type=checkbox]:checked'), function(el) {
           var loader = '<div id="loader"><img src="/static/images/ajax-loader.gif"></div>'; 
-          $(loader).css('margin-top', '3px').appendTo($(el).parent().parent());
+          $(loader).appendTo($(el).parent().parent());
           _this.sendRequestToMember(el);
         });
       }
@@ -51,9 +51,10 @@ define([
 
     sendRequestToMember: function (el) {
       var _this = this;
-      var id = $(el).val();
       var data = {
-        member_id: id
+        member_id: $(el).attr('data-member-id'),
+        subject: $('#subject').val(),
+        message: $('#message').val()
       };
       $.ajax({
         url: '/api/members/request-update/',

@@ -120,27 +120,30 @@ def member_update_request(request):
         member = get_object_or_404(Member, pk=member_id)
         if member.organization.owner != request.user:
             return HttpResponse('Sorry, you do not own that member.')
+
         context = { 
-          'user': request.user,
           'member': member,
-          'organization': member.organization,
           'site_name': settings.SITE_NAME
         }
+        subject = request.POST.get('subject', 'Member Update Request')
+        message = request.POST.get('message', '')
         context = Context(context)
-        text_content = get_template('emails/member_update_request.txt').render(context)
-        html_content = get_template('emails/member_update_request.html').render(context)
+
+        text_content = message + '\n\n' + get_template('emails/member_update_request.txt').render(context)
         to = member.email
         reply_to = request.user.email
-        subject, from_email = 'Member Update Request', settings.DEFAULT_FROM_EMAIL
+        from_email = settings.DEFAULT_FROM_EMAIL
+
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
-        msg.attach_alternative(html_content, 'text/html')
         successful = msg.send()
+
         if successful == 0:
             message = 'There was an error sending the email. Please try again.'
         else:
             message = 'Email successfully sent.'
         member.increment_times_requested()
         member.set_last_requested()
+
         # Stop adding messages from the API. This is counterintuitive, and 
         # confuses presentation logic with backend logic
         # messages.add_message(request, messages.INFO, message)
@@ -200,7 +203,8 @@ def member_send_mail(request):
         else:
             message = 'Email successfully sent.'
             redirect_url = member.get_absolute_url()
-        messages.add_message(request, messages.INFO, message)
+        # Stop adding messages from the API.
+        # messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 

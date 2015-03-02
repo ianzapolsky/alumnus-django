@@ -4,9 +4,17 @@
 {% block require_js %}
 <script>
   require([
-    'src/views/memberlist-detail'
-  ], function(MemberListDetailView) {
+    'src/views/memberlist-detail',
+    'src/views/table-buttons',
+    'src/views/member-list',
+    'src/views/email-form',
+    'src/views/request-info-form'
+  ], function(MemberListDetailView, TableButtonsView, MemberListView, EmailFormView, RequestInfoFormView) {
     new MemberListDetailView();
+    new TableButtonsView();
+    new MemberListView();
+    new EmailFormView();
+    new RequestInfoFormView();
   });
 </script>
 {% endblock %}
@@ -15,30 +23,34 @@
 <h2>{{ memberlist }}</h2>
 <br>
 
-<div class="centered col-sm-6">
-  <table class="left-align table table-hover table-clickable">
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th><!-- Detail --></th>
-    </tr>
-    {% for member in memberlist.members.all %}
-    <tr href="{{ member.get_absolute_url }}">
-      <td>{{ forloop.counter }}</td>
-      <td>{{ member.firstname }}</td>
-      <td>{{ member.lastname }}</td>
-      <td>{{ member.email }}</td>
-      <td><a class="btn btn-sm btn-warning" href="{{ member.get_absolute_url }}">Detail</a></td>
-    </tr>
-    {% endfor %}
-  </table>
-  <br>
-  <a class="btn btn-primary" href="{{ memberlist.get_send_mail_url }}">Send email to MemberList</a>
-  <a class="btn btn-warning" href="{{ memberlist.get_update_url }}">Update MemberList</a>
+<div class="member-list-container">
+    
+  {% include "generic/templates.html" %}
+
+  <div id="messages-container">
+  </div>
+
+  <div class="centered col-sm-6">
+
+    {% include "generic/member_table_detail.html" %}
+
+    <a id="member-send-mail" class="btn btn-primary">Send Mail</a>
+    <a id="member-request-info" class="btn btn-success">Request Member Information</a>
+    <br>
+    <br>
+  </div>
+
+  <div class="centered col-sm-6" id="send-mail-container">
+  </div>
+
+  <div class="centered col-sm-6">
+    <a class="btn btn-warning" href="{{ memberlist.get_update_url }}">Update MemberList</a>
+    <button id="memberlist-delete" class="btn btn-danger">Delete MemberList</button>
+    <br>
+  </div>
 
   <input id="memberlist-id" type="hidden" value="{{ memberlist.pk }}">
-  <button id="memberlist-delete" class="btn btn-danger">Delete MemberList</button>
+
 </div>
+
 {% endblock %}

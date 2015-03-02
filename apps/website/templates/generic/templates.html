@@ -34,3 +34,28 @@
     <br>
 </script>
 
+<script type="text/template" id="send-info-request-template">
+  <div class="form-group"> 
+    <label>Subject:</label>
+    <textarea id="subject" required="" rows="1" class="form-control">Member Update Request</textarea>
+    <br>
+  </div>
+  <div class="form-group">
+    <label>Personalize Message:</label>
+    <div class="left-align">
+      <textarea id="message" required="" rows="8" class="form-control">Hi there,
+
+{{ user }} has added you as a member of an organization called {{ organization }} on Alumnus.
+
+Please follow the link below to add information about yourself to the database so your organization leader can know more about who you are, what information you might be interested in, and how best to contact you.</textarea>
+      <br>
+      <p>(Link)</p>
+      <p>Note that this link will expire in 24 hours.</p>
+    </div>
+    <br>
+  </div>
+    <button id="send-info-request" class="btn btn-success">Send Information Request</button>
+    <br>
+    <br>
+</script>
+

@@ -16,6 +16,7 @@ define([
 
     events: { 
       'click #member-send-mail': 'renderSendMailForm',
+      'click #member-request-info': 'renderRequestInfoForm'
     },
 
     formIsValid: function () {
@@ -36,6 +37,13 @@ define([
         var content = _.template( $('#send-mail-template').html());
         $('#send-mail-container').html(content);
       } 
+    },
+
+    renderRequestInfoForm: function() {
+      if (this.formIsValid()) {
+        var content = _.template( $('#send-info-request-template').html());
+        $('#send-mail-container').html(content);
+      }
     },
 
     hideSendMailForm: function () {

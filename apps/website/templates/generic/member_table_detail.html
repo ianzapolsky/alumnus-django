@@ -16,7 +16,7 @@
     </tr>
     {% for member in members %}
     <tr href="{{ member.get_absolute_url }}">
-      <td><input data-member-email="{{ member.email }}" type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
+      <td><input data-member-id="{{ member.pk }}" type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
       <td>{{ member.firstname }}</td>
       <td>{{ member.lastname }}</td>
       <td>{{ member.graduation_year }}</td>
@@ -36,7 +36,7 @@
       {% endif %}
       -->
 
-      <td><a class="btn btn-sm btn-warning" href="{{ member.get_absolute_url }}">Detail</a></td>
+      <td><a class="btn btn-xxs btn-sm btn-warning" href="{{ member.get_absolute_url }}">Detail</a></td>
     </tr>
     {% endfor %}
   </table>
@@ -56,7 +56,7 @@
     </tr>
     <% _.each(Members, function(member, index) { %>
     <tr href="/members/<%= member.get('pk') %>">
-      <td><input data-member-email="<%= member.get('fields').email %>" type="checkbox" id="id_members_<%= index %>" name="members" value="<%= member.get('pk') %>"></td>
+      <td><input data-member-id="<%= member.get('pk') %>" type="checkbox" id="id_members_<%= index %>" name="members" value="<%= member.get('pk') %>"></td>
       <td><%= member.get('fields').firstname %></td>
       <td><%= member.get('fields').lastname %></td>
       <td><%= member.get('fields').graduation_year %></td>
@@ -67,7 +67,7 @@
         <td>No</td>
       <% } %>
 
-      <td><a class="btn btn-sm btn-warning" href="/members/<%= member.get('pk') %>">Detail</a></td>
+      <td><a class="btn btn-xxs btn-sm btn-warning" href="/members/<%= member.get('fields').slug %>">Detail</a></td>
     </tr>
     <% }); %>
   </table>

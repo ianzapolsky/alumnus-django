@@ -13,8 +13,8 @@
       <th>School</th>
     </tr>
     {% for member in members %}
-    <tr href="{{ member.get_absolute_url }}">
-      <td><input data-member-email="{{ member.email }}" type="checkbox" value="{{ member }}"></td>
+    <tr> 
+      <td><input data-member-id="{{ member.pk }}" type="checkbox" value="{{ member.pk }}"></td>
       <td>{{ member.firstname }}</td>
       <td>{{ member.lastname }}</td>
       <td>{{ member.graduation_year}}</td>
@@ -34,8 +34,8 @@
       <th>School</th>
     </tr>
     <% _.each(Members, function(member) { %>
-    <tr href="/members/<%= member.get('pk') %>">
-      <td><input data-member-email="<%= member.get('fields').email %>" type="checkbox" value="<%= member.get('fields').firstname + ' ' + member.get('fields').lastname %>"></td>
+    <tr>
+      <td><input data-member-id="<%= member.get('pk') %>" type="checkbox" value="<%= member.get('pk') %>"></td>
       <td><%= member.get('fields').firstname %></td>
       <td><%= member.get('fields').lastname %></td>
       <td><%= member.get('fields').graduation_year %></td>

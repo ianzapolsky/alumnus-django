@@ -17,9 +17,9 @@
 
   <div class="col-sm-6">
     {% for memberlist in memberlists %}
-    <h3 data-memberlist-id="{{ memberlist.pk }}" class="memberlist-link"><a href="{{ memberlist.get_absolute_url }}">{{ memberlist }}</a></h3>
+      <h3 data-memberlist-id="{{ memberlist.pk }}" class="memberlist-link"><a href="{{ memberlist.get_absolute_url }}">{{ memberlist }}</a></h3>
     {% empty %}
-    <h4>You have no MemberLists</h4>
+      <h4>You have no MemberLists</h4>
     {% endfor %}
     <br>
     <a class="btn btn-primary" href="{{ organization.get_create_memberlist_url }}">Add memberlist</a>
@@ -41,25 +41,32 @@
         <th>#</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Email</th>
+        <th>Grad. Year</th>
+        <th>School</th>
+        <th>Information Entered</th>
         <th></th>
       </tr>
       <% _.each(Members.models, function(member, index) { %>
-      <tr> 
+      <tr href="/members/<%= member.get('pk') %>">
         <td><%= index + 1 %></td>
         <td><%= member.get('fields').firstname %></td>
         <td><%= member.get('fields').lastname %></td>
-        <td><%= member.get('fields').email %></td>
-        <td><a class="btn btn-sm btn-warning" href="/members/<%= member.get('fields').slug %>">Detail</a></td>
+        <td><%= member.get('fields').graduation_year %></td>
+        <td><%= member.get('fields').school %></td>
+        <% if (member.get('fields').times_completed > 0) { %>
+          <td>Yes</td>
+        <% } else { %>
+          <td>No</td>
+        <% } %>
+  
+        <td><a class="btn btn-xxs btn-sm btn-warning" href="/members/<%= member.get('fields').slug %>">Detail</a></td>
       </tr>
       <% }); %>
     </table>
     <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/">Detail View</a>
-    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/send-mail/">Send message to memberlist</a>
-    <a class="btn btn-primary" href="/memberlists/<%= Members.memberlist_slug %>/update/">Update memberlist</a>
+    <a class="btn btn-success" href="/memberlists/<%= Members.memberlist_slug %>/send-mail/">Send message to memberlist</a>
+    <a class="btn btn-warning" href="/memberlists/<%= Members.memberlist_slug %>/update/">Update memberlist</a>
   </script>
-
-</div>
 
 </div>
 

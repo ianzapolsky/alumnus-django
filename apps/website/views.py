@@ -340,6 +340,7 @@ def memberlist_detail(request, memberlist_slug):
         return HttpResponse('Sorry, you do not own that memberlist.')
     context['organization'] = organization
     context['memberlist'] = memberlist
+    context['members'] = memberlist.get_members()
     return render(request, 'memberlist_detail.html', context)
 
 

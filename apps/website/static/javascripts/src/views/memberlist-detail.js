@@ -6,7 +6,7 @@ define([
   
   var MemberListDetailView = Backbone.View.extend({
     
-    el: '.centered',
+    el: '.member-list-container',
   
     initialize: function() {
       console.log('MemberListDetailView initialize');
@@ -18,7 +18,7 @@ define([
 
     handleDelete: function( ev ) {
       ev.preventDefault();
-      var check = confirm("Are you sure you want to delete this Member?");
+      var check = confirm("Are you sure you want to delete this MemberList?");
       if (check == true) {
         this.showLoading()
         var _this = this;

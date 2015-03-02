@@ -43,7 +43,7 @@ define([
       if (this.formIsValid()) {
         _.forEach($('input[type=checkbox]:checked'), function(el) {
           var loader = '<div id="loader"><img src="/static/images/ajax-loader.gif"></div>'; 
-          $(loader).css('margin-top', '3px').appendTo($(el).parent().parent());
+          $(loader).appendTo($(el).parent().parent());
           _this.sendMailToMember(el);
         });
       }
@@ -51,16 +51,13 @@ define([
 
     sendMailToMember: function (el) {
       var _this = this;
-      var address = $(el).attr('data-member-email');
-      var recipients = [address];
       var data = {
-        organization_id: $('#organization-id').val(),
-        recipients: JSON.stringify(recipients),
+        member_id: $(el).attr('data-member-id'),
         message: $('#message').val(),
         subject: $('#subject').val()
       };
       $.ajax({
-        url: '/api/organizations/send-mail/',
+        url: '/api/members/send-mail/',
         type: 'POST',
         data: data,
         success: function (data) {

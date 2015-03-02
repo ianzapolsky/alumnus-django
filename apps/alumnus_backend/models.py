@@ -126,6 +126,9 @@ class MemberList(models.Model):
     def get_send_mail_url(self):
         return self.get_absolute_url() + '/send-mail'
 
+    def get_members(self):
+        return self.members.all()
+
     def get_email_list(self):
         email_list = '' 
         for member in self.members.all():

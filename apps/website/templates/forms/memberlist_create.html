@@ -48,7 +48,8 @@
             <th></th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Email</th>
+            <th>Grad. Year</th>
+            <th>School</th>
           </tr>
           {% for member in organization.get_members %}
           <tr> 
@@ -62,8 +63,9 @@
             <td><input type="checkbox" id="id_members_{{ forloop.counter0 }}" name="members" value="{{ member.pk }}"></td>
             {% endif %}
             <td>{{ member.firstname }}</td>
-            <td>{{ member.lastname}}</td>
-            <td>{{ member.email }}</td>
+            <td>{{ member.lastname }}</td>
+            <td>{{ member.graduation_year}}</td>
+            <td>{{ member.school }}</td>
           </tr>
           {% endfor %}
         </table>
@@ -85,14 +87,16 @@
         <th></th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Email</th>
+        <th>Grad. Year</th>
+        <th>School</th>
       </tr>
       <% _.each(Members, function(member, index) { %>
       <tr> 
         <td><input type="checkbox" id="id_members_<%= index %>" name="members" value="<%= member.get('pk') %>"></td>
         <td><%= member.get('fields').firstname %></td>
         <td><%= member.get('fields').lastname %></td>
-        <td><%= member.get('fields').email %></td>
+        <td><%= member.get('fields').graduation_year %></td>
+        <td><%= member.get('fields').school %></td>
       </tr>
       <% }); %>
     </table>
