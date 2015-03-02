@@ -58,9 +58,9 @@ define([
           var grad = parseInt(member.get('fields').graduation_year);
           var from = parseInt(_this.filters['Graduation Year From']);
           var to = parseInt(_this.filters['Graduation Year To']);
-          if (isNaN(grad)) {
+          if (isNaN(grad))
             return false;
-          else if (grad < from || grad > to) {
+          else if (grad < from || grad > to)
             return false;
         }
         if (_this.filters['School'] && member.get('fields').school != _this.filters['School']) {
