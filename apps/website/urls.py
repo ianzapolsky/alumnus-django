@@ -36,9 +36,10 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/$', 'website.views.members'),
     url(r'^members/(?P<member_slug>[-\w\d]+)/$', 'website.views.member_detail'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/create/$', 'website.views.member_create'),
+    url(r'^members/(?P<member_slug>[-\w\d]+)/update/$', 'website.views.member_update'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/import/$', 'website.views.member_import'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/export/$', 'website.views.member_export'),
-    url(r'^members/(?P<member_slug>[-\w\d]+)/update/$', 'website.views.member_update'),
+
     # Public member update view, visible to only those with a valid AccessToken
     url(r'^members/(?P<member_slug>[-\w\d]+)/update/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public'),
     url(r'^thanks/(?P<member_slug>[-\w\d]+)/(?P<token>[-\w\d]+)/$', 'website.views.member_update_public_thanks'),
@@ -51,6 +52,5 @@ urlpatterns = patterns('',
   
     # Send email
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/send-mail/$', 'website.views.organization_send_mail'),
-    url(r'^members/(?P<member_slug>[-\w\d]+)/send-mail/$', 'website.views.member_send_mail'),
 
 )

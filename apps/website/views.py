@@ -42,14 +42,13 @@ def user_activate(request, token):
         user.delete();
         return redirect('/')
 
-
 @login_required
 def account(request):
     context = {'user': request.user}
     context['organizations'] = Organization.objects.filter(owner=request.user)
     return render(request, 'account_detail.html', context)
 
-
+@login_required
 def user_update_email(request):
     context = {'user': request.user}
     user = request.user
@@ -65,7 +64,7 @@ def user_update_email(request):
         context['form'] = UserUpdateEmailForm(instance=user)    
     return render(request, 'generic/form.html', context)
 
-
+@login_required
 def user_update_password(request):
     context = {'user': request.user}
     user = request.user
@@ -88,7 +87,6 @@ def organizations(request):
     context = {'user': request.user}
     context['organizations'] = Organization.objects.filter(owner=request.user)
     return render(request, 'organization_list.html', context)
-
 
 @login_required
 def organization_detail(request, organization_slug):
@@ -278,17 +276,6 @@ def member_update_public_thanks(request, member_slug, token):
     return render(request, 'thanks.html', context)
 
 @login_required
-def member_send_mail(request, member_slug):
-    member = get_object_or_404(Member, slug=member_slug)
-    organization = member.organization
-    if organization.owner != request.user:
-        return HttpResponse('Sorry, you do not own this memberlist')
-    context = {'member': member}
-    context['organization'] = organization
-    return render(request, 'forms/member_send_mail.html', context)
-
-
-@login_required
 def member_import(request, organization_slug):
     context = {'user': request.user}
     organization = get_object_or_404(Organization, slug=organization_slug)
@@ -383,4 +370,3 @@ def memberlist_update(request, memberlist_slug):
     else:
         context['form'] = MemberListForm(organization, instance=memberlist)
     return render(request, 'forms/memberlist_create.html', context)
-

@@ -84,6 +84,7 @@ class OrganizationForm(forms.ModelForm):
 
     def save(self, owner, commit=True):
         instance = super(OrganizationForm, self).save(commit=False)
+
         # set owner
         instance.owner = owner
 
