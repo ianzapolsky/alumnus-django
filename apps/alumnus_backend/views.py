@@ -164,8 +164,7 @@ def member_send_mail(request):
         text_content = message
         to = member.email
         reply_to = request.user.email
-        from_email = str(member.organization) + ' ' + settings.DEFAULT_FROM_EMAIL
-        #from_email = settings.DEFAULT_FROM_EMAIL
+        from_email = str(member.organization) + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
         if successful == 0:
