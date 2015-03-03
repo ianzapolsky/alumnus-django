@@ -132,7 +132,7 @@ def member_update_request(request):
         text_content = message + '\n\n' + get_template('emails/member_update_request.txt').render(context)
         to = member.email
         reply_to = request.user.email
-        from_email = str(member.organization) + ' ' + settings.DEFAULT_FROM_EMAIL
+        from_email = str(member.organization) + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
@@ -143,10 +143,6 @@ def member_update_request(request):
             message = 'Email successfully sent.'
         member.increment_times_requested()
         member.set_last_requested()
-
-        # Stop adding messages from the API. This is counterintuitive, and 
-        # confuses presentation logic with backend logic
-        # messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': member.get_absolute_url()}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
@@ -173,34 +169,6 @@ def member_send_mail(request):
         else:
             message = 'Email successfully sent.'
             redirect_url = member.get_absolute_url()
-        # Stop adding messages from the API.
-        # messages.add_message(request, messages.INFO, message)
-        response = {'successful': successful, 'redirect': redirect_url}
-        return HttpResponse(json.dumps(response), content_type='application/json')
-
-@login_required
-def memberlist_send_mail(request):
-    if request.method == 'POST':
-        memberlist_id = request.POST.get('memberlist_id')
-        memberlist = get_object_or_404(MemberList, pk=memberlist_id)
-        if memberlist.organization.owner != request.user:
-            return HttpResponse('Sorry, you do not own that memberlist.')
-
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message', '')
-        text_content = message
-        to = [member.email for member in memberlist.members.all()]
-        reply_to = request.user.email
-        from_email = settings.DEFAULT_FROM_EMAIL
-        msg = EmailMessage(subject, message, from_email, to, headers={'Reply-To': reply_to})
-        successful = msg.send()
-        if successful == 0:
-            message = 'There was an error sending the email. Please try again.'
-            redirect_url = member.get_send_mail_url()
-        else:
-            message = 'Email successfully sent.'
-            redirect_url = member.get_absolute_url()
-        messages.add_message(request, messages.INFO, message)
         response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
