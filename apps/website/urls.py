@@ -52,6 +52,5 @@ urlpatterns = patterns('',
     # Send email
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/send-mail/$', 'website.views.organization_send_mail'),
     url(r'^members/(?P<member_slug>[-\w\d]+)/send-mail/$', 'website.views.member_send_mail'),
-    url(r'^memberlists/(?P<memberlist_slug>[-\w\d]+)/send-mail/$', 'website.views.memberlist_send_mail'), 
 
 )
