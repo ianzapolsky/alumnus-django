@@ -60,9 +60,10 @@ def ownership_required_ajax(function):
             except:
                 pass
         if request.method == 'POST':      
+            print 'hello'
             try:
                 organization_id = request.POST.get('organization_id', '')
-                organization = get_object_or_404(Member, pk=organization_id)
+                organization = get_object_or_404(Organization, pk=organization_id)
             except:
                 pass
             try:
@@ -79,7 +80,7 @@ def ownership_required_ajax(function):
                 pass
 
         if organization.owner != request.user:
-            response = {'message': 'Sorry, you do not own this Organization.', 'error': True}
+            response = {'message': 'Sorry, you cannot perform this action because do not own this Organization.', 'error': True}
             return HttpResponse(json.dumps(response), content_type='application/json')
         return function(request, *args, **kwargs)
 
@@ -95,7 +96,7 @@ def access_required_ajax(function):
         if request.method == 'POST':      
             try:
                 organization_id = request.POST.get('organization_id', '')
-                organization = get_object_or_404(Member, pk=organization_id)
+                organization = get_object_or_404(Organization, pk=organization_id)
             except:
                 pass
             try:
@@ -117,15 +118,3 @@ def access_required_ajax(function):
         return function(request, *args, **kwargs)
 
     return wrap
-
-def user_has_ownership(user, obj):
-    if obj.owner != user:
-        return False
-    return True
-
-def user_has_access(user, obj):
-    if obj.organization.owner != user and obj.organization not in Organization.objects.filter(privileged_users__in=[user]):
-        return False
-    return True
-    
-            

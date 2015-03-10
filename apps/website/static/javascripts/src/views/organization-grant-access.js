@@ -30,6 +30,7 @@ define([
       ev.preventDefault();
       var _this = this;
       if (this.formIsValid()) {
+        this.showLoading();
         var data = {
           organization_id: $('#organization-id').val(),
           username: $('#username').val()
@@ -39,6 +40,7 @@ define([
           type: 'POST',
           data: data,
           success: function (data) {
+            _this.hideLoading();
             if (data.error) {
               var content = _.template($('#errors-template').html(), {Errors: [data.message]});
               $('#messages-container').html(content);
@@ -75,6 +77,18 @@ define([
     signalSuccess: function() {
       $('#messages-container').html('');
       window.scroll(0,0);
+    },
+
+    showLoading: function() {
+      // add the overlay with loading image to the page
+       var over = '<div class="overlay">' +
+            '<img class="loading" src="/static/images/ajax-loader.gif">' +
+            '</div>'; 
+      $(over).appendTo('body');
+    },
+
+    hideLoading: function() {
+      $('.overlay').remove();
     },
 
     renderErrors: function() {

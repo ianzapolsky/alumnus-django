@@ -201,7 +201,7 @@ def member_create(request, organization_slug):
 
 
 @login_required
-@ownership_required
+@access_required
 def member_update(request, member_slug):
     context = {'user': request.user}
     member = get_object_or_404(Member, slug=member_slug)
@@ -359,7 +359,7 @@ def memberlist_create(request, organization_slug):
     
 
 @login_required
-@ownership_required
+@access_required
 def memberlist_update(request, memberlist_slug):
     memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
     organization = memberlist.organization

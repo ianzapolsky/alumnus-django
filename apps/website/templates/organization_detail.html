@@ -35,10 +35,12 @@
 </div>
 
 <div class="row col-sm-12">
+  {% if organization.owner == user %}
   <div class="col-sm-4">
     <h3><a href="{{ organization.get_grant_access_url }}">Grant Access</a></h3>
     <p>Grant access to your Organization to another Alumnus User.</p>
   </div>
+  {% endif %}
   <div class="col-sm-4">
     <h3><a href="{{ organization.get_export_member_url }}">Export Members</a></h3>
     <p>Export the Members in your Organization to a downloadable Excel file.</p>
