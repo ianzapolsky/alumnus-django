@@ -28,7 +28,11 @@
     {% endfor %}
   </table>
 </div>
-<h1>Organizations You Have Access To</h1>
+<div class="centered col-md-6">
+  <a class="btn btn-primary" href="/organizations/create">Add Organization</a>
+</div>
+<br>
+<h3>Organizations You Have Access To</h3>
 <br>
 <div class="centered col-md-6">
   <table class="table">
@@ -38,11 +42,9 @@
     </tr>
     {% empty %}
     <tr>
-      <td>You have access to no Organizations.</td>
+      <td>You have access to no other Organizations.</td>
     </tr>
     {% endfor %}
   </table>
 </div>
-<br>
-<a class="btn btn-primary" href="/organizations/create">Add Organization</a>
 {% endblock %}

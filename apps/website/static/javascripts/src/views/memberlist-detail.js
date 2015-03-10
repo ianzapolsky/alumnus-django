@@ -28,8 +28,11 @@ define([
           type: 'POST',
           data: data,
           success: function(data) {
-            if (data.redirect) {
-              _this.hideLoading();
+            _this.hideLoading();
+            if (data.error) {
+              var content = _.template($('#errors-template').html(), {Errors: [data.message]});
+              $('#messages-container').html(content);
+            } else if (data.redirect) {
               window.location.replace(data.redirect);
             }
           }

@@ -359,7 +359,7 @@ def memberlist_create(request, organization_slug):
     
 
 @login_required
-@access_required
+@ownership_required
 def memberlist_update(request, memberlist_slug):
     memberlist = get_object_or_404(MemberList, slug=memberlist_slug)
     organization = memberlist.organization

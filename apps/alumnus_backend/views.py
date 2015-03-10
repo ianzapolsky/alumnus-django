@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import Context
 from django.template.loader import get_template
 
-from .decorators import access_required, ownership_required_ajax
+from .decorators import access_required, ownership_required_ajax, access_required_ajax, user_has_access
 from .models import Organization, Member, MemberList
 
 
@@ -50,41 +50,38 @@ def user_check_password(request):
 def get_memberlist(request, memberlist_id):
     if request.method == 'GET':
         memberlist = get_object_or_404(MemberList, pk=memberlist_id)
-        if memberlist.organization.owner != request.user: 
-            return HttpResponse('Sorry, you do not own that MemberList.')
+        if not user_has_access(request.user, memberlist):
+            return HttpResponse('Sorry, you do not have access to that MemberList.')
         response = {'members': serializers.serialize('json', memberlist.members.all())}
         return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 
 @login_required
+@access_required_ajax
 def get_organization(request, organization_id):
     if request.method == 'GET':
         organization = get_object_or_404(Organization, pk=organization_id)
-        if organization.owner != request.user:
-            return HttpResponse('Sorry, you do not own that Organization.')
         response = {'members': serializers.serialize('json', organization.get_members())}
         return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 
 @login_required
+@ownership_required_ajax
 def organization_delete(request):
     """ Deletes the specified organization """
     if request.method == 'POST':
         organization_id  = request.POST.get('organization_id')
         organization = get_object_or_404(Organization, pk=organization_id) 
-        if organization.owner != request.user:
-            message = 'Sorry, you do not own this organization.'
-            redirect = None
-        else:
-            organization.delete()
-            message = 'Organization successfully deleted.' 
-            redirect = '/'
+        organization.delete()
+        message = 'Organization successfully deleted.' 
+        redirect = '/'
         messages.add_message(request, messages.INFO, message)
         response = {'redirect': redirect} 
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 @login_required
+@ownership_required_ajax
 def organization_grant_access(request):
     """ Adds the specified User as a privileged User to the Organization """
     if request.method == 'POST':
@@ -92,43 +89,39 @@ def organization_grant_access(request):
         username = request.POST.get('username')
 
         organization = get_object_or_404(Organization, pk=organization_id) 
+
         try:
             user = User.objects.get(username=username)
         except:
             response = {'message': 'That user does not exist.', 'error': True}
             return HttpResponse(json.dumps(response), content_type='application/json')
 
-        if organization.owner != request.user:
-            message = 'Sorry, you do not own this organization.'
+        if organization.privileged_users.filter(username=user.username).exists():
+            message = str(user) + 'has already been granted access to ' + str(organization) + '.' 
             error = True
         else:
-            if organization.privileged_users.filter(username=user.username).exists():
-                message = str(user) + 'has already been granted access to ' + str(organization) + '.' 
-                error = True
-            else:
-                organization.privileged_users.add(user)
-                message = str(user) + 'has been granted access to ' + str(organization) + '.' 
-                error = False
+            organization.privileged_users.add(user)
+            message = str(user) + 'has been granted access to ' + str(organization) + '.' 
+            error = False
+
         response = {'message': message, 'error': error}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 @login_required
+@ownership_required_ajax
 def memberlist_delete(request):
     """ Deletes the specified memberlist, assuming the user owns that memberlist """
     if request.method == 'POST':
         memberlist_id  = request.POST.get('memberlist_id')
         memberlist = get_object_or_404(MemberList, pk=memberlist_id) 
         organization = memberlist.organization
-        if organization.owner != request.user:
-            message = 'Sorry, you do not own this memberlist.'
-            redirect = None
-        else:
-            memberlist.delete()
-            message = 'MemberList successfully deleted.' 
-            redirect = organization.get_memberlists_url()
+        memberlist.delete()
+        message = 'MemberList successfully deleted.' 
+        error = False
+        redirect = organization.get_memberlists_url()
         messages.add_message(request, messages.INFO, message)
-        response = {'redirect': redirect} 
+        response = {'message': message, 'error': error, 'redirect': redirect} 
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
@@ -140,10 +133,9 @@ def member_delete(request):
         member_id  = request.POST.get('member_id')
         member = get_object_or_404(Member, pk=member_id) 
         organization = member.organization
-        else:
-            member.delete()
-            message = 'Member successfully deleted.' 
-            redirect = organization.get_members_url()
+        member.delete()
+        message = 'Member successfully deleted.' 
+        redirect = organization.get_members_url()
         messages.add_message(request, messages.INFO, message)
         response = {'redirect': redirect} 
         return HttpResponse(json.dumps(response), content_type='application/json')
@@ -190,7 +182,7 @@ def member_send_mail(request):
     if request.method == 'POST':
         member_id = request.POST.get('member_id')
         member = get_object_or_404(Member, pk=member_id)
-
+    
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
         from_name = request.POST.get('from', str(member.organization))

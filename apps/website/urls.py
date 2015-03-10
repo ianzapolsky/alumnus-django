@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^account/$', 'website.views.account'),
     url(r'^account/update-email/$', 'website.views.user_update_email'),
     url(r'^account/update-password/$', 'website.views.user_update_password'),
+    url(r'^account/permissions-error/$', TemplateView.as_view(template_name='permissions_error.html')),
 
     # Home
     url(r'^$', 'website.views.organizations'),
