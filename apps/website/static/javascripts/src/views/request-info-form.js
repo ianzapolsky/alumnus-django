@@ -54,7 +54,8 @@ define([
       var data = {
         member_id: $(el).attr('data-member-id'),
         subject: $('#subject').val(),
-        message: $('#message').val()
+        message: $('#message').val(),
+        from: $('#from').val()
       };
       $.ajax({
         url: '/api/members/request-update/',

@@ -127,12 +127,15 @@ def member_update_request(request):
         }
         subject = request.POST.get('subject', 'Member Update Request')
         message = request.POST.get('message', '')
+        from_name = request.POST.get('from', str(member.organization))
         context = Context(context)
 
         text_content = message + '\n\n' + get_template('emails/member_update_request.txt').render(context)
         to = member.email
         reply_to = request.user.email
-        from_email = str(member.organization) + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
+        from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
+
+        print from_email
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
@@ -157,12 +160,18 @@ def member_send_mail(request):
 
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
+        from_name = request.POST.get('from', str(member.organization))
+
         text_content = message
         to = member.email
         reply_to = request.user.email
-        from_email = str(member.organization) + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
+        from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
+
+        print from_email
+
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
+
         if successful == 0:
             message = 'There was an error sending the email. Please try again.'
             redirect_url = member.get_send_mail_url()

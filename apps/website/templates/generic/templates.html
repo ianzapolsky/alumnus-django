@@ -20,6 +20,11 @@
 
 <script type="text/template" id="send-mail-template">
   <div class="form-group"> 
+    <label>From:</label>
+    <input id="from" required="" class="form-control" value="{{ organization }}">
+    <br>
+  </div>
+  <div class="form-group"> 
     <label>Subject:</label>
     <textarea id="subject" required="" rows="1" class="form-control"></textarea>
     <br>
@@ -35,6 +40,11 @@
 </script>
 
 <script type="text/template" id="send-info-request-template">
+  <div class="form-group"> 
+    <label>From:</label>
+    <input id="from" required="" class="form-control" value="{{ organization }}">
+    <br>
+  </div>
   <div class="form-group"> 
     <label>Subject:</label>
     <textarea id="subject" required="" rows="1" class="form-control">Member Update Request</textarea>
