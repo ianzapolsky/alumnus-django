@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block require_js %}
+<script>
+  require([
+    'src/views/organization-grant-access',
+  ], function(OrganizationGrantAccessView) {
+    new OrganizationGrantAccessView();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+ 
+
+
+<div id="grant-access-container">
+
+  <div id="messages-container">
+  </div>
+
+  <h3>Grant access to <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h3>
+  <br>
+  
+  <div id="form-container" class="centered col-md-4">
+  
+    {% include "generic/templates.html" %}
+      
+    <div class="form-group">
+      <form method="post">
+        <label for="username">Username (required):</label>
+        <input class="form-control" id="username">
+        <br>
+        <button id="btn-submit" class="btn btn-success" type="submit">Submit</button>
+      </form>
+      <br>
+      <br>
+    </div>
+  
+    <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
+  
+  </div>
+
+</div>
+  
+{% endblock %}

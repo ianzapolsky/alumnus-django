@@ -78,6 +78,36 @@ def organization_delete(request):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required
+def organization_grant_access(request):
+    """ Adds the specified User as a privileged User to the Organization """
+    if request.method == 'POST':
+        organization_id  = request.POST.get('organization_id')
+        username = request.POST.get('username')
+
+        organization = get_object_or_404(Organization, pk=organization_id) 
+        try:
+            user = User.objects.get(username=username)
+        except:
+            response = {'message': 'That user does not exist.', 'error': True}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+        # get_object_or_404(User, username=username)
+
+        if organization.owner != request.user:
+            message = 'Sorry, you do not own this organization.'
+            error = True
+        else:
+            if organization.privileged_users.filter(username=user.username).exists():
+                message = str(user) + 'has already been granted access to ' + str(organization) + '.' 
+                error = True
+            else:
+                organization.privileged_users.add(user)
+                message = str(user) + 'has been granted access to ' + str(organization) + '.' 
+                error = False
+        response = {'message': message, 'error': error}
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+@login_required
 def memberlist_delete(request):
     """ Deletes the specified memberlist, assuming the user owns that memberlist """
     if request.method == 'POST':

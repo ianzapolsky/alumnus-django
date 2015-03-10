@@ -14,12 +14,16 @@ class Organization(models.Model):
     owner = models.ForeignKey(User)
     slug = models.SlugField(unique=True)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
+    privileged_users = models.ManyToManyField(User, related_name='privileged_users')
 
     def __unicode__(self):
         return self.name
 
     def get_members(self):
         return Member.objects.filter(organization=self).all()
+
+    def get_privileged_users(self):
+        return self.privileged_users.all()
 
     def get_absolute_url(self):
         return '/organizations/' + self.slug
@@ -47,6 +51,9 @@ class Organization(models.Model):
 
     def get_send_mail_url(self):
         return self.get_absolute_url() + '/send-mail'
+
+    def get_grant_access_url(self):
+        return self.get_absolute_url() + '/grant-access'
 
     class Meta:
         ordering = ['name']

@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^organizations/create/$', 'website.views.organization_create'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/$', 'website.views.organization_detail'),
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/update/$', 'website.views.organization_update'),
+    url(r'^organizations/(?P<organization_slug>[-\w\d]+)/grant-access/$', 'website.views.organization_grant_access'),
 
     # Members
     url(r'^organizations/(?P<organization_slug>[-\w\d]+)/members/$', 'website.views.members'),

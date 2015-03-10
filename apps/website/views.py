@@ -86,6 +86,7 @@ def user_update_password(request):
 def organizations(request):
     context = {'user': request.user}
     context['organizations'] = Organization.objects.filter(owner=request.user)
+    context['privileged_organizations'] = Organization.objects.filter(privileged_users__in=[request.user])
     return render(request, 'organization_list.html', context)
 
 @login_required
@@ -139,6 +140,16 @@ def organization_send_mail(request, organization_slug):
     context['organization'] = organization
     context['members'] = organization.get_members()
     return render(request, 'forms/organization_send_mail.html', context)
+
+@login_required
+def organization_grant_access(request, organization_slug):
+    context = {'user': request.user}
+    organization = get_object_or_404(Organization, slug=organization_slug)
+    if organization.owner != request.user:
+        return HttpResponse('Sorry, you do not own this memberlist')
+    context['organization'] = organization
+    context['members'] = organization.get_members()
+    return render(request, 'forms/organization_grant_access.html', context)
 
 
 """ Member views """

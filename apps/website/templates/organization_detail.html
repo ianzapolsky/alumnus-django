@@ -3,34 +3,46 @@
 
 {% block content %}
 <h1>{{ organization }}</h1>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_send_mail_url }}">Send mail</a></h3>
-  <p>Send email to your Members.</p>
-</div>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_members_url }}">Members</a></h3>
-  <p>View all Members in your Organization.</p>
-</div>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
-  <p>View all the MemberLists you have created for this Organization.</p>
+
+<div class="row col-sm-12">
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_send_mail_url }}">Send mail</a></h3>
+    <p>Send email to your Members.</p>
+  </div>
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_members_url }}">Members</a></h3>
+    <p>View all Members in your Organization.</p>
+  </div>
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_memberlists_url }}">MemberLists</a></h3>
+    <p>View all the MemberLists you have created for this Organization.</p>
+  </div>
 </div>
 
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_create_member_url }}">Add Member</a></h3>
-  <p>Add a new Member to your Organization.</p>
+<div class="row col-sm-12">
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_create_member_url }}">Add Member</a></h3>
+    <p>Add a new Member to your Organization.</p>
+  </div>
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_import_member_url }}">Import Members</a></h3>
+    <p>Import new Members into your Organization from a CSV or Excel file.</p>
+  </div>
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_create_memberlist_url }}">Add MemberList</a></h3>
+    <p>Add a new MemberList.</p>
+  </div>
 </div>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_import_member_url }}">Import Members</a></h3>
-  <p>Import new Members into your Organization from a CSV or Excel file.</p>
-</div>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_create_memberlist_url }}">Add MemberList</a></h3>
-  <p>Add a new MemberList.</p>
-</div>
-<div class="col-sm-4">
-  <h3><a href="{{ organization.get_export_member_url }}">Export Members</a></h3>
-  <p>Export the Members in your Organization to a downloadable Excel file.</p>
+
+<div class="row col-sm-12">
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_grant_access_url }}">Grant Access</a></h3>
+    <p>Grant access to your Organization to another Alumnus User.</p>
+  </div>
+  <div class="col-sm-4">
+    <h3><a href="{{ organization.get_export_member_url }}">Export Members</a></h3>
+    <p>Export the Members in your Organization to a downloadable Excel file.</p>
+  </div>
 </div>
 
 {% endblock %}

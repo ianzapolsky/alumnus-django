@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^organizations/$', 'alumnus_backend.views.get_organizations'),
     url(r'^organizations/(?P<organization_id>\d+)/$', 'alumnus_backend.views.get_organization'),
     url(r'^organizations/delete/$', 'alumnus_backend.views.organization_delete'),
+    url(r'^organizations/grant-access/$', 'alumnus_backend.views.organization_grant_access'),
 
     # Members
     url(r'^members/delete/$', 'alumnus_backend.views.member_delete'),

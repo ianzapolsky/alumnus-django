@@ -23,7 +23,22 @@
     </tr>
     {% empty %}
     <tr>
-      <td>You have no Organizations</td>
+      <td>You own no Organizations.</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<h1>Organizations You Have Access To</h1>
+<br>
+<div class="centered col-md-6">
+  <table class="table">
+    {% for org in privileged_organizations %}
+    <tr>
+      <td><a href="{{ org.get_absolute_url }}"><h4>{{ org }}</h4></a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td>You have access to no Organizations.</td>
     </tr>
     {% endfor %}
   </table>
