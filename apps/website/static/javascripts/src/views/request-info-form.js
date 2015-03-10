@@ -62,15 +62,21 @@ define([
         type: 'POST',
         data: data,
         success: function (data) {
-          $(el).parent().parent().find('#loader').remove();
-          $(el).parent().parent().css('background-color', 'rgba(0,255,0,0.25)');
-          $(el).prop('checked', false);
+          if (data.error) {
+            $(el).parent().parent().find('#loader').remove();
+            var content = _.template($('#errors-template').html(), {Errors: [data.message]});
+            $('#messages-container').html(content);
+          } else {
+            $(el).parent().parent().find('#loader').remove();
+            $(el).parent().parent().css('background-color', 'rgba(0,255,0,0.25)');
+            $(el).prop('checked', false);
 
-          _this.messagesSent += 1;
-          if (_this.messagesSent === 1) var msg = '1 request successfully sent.';
-          else var msg = _this.messagesSent + ' requests sent successfully.';
-          var content = _.template($('#messages-template').html(), {Messages: [msg]});
-          $('#messages-container').html(content);
+            _this.messagesSent += 1;
+            if (_this.messagesSent === 1) var msg = '1 request successfully sent.';
+            else var msg = _this.messagesSent + ' requests sent successfully.';
+            var content = _.template($('#messages-template').html(), {Messages: [msg]});
+            $('#messages-container').html(content);
+          }
         }
       });
     },

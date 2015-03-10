@@ -80,7 +80,7 @@ class OrganizationForm(forms.ModelForm):
     
     class Meta:
         model = Organization 
-        exclude = ('owner', 'slug', 'uuid',)
+        exclude = ('owner', 'privileged_users', 'slug', 'uuid',)
 
     def save(self, owner, commit=True):
         instance = super(OrganizationForm, self).save(commit=False)
