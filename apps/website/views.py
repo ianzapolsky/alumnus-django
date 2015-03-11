@@ -89,8 +89,9 @@ def user_update_password(request):
 @login_required
 def organizations(request):
     context = {'user': request.user}
-    context['organizations'] = Organization.objects.filter(owner=request.user)
-    context['privileged_organizations'] = Organization.objects.filter(privileged_users__in=[request.user])
+    organizations = Organization.objects.filter(owner=request.user)
+    privileged_organizations = Organization.objects.filter(privileged_users__in=[request.user])
+    context['organizations'] = itertools.chain(organizations, privileged_organizations)
     return render(request, 'organization_list.html', context)
 
 
