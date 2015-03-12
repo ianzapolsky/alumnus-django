@@ -6,7 +6,7 @@ define([
   
   var Members = Backbone.Collection.extend({
 
-    url: '/api/memberlists/',
+    url: null,
     model: Member,
     memberlist_id: null,
     memberlist_slug: null,
