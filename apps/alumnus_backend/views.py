@@ -135,8 +135,6 @@ def member_update_request(request):
         reply_to = request.user.email
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
-        print from_email
-
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
 
@@ -166,8 +164,6 @@ def member_send_mail(request):
         to = member.email
         reply_to = request.user.email
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
-
-        print from_email
 
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
