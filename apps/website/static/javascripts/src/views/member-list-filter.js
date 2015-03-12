@@ -38,18 +38,22 @@ define([
     handleFilter: function( ev ) {
       ev.preventDefault();
       this.filters['Sort'] = $('#sort-filter').val();
-      this.filters['Gender'] = $('#gender-filter').val();
+      this.filters['Participant Type'] = $('#participant-type-filter').val();
       this.filters['Graduation Year From'] = $('#graduation-year-from-filter').val();
       this.filters['Graduation Year To'] = $('#graduation-year-to-filter').val();
       this.filters['School'] = $('#school-filter').val();
       this.filters['Current State'] = $('#state-filter').val();
       this.filters['Industry'] = $('#industry-filter').val();
+      this.filters['Gender'] = $('#gender-filter').val();
       this.render();
     },
 
     render: function() {
       var _this = this;
       var results = this.members.filter(function(member) {
+        if (_this.filters['Participant Type'] && member.get('fields').participant_type != _this.filters['Participant Type']) {
+          return false;
+        }
         if (_this.filters['Gender'] && member.get('fields').gender != _this.filters['Gender']) {
           return false;
         }

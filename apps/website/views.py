@@ -174,8 +174,8 @@ def member_create(request, organization_slug):
     if request.method == 'POST':
         form = MemberForm(request.POST)
         fields = list(form)
-        context['form_personal'] = fields[:4] 
-        context['form_work'] = fields[4:]
+        context['form_personal'] = fields[:5] 
+        context['form_work'] = fields[5:]
         context['form'] = form
         if form.is_valid():
             member = form.save(organization)
@@ -184,8 +184,8 @@ def member_create(request, organization_slug):
     else:
         context['form'] = MemberForm()    
         fields = list(context['form'])
-        context['form_personal'] = fields[:4]
-        context['form_work'] = fields[4:]
+        context['form_personal'] = fields[:5]
+        context['form_work'] = fields[5:]
     return render(request, 'forms/member_create.html', context)
 
 
@@ -201,8 +201,8 @@ def member_update(request, member_slug):
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
         fields = list(form)
-        context['form_personal'] = fields[:4] 
-        context['form_work'] = fields[4:]
+        context['form_personal'] = fields[:5] 
+        context['form_work'] = fields[5:]
         context['form'] = form
         if form.is_valid():
             form.save(organization)
@@ -211,8 +211,8 @@ def member_update(request, member_slug):
     else:
         context['form'] = MemberForm(instance=member)
         fields = list(context['form'])
-        context['form_personal'] = fields[:4] 
-        context['form_work'] = fields[4:]
+        context['form_personal'] = fields[:5] 
+        context['form_work'] = fields[5:]
     return render(request, 'forms/member_create.html', context)
 
 

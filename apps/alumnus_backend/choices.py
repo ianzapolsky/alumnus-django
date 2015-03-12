@@ -30,6 +30,10 @@ YEAR_CHOICES = (
 
 SCHOOL_CHOICES = (('CC', 'CC'), ('SEAS', 'SEAS'), ('GS', 'GS'), ('BC', 'BC'),)
 
+PARTICIPATION_CHOICES = (('Current', 'Current Member'), 
+                         ('Past', 'Past Member'),
+                         ('Friend/Family', 'Friend/Family of Member'),)
+
 INDUSTRY_CHOICES = (
   ('Accounting', 'Accounting'),
   ('Airlines/Aviation', 'Airlines/Aviation'),

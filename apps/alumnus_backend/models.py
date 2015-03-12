@@ -57,6 +57,7 @@ class Member(models.Model):
     organization = models.ForeignKey(Organization)
     uuid = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
     slug = models.SlugField(unique=True)
+    participant_type = models.CharField(max_length=100, choices=PARTICIPATION_CHOICES, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)
     graduation_year = models.CharField(max_length=4, choices=YEAR_CHOICES, blank=True)
     school = models.CharField(max_length=10, choices=SCHOOL_CHOICES, blank=True)
