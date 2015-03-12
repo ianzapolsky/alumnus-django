@@ -24,5 +24,6 @@ urlpatterns = patterns('',
     
     # Send mail
     url(r'^members/send-mail/$', 'alumnus_backend.views.member_send_mail'),
+    url(r'^members/send-group-mail/$', 'alumnus_backend.views.group_send_mail'),
 
 )

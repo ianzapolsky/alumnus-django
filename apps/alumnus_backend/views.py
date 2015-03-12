@@ -167,8 +167,6 @@ def member_send_mail(request):
         reply_to = request.user.email
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
-        print from_email
-
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})
         successful = msg.send()
 
@@ -181,3 +179,32 @@ def member_send_mail(request):
         response = {'successful': successful, 'redirect': redirect_url}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+@login_required
+def group_send_mail(request):
+    if request.method == 'POST':
+
+        recipients = request.POST.getlist('member_ids[]', '')
+  
+        addresses = []
+        for member_id in recipients:
+            addresses.append(Member.objects.get(pk=member_id).email)
+    
+        organization = Member.objects.get(pk=recipients[0]).organization
+
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        from_name = request.POST.get('from', str(organization))
+
+        text_content = message
+        reply_to = request.user.email
+        from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
+
+        msg = EmailMessage(subject, message, from_email, addresses, headers={'Reply-To': reply_to})
+        successful = msg.send()
+
+        if successful == 0:
+            message = 'There was an error sending the email. Please try again.'
+        else:
+            message = 'Email successfully sent.'
+        response = {'successful': successful}
+        return HttpResponse(json.dumps(response), content_type='application/json')

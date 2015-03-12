@@ -18,6 +18,7 @@ define([
 
     events: { 
       'click #send-mail': 'handleSendAsync',
+      'click #send-mail-group': 'handleGroupSendAsync',
     },
 
     formIsValid: function () {
@@ -49,6 +50,51 @@ define([
       }
     },
 
+    handleGroupSendAsync: function (ev) {
+      ev.preventDefault();
+      this.messagesSent = 0;
+      var recipients = [];
+      if (this.formIsValid()) {
+        _.forEach($('input[type=checkbox]:checked'), function(el) {
+          var loader = '<div id="loader"><img src="/static/images/ajax-loader.gif"></div>'; 
+          $(loader).appendTo($(el).parent().parent());
+          recipients.push(el);
+        });
+      }
+      this.sendMailToGroup(recipients);
+    },
+
+    sendMailToGroup: function(recipients) {
+      var _this = this;
+      var member_ids = []
+      _.forEach(recipients, function(el) {
+        member_ids.push($(el).attr('data-member-id'));
+      });
+      var data = {
+        member_ids: member_ids,
+        message: $('#message').val(),
+        subject: $('#subject').val(),
+        from: $('#from').val()
+      };
+      $.ajax({
+        url: '/api/members/send-group-mail/',
+        type: 'POST',
+        data: data,
+        success: function (data) {
+          _.forEach(recipients, function (el) {
+            $(el).parent().parent().find('#loader').remove();
+            $(el).parent().parent().css('background-color', 'rgba(0,255,0,0.25)');
+            $(el).prop('checked', false);
+            _this.messagesSent += 1;
+          });
+          if (_this.messagesSent === 1) var msg = '1 email successfully sent.';
+          else var msg = _this.messagesSent + ' emails sent successfully.';
+          var content = _.template($('#messages-template').html(), {Messages: [msg]});
+          $('#messages-container').html(content);
+        }
+      });
+    },
+      
     sendMailToMember: function (el) {
       var _this = this;
       var data = {
