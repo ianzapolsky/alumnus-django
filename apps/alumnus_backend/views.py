@@ -182,14 +182,8 @@ def member_send_mail(request):
 @login_required
 def group_send_mail(request):
     if request.method == 'POST':
-
-        recipients = request.POST.getlist('member_ids[]', '')
-  
-        addresses = []
-        for member_id in recipients:
-            addresses.append(Member.objects.get(pk=member_id).email)
-    
-        organization = Member.objects.get(pk=recipients[0]).organization
+        recipients = request.POST.getlist('recipients[]', '')
+        organization = Member.objects.get(pk=request.POST.get('member_id')).organization
 
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
@@ -199,7 +193,7 @@ def group_send_mail(request):
         reply_to = request.user.email
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
-        msg = EmailMessage(subject, message, from_email, addresses, headers={'Reply-To': reply_to})
+        msg = EmailMessage(subject, message, from_email, recipients, headers={'Reply-To': reply_to})
         successful = msg.send()
 
         if successful == 0:

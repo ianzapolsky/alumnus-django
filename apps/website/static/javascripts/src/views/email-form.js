@@ -66,12 +66,9 @@ define([
 
     sendMailToGroup: function(recipients) {
       var _this = this;
-      var member_ids = []
-      _.forEach(recipients, function(el) {
-        member_ids.push($(el).attr('data-member-id'));
-      });
       var data = {
-        member_ids: member_ids,
+        recipients: _.map(recipients, function (el) { return $(el).attr('data-member-email'); }),
+        member_id: $($('input[type=checkbox]:checked')[0]).attr('data-member-id'),
         message: $('#message').val(),
         subject: $('#subject').val(),
         from: $('#from').val()
@@ -87,8 +84,8 @@ define([
             $(el).prop('checked', false);
             _this.messagesSent += 1;
           });
-          if (_this.messagesSent === 1) var msg = '1 email successfully sent.';
-          else var msg = _this.messagesSent + ' emails sent successfully.';
+          if (_this.messagesSent === 1) var msg = 'Email sent successfully to 1 recipient.';
+          else var msg = 'Emails sent successfully to ' + _this.messagesSent + ' recipients.';
           var content = _.template($('#messages-template').html(), {Messages: [msg]});
           $('#messages-container').html(content);
         }
@@ -113,7 +110,7 @@ define([
           $(el).prop('checked', false);
 
           _this.messagesSent += 1;
-          if (_this.messagesSent === 1) var msg = '1 email successfully sent.';
+          if (_this.messagesSent === 1) var msg = '1 email sent successfully.';
           else var msg = _this.messagesSent + ' emails sent successfully.';
           var content = _.template($('#messages-template').html(), {Messages: [msg]});
           $('#messages-container').html(content);
