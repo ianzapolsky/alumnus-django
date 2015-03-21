@@ -48,6 +48,9 @@ class Organization(models.Model):
     def get_send_mail_url(self):
         return self.get_absolute_url() + '/send-mail'
 
+    class Meta:
+        ordering = ['name']
+
 
 class Member(models.Model):
 
@@ -138,6 +141,9 @@ class MemberList(models.Model):
         for member in self.members.all():
             email_list += member.email + ', '
         return email_list
+
+    class Meta:
+        ordering = ['name']
 
 
 class AccessToken(models.Model):
