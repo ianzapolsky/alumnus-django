@@ -106,6 +106,9 @@ class Member(models.Model):
             return True
         return False
 
+    class Meta:
+        ordering = ['lastname', 'firstname']
+
 
 class MemberList(models.Model):
   
