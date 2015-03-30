@@ -1,7 +1,7 @@
 define([
   'underscore',
   'backbone',
-  'src/models/member',
+  'dist/src/models/member',
 ], function(_, Backbone, Member) {
   
   var Members = Backbone.Collection.extend({
