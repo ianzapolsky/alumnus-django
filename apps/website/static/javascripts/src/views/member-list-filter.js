@@ -88,6 +88,10 @@ define([
 
       if (this.filters['Sort'] && !this.ascending)
         results.reverse();
+  
+      // Reverse to match expected behavior for alphabetical sorting.
+      if (this.filters['Sort'] === 'firstname' || this.filters['Sort'] === 'lastname')
+        results.reverse();
     
       var content = _.template( $('#member-list-template').html(), { Members: results });
       $('#member-list-members').html(content);
