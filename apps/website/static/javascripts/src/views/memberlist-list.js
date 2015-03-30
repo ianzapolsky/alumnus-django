@@ -2,8 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'src/models/member',
-  'src/collections/members',
+  'dist/src/models/member',
+  'dist/src/collections/members',
 ], function($, _, Backbone, MemberModel, MemberCollection) {
   
   var MemberlistListView = Backbone.View.extend({

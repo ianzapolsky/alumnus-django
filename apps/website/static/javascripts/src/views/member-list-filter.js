@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'src/collections/members',
+  'dist/src/collections/members',
 ], function($, _, Backbone, MemberCollection) {
   
   var MemberListFilterView = Backbone.View.extend({
