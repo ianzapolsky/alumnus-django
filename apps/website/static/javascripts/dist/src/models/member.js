@@ -1,1 +1,1 @@
-define(["underscore","backbone"],function(n,l){var e=l.Model.extend({"default":{firstname:null,lastname:null,email:null,slug:null,organization:null}});return e});
+define(["underscore","backbone"],function(l,n){var e=n.Model.extend({url:null,"default":{firstname:null,lastname:null,email:null,slug:null,organization:null}});return e});

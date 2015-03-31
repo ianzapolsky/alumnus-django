@@ -5,6 +5,8 @@ define([
   
   var Member = Backbone.Model.extend({
 
+    url: null,
+
     default: {
       firstname: null,
       lastname: null,
