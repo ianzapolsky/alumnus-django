@@ -57,7 +57,7 @@ def get_organization(request, organization_id):
         organization = get_object_or_404(Organization, pk=organization_id)
         if organization.owner != request.user: 
             return HttpResponse('Sorry, you do not own that Organization.')
-        response = {'members': serializers.serialize('json', organization.get_members().all())}
+        response = {'members': serializers.serialize('json', organization.get_members())}
         return HttpResponse(json.dumps(response), content_type='appliction/json')
 
 @login_required

@@ -12,7 +12,8 @@
       <th>Participant Type</th>
       <th>Grad. Year</th>
       <th>School</th>
-      <th>Information Entered</th>
+      <th>Profile Completion</th>
+      <th>Request Sent</th>
       <th><!-- Detail --></th>
     </tr>
     {% for member in members %}
@@ -23,8 +24,9 @@
       <td>{{ member.participant_type }}</td>
       <td>{{ member.graduation_year }}</td>
       <td>{{ member.school }}</td>
+      <td>{{ member.get_completion|stringformat:"d" }}%</td>
 
-      {% if member.times_completed > 0 %}
+      {% if member.times_requested > 0 %}
         <td>Yes</td>
       {% else %}
         <td>No</td>
@@ -54,7 +56,8 @@
       <th>Participant Type</th>
       <th>Grad. Year</th>
       <th>School</th>
-      <th>Information Entered</th>
+      <th>Profile Completion</th>
+      <th>Request Sent</th>
       <th></th>
     </tr>
     <% _.each(Members, function(member, index) { %>
@@ -65,7 +68,9 @@
       <td><%= member.get('fields').participant_type %></td>
       <td><%= member.get('fields').graduation_year %></td>
       <td><%= member.get('fields').school %></td>
-      <% if (member.get('fields').times_completed > 0) { %>
+      <td><%= (10 - _.filter(Object.keys(member.get('fields')), function(key) { return member.get('fields')[key] === ''; }).length) / 10.0 * 100.0 %>%</td>
+
+      <% if (member.get('fields').times_requested > 0) { %>
         <td>Yes</td>
       <% } else { %>
         <td>No</td>

@@ -109,6 +109,25 @@ class Member(models.Model):
             return True
         return False
 
+    def get_completion(self):
+        fields = 10.0
+        completed = 3.0
+        if self.participant_type != '':
+            completed += 1.0
+        if self.gender != '':
+            completed += 1.0
+        if self.graduation_year != '':
+            completed += 1.0
+        if self.school != '':
+            completed += 1.0
+        if self.industry != '':
+            completed += 1.0
+        if self.company != '':
+            completed += 1.0
+        if self.current_state != '':
+            completed += 1.0
+        return completed / fields * 100
+
     class Meta:
         ordering = ['lastname', 'firstname']
 
