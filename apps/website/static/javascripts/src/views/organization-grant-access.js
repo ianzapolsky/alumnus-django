@@ -6,6 +6,8 @@ define([
 
   var OrganizationGrantAccessView = Backbone.View.extend({
 
+    messages: [],
+  
     el: '#grant-access-container',
 
     initialize: function() {
@@ -14,6 +16,7 @@ define([
 
     events: { 
       'click #btn-submit': 'handleAccessGrant',
+      'click #btn-submit-ownership': 'handleTransferOwnership',
     },
 
     formIsValid: function () {
@@ -47,6 +50,32 @@ define([
             } else {
               var content = _.template($('#messages-template').html(), {Messages: [data.message]});
               $('#messages-container').html(content);
+            }
+          }
+        });
+      }
+    },
+
+    handleTransferOwnership: function (ev) {
+      ev.preventDefault();
+      var _this = this;
+      if (this.formIsValid()) {
+        this.showLoading();
+        var data = {
+          organization_id: $('#organization-id').val(),
+          username: $('#username-ownership').val()
+        };
+        $.ajax({
+          url: '/api/organizations/transfer-ownership/',
+          type: 'POST',
+          data: data,
+          success: function (data) {
+            _this.hideLoading();
+            if (data.error) {
+              var content = _.template($('#errors-template').html(), {Errors: [data.message]});
+              $('#messages-container').html(content);
+            } else {
+              window.location = data.redirect;
             }
           }
         });

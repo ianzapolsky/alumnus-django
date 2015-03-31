@@ -105,6 +105,35 @@ def organization_grant_access(request):
         response = {'message': message, 'error': error}
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+@login_required
+@ownership_required_ajax
+def organization_transfer_ownership(request):
+    """ Changes the specified User to be the new owner of the Organization """
+    if request.method == 'POST':
+        organization_id  = request.POST.get('organization_id')
+        organization = get_object_or_404(Organization, pk=organization_id) 
+        username = request.POST.get('username')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            response = {'message': 'That user does not exist.', 'error': True}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+        if organization.owner == user:
+            response = {'message': 'That user is already the owner of this Organization.', 'error': True}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+
+        if organization.privileged_users.filter(username=user.username).exists():
+            organization.privileged_users.remove(user)
+        organization.owner = user
+        if not organization.privileged_users.filter(username=request.user.username).exists():
+            organization.privileged_users.add(request.user)
+        organization.save()
+
+        message = str(user) + ' has been made the new owner of ' + str(organization) + '. ' + str(request.user) + ' has been made a privileged user automatically.'
+        messages.add_message(request, messages.INFO, message)
+        response = {'message': message, 'error': False, 'redirect': organization.get_absolute_url()}
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
 @login_required
 @ownership_required_ajax

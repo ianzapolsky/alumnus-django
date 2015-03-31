@@ -14,14 +14,15 @@
 
 {% block content %}
  
-
-
 <div id="grant-access-container">
 
   <div id="messages-container">
   </div>
 
-  <h3>Grant access to <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h3>
+  <div class="centered col-md-6">
+    <h3>Grant access to <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h3>
+    <p><strong>Attention:</strong> Granting access to your Organization to another Alumnus user will allow that user to send email to your Members, create new Members and MemberLists, and edit your Members. However, these users will not be able to delete Members or MemberLists, nor will they be able to delete your Organization or grant access to it to anyone else.</p>
+  </div>
   <br>
   
   <div id="form-container" class="centered col-md-4">
@@ -39,9 +40,33 @@
       <br>
     </div>
   
-    <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
   
   </div>
+
+  <div class="centered col-md-6">
+    <h3>Transfer ownership of <a href="{{ organization.get_absolute_url }}">{{ organization }}</a></h3>
+    <p><strong>Warning:</strong> Transferring the ownership of your Organization to another Alumnus user will cause you to lose access to your Organization. You will automatically be made a privileged user of the Organization when you transfer ownership, but you will no longer be able to delete Members or MemberLists, delete the Organization itself, or control which Alumnus users have access to your Organization.</p>
+  </div>
+  <br>
+  
+  <div id="form-container" class="centered col-md-4">
+  
+    <div class="form-group">
+      <form method="post">
+        <label for="username">Username (required):</label>
+        <input class="form-control" id="username-ownership">
+        <br>
+        <button id="btn-submit-ownership" class="btn btn-success" type="submit">Submit</button>
+      </form>
+      <br>
+      <br>
+    </div>
+  
+  </div>
+
+
+
+  <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
 
 </div>
   

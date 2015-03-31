@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^organizations/(?P<organization_id>\d+)/$', 'alumnus_backend.views.get_organization'),
     url(r'^organizations/delete/$', 'alumnus_backend.views.organization_delete'),
     url(r'^organizations/grant-access/$', 'alumnus_backend.views.organization_grant_access'),
+    url(r'^organizations/transfer-ownership/$', 'alumnus_backend.views.organization_transfer_ownership'),
 
     # Members
     url(r'^members/delete/$', 'alumnus_backend.views.member_delete'),
