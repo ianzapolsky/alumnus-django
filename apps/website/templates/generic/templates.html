@@ -20,9 +20,18 @@
 
 <script type="text/template" id="send-mail-template">
   <div class="form-group"> 
-    <label>From:</label>
-    <input id="from" required="" class="form-control" value="{{ organization }}">
+    <label>Reply-to email:</label>
+    <select id="from-email" class="form-control">
+      {% if user == organization.owner %}
+        <option value="{{ user.email }}">{{ user.email }}</option>
+      {% else %}
+        <option value="{{ user.email }}">{{ user.email }} (you)</option>
+        <option value="{{ organization.owner.email }}">{{ organization.owner.email }} (owner)</option>
+      {% endif %}
+    </select>
     <br>
+    <label>Sender name:</label>
+    <input id="from" required="" class="form-control" value="{{ organization }}">
   </div>
   <div class="form-group"> 
     <label>Subject:</label>
@@ -41,7 +50,7 @@
 
 <script type="text/template" id="send-info-request-template">
   <div class="form-group"> 
-    <label>From:</label>
+    <label>Sender name:</label>
     <input id="from" required="" class="form-control" value="{{ organization }}">
     <br>
   </div>

@@ -187,10 +187,9 @@ def member_update_request(request):
 
         text_content = message + '\n\n' + get_template('emails/member_update_request.txt').render(context)
         to = member.email
-        reply_to = request.user.email
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to], headers={'Reply-To': reply_to})
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         successful = msg.send()
 
         if successful == 0:
@@ -213,10 +212,11 @@ def member_send_mail(request):
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
         from_name = request.POST.get('from', str(member.organization))
+        from_address = request.POST.get('from_email', str(member.organization))
 
         text_content = message
         to = member.email
-        reply_to = request.user.email
+        reply_to = from_address
         from_email = from_name + ' <' + settings.DEFAULT_FROM_EMAIL + '>'
 
         msg = EmailMessage(subject, message, from_email, [to], headers={'Reply-To': reply_to})

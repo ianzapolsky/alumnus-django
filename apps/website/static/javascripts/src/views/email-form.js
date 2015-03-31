@@ -55,7 +55,8 @@ define([
         member_id: $(el).attr('data-member-id'),
         message: $('#message').val(),
         subject: $('#subject').val(),
-        from: $('#from').val()
+        from: $('#from').val(),
+        from_email: $('#from-email').val()
       };
       $.ajax({
         url: '/api/members/send-mail/',

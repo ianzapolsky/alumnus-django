@@ -23,7 +23,7 @@ define([
     },
 
     events: {
-      'change select': 'handleFilter',
+      'change .filter-select': 'handleFilter',
       'click input[type=radio]': 'changeOrder',
     },
 
