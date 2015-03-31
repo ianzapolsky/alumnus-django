@@ -11,7 +11,10 @@
 
 {% block content %}
 <h2><a href="{{ organization.get_absolute_url }}">{{ organization }}</a> MemberLists</h2>
-<br>
+<div class="centered col-sm-6">
+  <h4><a href="{{ organization.get_create_memberlist_url }}">Add MemberList</a></h4>
+  <br>
+</div>
 
 <div id="memberlist-container">
 
@@ -22,7 +25,6 @@
       <h4>You have no MemberLists</h4>
     {% endfor %}
     <br>
-    <a class="btn btn-primary" href="{{ organization.get_create_memberlist_url }}">Add memberlist</a>
   </div>
 
   <div id="memberlist-members" class="col-sm-6">

@@ -28,7 +28,10 @@
   </div>
 
   <h2><a href="{{ organization.get_absolute_url }}" >{{ organization }}</a> Members ({{ members.count }})</h2>
-  <br>
+  <div class="centered col-sm-6">
+    <h4><a href="{{ organization.get_create_member_url }}">Add Member</a></h4>
+    <br>
+  </div>
 
   <div class="left-align col-sm-3 filters">
     <div class="left-align col-sm-10">
@@ -47,10 +50,6 @@
   <div class="centered col-sm-6" id="send-mail-container">
   </div>
   <br>
-
-  <div class="centered col-sm-6">
-    <a class="btn btn-primary" href="{{ organization.get_create_member_url }}">Add member</a>
-  </div>
 
   <input id="organization-id" type="hidden" value="{{ organization.pk }}"> 
 
