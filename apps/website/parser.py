@@ -26,18 +26,25 @@ class ExcelParser():
 
             m = Member(email=row[0].value, firstname=row[1].value, lastname=row[2].value, organization=organization)
 
-            if row[3].value != '':
-                m.gender = row[3].value
+            if row[3].value == 'Current Member':
+                m.participant_type = 'Current'
+            elif row[3].value == 'Past Member':
+                m.participant_type = 'Past'
+            elif row[3].value == 'Friend/Family of Member':
+                m.participant_type = 'Friend/Family'
+
             if row[4].value != '':
-                m.graduation_year = int(row[4].value)
+                m.gender = row[4].value
             if row[5].value != '':
-                m.school = row[5].value
+                m.graduation_year = int(row[5].value)
             if row[6].value != '':
-                m.industry = row[6].value
+                m.school = row[6].value
             if row[7].value != '':
-                m.company = row[7].value
+                m.industry = row[7].value
             if row[8].value != '':
-                m.current_state = row[8].value
+                m.company = row[8].value
+            if row[9].value != '':
+                m.current_state = row[9].value
 
             # set slug
             max_length = Member._meta.get_field('slug').max_length
@@ -58,17 +65,19 @@ class ExcelParser():
             return False 
         if row[2].value != 'Last name (*Required)':
             return False 
-        if row[3].value != 'Gender':
+        if row[3].value != 'Participant Type':
             return False 
-        if row[4].value != 'Grad. Year':
+        if row[4].value != 'Gender':
             return False 
-        if row[5].value != 'School':
+        if row[5].value != 'Grad. Year':
             return False 
-        if row[6].value != 'Industry':
+        if row[6].value != 'School':
             return False 
-        if row[7].value != 'Company':
+        if row[7].value != 'Industry':
             return False 
-        if row[8].value != 'Current State':
+        if row[8].value != 'Company':
+            return False 
+        if row[9].value != 'Current State':
             return False 
         return True
 
