@@ -36,6 +36,9 @@ define([
       if (this.formIsValid()) {
         var content = _.template( $('#send-mail-template').html());
         $('#send-mail-container').html(content);
+        $('html, body').animate({
+          scrollTop: $('#email-form-divider').offset().top - 70
+        }, 500);
       } 
     },
 
@@ -43,6 +46,9 @@ define([
       if (this.formIsValid()) {
         var content = _.template( $('#send-info-request-template').html());
         $('#send-mail-container').html(content);
+        $('html, body').animate({
+          scrollTop: $('#email-form-divider').offset().top - 70
+        }, 500);
       }
     },
 
