@@ -93,7 +93,15 @@ def access_required_ajax(function):
                 organization = Organization.objects.get(pk=kwargs['organization_id'])
             except:
                 pass
+            try:
+                memberlist_id = kwargs['memberlist_id']
+                memberlist = get_object_or_404(MemberList, pk=memberlist_id)
+                organization = memberlist.organization
+            except:
+                pass
+          
         if request.method == 'POST':      
+            print request.POST.get('memberlist_id', 'hello bob')
             try:
                 organization_id = request.POST.get('organization_id', '')
                 organization = get_object_or_404(Organization, pk=organization_id)
