@@ -24,7 +24,22 @@
     <!-- Load page-specific CSS here -->
     {% endblock %}
 
-    <!-- Load Javascript modules -->
+    <!-- Define RequireJS settings -->
+    <script> 
+      var require = {
+        shim: {
+          'common': {'deps': ['jquery']}
+        },
+        paths: {
+          'common': 'dist/lib/common',
+          'backbone': 'dist/lib/backbone',
+          'jquery': 'dist/lib/jquery',
+          'underscore': 'dist/lib/underscore',
+        }
+      };
+    </script>
+
+    <!-- Load main RequireJS module -->    
     <script data-main="{% static 'javascripts/main.js' %}" src="{% static 'javascripts/lib/requirejs/require.js' %}"></script>
 
     {% block require_js %}
